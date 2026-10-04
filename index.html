@@ -17,11 +17,11 @@
       background: #ffffff;
       border: 1px solid #e5e7eb;
       border-radius: 12px;
-      padding: 20px;
+      padding: 24px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
     h1 {
-      margin: 0 0 8px 0;
+      margin: 0 0 12px 0;
       font-size: 22px;
     }
     .filter-container {
@@ -29,6 +29,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
     }
     label {
       font-weight: 600;
@@ -40,7 +41,6 @@
       border: 1px solid #d1d5db;
       border-radius: 6px;
       background-color: white;
-      font-weight: 500;
       cursor: pointer;
     }
     .stats {
@@ -86,9 +86,9 @@
     <h1>Apuração 1º Turno 2026 (Exterior)</h1>
 
     <div class="filter-container">
-      <label for="countrySelect">Filtrar por:</label>
+      <label for="countrySelect">Filtrar visualização:</label>
       <select id="countrySelect" onchange="atualizarGrafico()">
-        <option value="ALL">Total Consolidado (Todos os Países)</option>
+        <option value="ALL">Total Geral (Todos os Países)</option>
       </select>
     </div>
 
@@ -114,7 +114,7 @@
       const select = document.getElementById("countrySelect");
       const valorAtual = select.value;
       
-      select.innerHTML = '<option value="ALL">Total Consolidado (Todos os Países)</option>';
+      select.innerHTML = '<option value="ALL">Total Geral (Todos os Países)</option>';
       dadosGlobais.forEach(item => {
         const opt = document.createElement("option");
         opt.value = item.pais;
@@ -135,7 +135,7 @@
       if (filtro === "ALL") {
         dadosGlobais.forEach(item => {
           totalUrnas += item.urnas || 0;
-          for (const [cand, qtd] of Object.entries(item.votos)) {
+          for (const [cand, qtd] of Object.entries(item.votos || {})) {
             consolidado[cand] = (consolidado[cand] || 0) + qtd;
           }
         });
@@ -143,7 +143,7 @@
         const item = dadosGlobais.find(i => i.pais === filtro);
         if (item) {
           totalUrnas = item.urnas || 0;
-          consolidado = { ...item.votos };
+          consolidado = { ...(item.votos || {}) };
         }
       }
 
