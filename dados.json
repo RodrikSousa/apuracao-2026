@@ -1,15 +1,67 @@
 [
-  { "nome": "Flávio Bolsonaro", "votos": 24855 },
-  { "nome": "Lula", "votos": 5926 },
-  { "nome": "Augusto Cury", "votos": 1539 },
-  { "nome": "Renan Santos", "votos": 1248 },
-  { "nome": "Ronaldo Caiado", "votos": 611 },
-  { "nome": "Zema", "votos": 391 },
-  { "nome": "Clariana Barão", "votos": 309 },
-  { "nome": "Samara", "votos": 170 },
-  { "nome": "Edmilson Costa", "votos": 136 },
-  { "nome": "Wilson Grassi", "votos": 91 },
-  { "nome": "Hertz Dias", "votos": 56 },
-  { "nome": "Leonardo Avalanche", "votos": 38 },
-  { "nome": "Rui Costa Pimenta", "votos": 36 }
+  {
+    "pais": "Japão",
+    "urnas": 119,
+    "votos": {
+      "Flávio Bolsonaro": 24601,
+      "Lula": 5234,
+      "Augusto Cury": 1501,
+      "Renan Santos": 1197,
+      "Ronaldo Caiado": 595,
+      "Zema": 368,
+      "Clariana Barão": 307,
+      "Samara": 164,
+      "Edmilson Costa": 136,
+      "Wilson Grassi": 91,
+      "Hertz Dias": 54,
+      "Leonardo Avalanche": 37,
+      "Rui Costa Pimenta": 33
+    }
+  },
+  {
+    "pais": "Nova Zelândia",
+    "urnas": 5,
+    "votos": {
+      "Lula": 234,
+      "Flávio Bolsonaro": 64,
+      "Renan Santos": 13,
+      "Zema": 7,
+      "Augusto Cury": 6,
+      "Ronaldo Caiado": 5,
+      "Samara": 2,
+      "Hertz Dias": 1
+    }
+  },
+  {
+    "pais": "Singapura",
+    "urnas": 2,
+    "votos": {
+      "Lula": 190,
+      "Flávio Bolsonaro": 92,
+      "Renan Santos": 22,
+      "Augusto Cury": 21,
+      "Zema": 12,
+      "Ronaldo Caiado": 6,
+      "Samara": 2,
+      "Rui Costa Pimenta": 2,
+      "Clariana Barão": 1
+    }
+  },
+  {
+    "pais": "China",
+    "urnas": 3,
+    "votos": {
+      "Lula": 268,
+      "Flávio Bolsonaro": 98,
+      "Renan Santos": 16,
+      "Augusto Cury": 11,
+      "Ronaldo Caiado": 5,
+      "Zema": 4,
+      "Samara": 2,
+      "Clariana Barão": 1,
+      "Rui Costa Pimenta": 1,
+      "Leonardo Avalanche": 1,
+      "Hertz Dias": 1
+    }
+  }
 ]
