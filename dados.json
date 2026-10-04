@@ -87,5 +87,21 @@
       "Zema": 1,
       "Samara": 1
     }
-  }
+  },
+  {
+    "pais": "Taiwan",
+    "votos": {
+      "Flávio Bolsonaro": 107,
+      "Lula": 77,
+      "Renan Santos": 14,
+      "Augusto Cury": 6,
+      "Zema": 4,
+      "Ronaldo Caiado": 2,
+      "Samara": 1,
+      "Hertz Dias": 2,
+      "Clariana Barão": 4,
+      "Edmilson Costa": 1,
+      "Leonardo Avalanche": 1
+    }
+  },
 ]
