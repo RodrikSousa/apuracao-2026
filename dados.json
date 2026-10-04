@@ -1,67 +1,53 @@
 [
   {
-    "pais": "Japão",
-    "urnas": 119,
+    "pais": "Austrália",
     "votos": {
-      "Flávio Bolsonaro": 24601,
-      "Lula": 5234,
-      "Augusto Cury": 1501,
-      "Renan Santos": 1197,
-      "Ronaldo Caiado": 595,
-      "Zema": 368,
-      "Clariana Barão": 307,
-      "Samara": 164,
-      "Edmilson Costa": 136,
-      "Wilson Grassi": 91,
-      "Hertz Dias": 54,
-      "Leonardo Avalanche": 37,
-      "Rui Costa Pimenta": 33
+      "Flávio Bolsonaro": 4562,
+      "Lula": 2579,
+      "Renan Santos": 316,
+      "Escritor Augusto Cury": 329,
+      "Zema": 132,
+      "Ronaldo Caiado": 124,
+      "Samara": 30,
+      "Hertz Dias": 14,
+      "Clariana Barão": 21,
+      "Rui Costa Pimenta": 6,
+      "Veterinário Wilson Grassi": 6,
+      "Edmilson Costa": 10,
+      "Leonardo Avalanche": 1
     }
   },
   {
-    "pais": "Nova Zelândia",
-    "urnas": 5,
+    "pais": "Coreia do Sul",
     "votos": {
-      "Lula": 234,
-      "Flávio Bolsonaro": 64,
-      "Renan Santos": 13,
-      "Zema": 7,
-      "Augusto Cury": 6,
-      "Ronaldo Caiado": 5,
-      "Samara": 2,
-      "Hertz Dias": 1
-    }
-  },
-  {
-    "pais": "Singapura",
-    "urnas": 2,
-    "votos": {
-      "Lula": 190,
-      "Flávio Bolsonaro": 92,
-      "Renan Santos": 22,
-      "Augusto Cury": 21,
-      "Zema": 12,
+      "Lula": 123,
+      "Flávio Bolsonaro": 72,
+      "Renan Santos": 6,
       "Ronaldo Caiado": 6,
-      "Samara": 2,
-      "Rui Costa Pimenta": 2,
-      "Clariana Barão": 1
+      "Escritor Augusto Cury": 6,
+      "Rui Costa Pimenta": 1,
+      "Zema": 1,
+      "Samara": 1
     }
   },
   {
-    "pais": "China",
-    "urnas": 3,
+    "pais": "Filipinas",
     "votos": {
-      "Lula": 268,
-      "Flávio Bolsonaro": 98,
-      "Renan Santos": 16,
-      "Augusto Cury": 11,
-      "Ronaldo Caiado": 5,
-      "Zema": 4,
-      "Samara": 2,
-      "Clariana Barão": 1,
-      "Rui Costa Pimenta": 1,
-      "Leonardo Avalanche": 1,
-      "Hertz Dias": 1
+      "Lula": 26,
+      "Flávio Bolsonaro": 33,
+      "Renan Santos": 2,
+      "Ronaldo Caiado": 1,
+    }
+  },
+  {
+    "pais": "Malásia",
+    "votos": {
+      "Lula": 44,
+      "Flávio Bolsonaro": 27,
+      "Renan Santos": 7,
+      "Escritor Augusto Cury": 3,
+      "Ronaldo Caiado": 1,
+      "Zema": 1,
     }
   }
 ]
