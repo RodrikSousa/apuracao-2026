@@ -62,5 +62,30 @@
       "Samara": 2,
       "Hertz Dias": 1
     }
+  },
+  {
+    "pais": "Singapura",
+    "votos": {
+      "Flávio Bolsonaro": 92,
+      "Lula": 190,
+      "Renan Santos": 22,
+      "Augusto Cury": 21,
+      "Zema": 12,
+      "Ronaldo Caiado": 6,
+      "Samara": 2,
+      "Clariana Barão": 1,
+      "Rui Costa Pimenta": 2
+    }
+  },
+  {
+    "pais": "Tailândia",
+    "votos": {
+      "Flávio Bolsonaro": 51,
+      "Lula": 40,
+      "Renan Santos": 3,
+      "Augusto Cury": 3,
+      "Zema": 1,
+      "Samara": 1
+    }
   }
 ]
