@@ -118,7 +118,8 @@
       dadosGlobais.forEach(item => {
         const opt = document.createElement("option");
         opt.value = item.pais;
-        opt.textContent = `${item.pais} (${item.urnas} urnas)`;
+        // Removida a parte das urnas daqui
+        opt.textContent = item.pais;
         select.appendChild(opt);
       });
 
@@ -130,11 +131,9 @@
     function atualizarGrafico() {
       const filtro = document.getElementById("countrySelect").value;
       let consolidado = {};
-      let totalUrnas = 0;
 
       if (filtro === "ALL") {
         dadosGlobais.forEach(item => {
-          totalUrnas += item.urnas || 0;
           for (const [cand, qtd] of Object.entries(item.votos || {})) {
             consolidado[cand] = (consolidado[cand] || 0) + qtd;
           }
@@ -142,7 +141,6 @@
       } else {
         const item = dadosGlobais.find(i => i.pais === filtro);
         if (item) {
-          totalUrnas = item.urnas || 0;
           consolidado = { ...(item.votos || {}) };
         }
       }
@@ -153,9 +151,9 @@
 
       const totalVotos = listaOrdenada.reduce((acc, c) => acc + c.votos, 0);
 
+      // Removida a contagem de urnas do texto de resumo
       document.getElementById("statsInfo").innerHTML = `
         <strong>${filtro === 'ALL' ? 'Total Geral' : filtro}:</strong> 
-        ${totalUrnas} urnas apuradas &bull; 
         <strong>${totalVotos.toLocaleString('pt-BR')}</strong> votos válidos
       `;
 
