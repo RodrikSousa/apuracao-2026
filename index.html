@@ -3,52 +3,176 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apuração Eleições 2026 - Exterior</title>
+  <title>Apuração 1º Turno 2026 - Exterior</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 800px; margin: 20px auto; padding: 0 15px; color: #222; }
-    h1 { margin-bottom: 5px; }
-    .subtitle { color: #666; margin-bottom: 25px; }
-    .candidate-row { margin-bottom: 12px; }
-    .candidate-header { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-    .bar-container { background: #eee; border-radius: 4px; height: 22px; width: 100%; overflow: hidden; }
-    .bar { height: 100%; background: #3b82f6; transition: width 0.4s ease; border-radius: 4px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 0 16px;
+      color: #1a1a1a;
+      background: #fafafa;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 22px;
+    }
+    .filter-container {
+      margin: 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    label {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    select {
+      padding: 8px 12px;
+      font-size: 15px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background-color: white;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .stats {
+      font-size: 14px;
+      color: #4b5563;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .candidate-row {
+      margin-bottom: 12px;
+    }
+    .candidate-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .bar-container {
+      background: #f3f4f6;
+      border-radius: 4px;
+      height: 22px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .bar {
+      height: 100%;
+      background: #3b82f6;
+      transition: width 0.3s ease;
+      border-radius: 4px;
+    }
     .Lula { background: #dc2626; }
     .Flávio { background: #2563eb; }
-    .loader { font-size: 14px; color: #666; font-style: italic; }
+    .Cury { background: #ea580c; }
+    .Renan { background: #eab308; }
+    .Caiado { background: #16a34a; }
   </style>
 </head>
 <body>
-  <h1>Apuração 1º Turno 2026 (Exterior)</h1>
-  <div class="subtitle" id="stats">A carregar dados em tempo real...</div>
-  <div id="chart"><div class="loader">A atualizar gráfico...</div></div>
+
+  <div class="card">
+    <h1>Apuração 1º Turno 2026 (Exterior)</h1>
+
+    <div class="filter-container">
+      <label for="countrySelect">Filtrar por:</label>
+      <select id="countrySelect" onchange="atualizarGrafico()">
+        <option value="ALL">Total Consolidado (Todos os Países)</option>
+      </select>
+    </div>
+
+    <div class="stats" id="statsInfo">A carregar apuração...</div>
+    <div id="chart"></div>
+  </div>
 
   <script>
-    async function carregarDados() {
+    let dadosGlobais = [];
+
+    async function buscarDados() {
       try {
-        // O timestamp evita que os telemóveis dos teus amigos guardem os números velhos em cache
-        const response = await fetch('dados.json?t=' + new Date().getTime());
-        const dados = await response.json();
-        renderizar(dados);
-      } catch (error) {
-        console.error("Erro ao carregar os dados:", error);
+        const res = await fetch('dados.json?t=' + new Date().getTime());
+        dadosGlobais = await res.json();
+        atualizarSelectPaises();
+        atualizarGrafico();
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
       }
     }
 
-    function renderizar(dados) {
-      dados.sort((a, b) => b.votos - a.votos);
-      const totalVotos = dados.reduce((acc, c) => acc + c.votos, 0);
-      document.getElementById("stats").textContent = `Total de votos válidos apurados: ${totalVotos.toLocaleString('pt-BR')}`;
+    function atualizarSelectPaises() {
+      const select = document.getElementById("countrySelect");
+      const valorAtual = select.value;
+      
+      select.innerHTML = '<option value="ALL">Total Consolidado (Todos os Países)</option>';
+      dadosGlobais.forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item.pais;
+        opt.textContent = `${item.pais} (${item.urnas} urnas)`;
+        select.appendChild(opt);
+      });
 
-      const container = document.getElementById("chart");
-      container.innerHTML = "";
+      if ([...select.options].some(o => o.value === valorAtual)) {
+        select.value = valorAtual;
+      }
+    }
 
-      dados.forEach(c => {
+    function atualizarGrafico() {
+      const filtro = document.getElementById("countrySelect").value;
+      let consolidado = {};
+      let totalUrnas = 0;
+
+      if (filtro === "ALL") {
+        dadosGlobais.forEach(item => {
+          totalUrnas += item.urnas || 0;
+          for (const [cand, qtd] of Object.entries(item.votos)) {
+            consolidado[cand] = (consolidado[cand] || 0) + qtd;
+          }
+        });
+      } else {
+        const item = dadosGlobais.find(i => i.pais === filtro);
+        if (item) {
+          totalUrnas = item.urnas || 0;
+          consolidado = { ...item.votos };
+        }
+      }
+
+      const listaOrdenada = Object.entries(consolidado)
+        .map(([nome, votos]) => ({ nome, votos }))
+        .sort((a, b) => b.votos - a.votos);
+
+      const totalVotos = listaOrdenada.reduce((acc, c) => acc + c.votos, 0);
+
+      document.getElementById("statsInfo").innerHTML = `
+        <strong>${filtro === 'ALL' ? 'Total Geral' : filtro}:</strong> 
+        ${totalUrnas} urnas apuradas &bull; 
+        <strong>${totalVotos.toLocaleString('pt-BR')}</strong> votos válidos
+      `;
+
+      const chart = document.getElementById("chart");
+      chart.innerHTML = "";
+
+      listaOrdenada.forEach(c => {
         const pct = totalVotos > 0 ? ((c.votos / totalVotos) * 100).toFixed(1) : 0;
+        let corClasse = "";
+        if (c.nome.includes("Lula")) corClasse = "Lula";
+        else if (c.nome.includes("Bolsonaro")) corClasse = "Flávio";
+        else if (c.nome.includes("Cury")) corClasse = "Cury";
+        else if (c.nome.includes("Renan")) corClasse = "Renan";
+        else if (c.nome.includes("Caiado")) corClasse = "Caiado";
+
         const row = document.createElement("div");
         row.className = "candidate-row";
-
-        const corClasse = c.nome.includes("Lula") ? "Lula" : (c.nome.includes("Bolsonaro") ? "Flávio" : "");
-
         row.innerHTML = `
           <div class="candidate-header">
             <span>${c.nome}</span>
@@ -58,13 +182,12 @@
             <div class="bar ${corClasse}" style="width: ${pct}%"></div>
           </div>
         `;
-        container.appendChild(row);
+        chart.appendChild(row);
       });
     }
 
-    // Carrega quando a página abre e depois atualiza sozinho de 30 em 30 segundos
-    carregarDados();
-    setInterval(carregarDados, 30000);
+    buscarDados();
+    setInterval(buscarDados, 30000);
   </script>
 </body>
 </html>
