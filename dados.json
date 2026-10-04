@@ -49,5 +49,18 @@
       "Ronaldo Caiado": 1,
       "Zema": 1
     }
+  },
+  {
+    "pais": "Nova Zelândia",
+    "votos": {
+      "Lula": 234,
+      "Flávio Bolsonaro": 64,
+      "Renan Santos": 13,
+      "Zema": 7,
+      "Augusto Cury": 6,
+      "Ronaldo Caiado": 5,
+      "Samara": 2,
+      "Hertz Dias": 1
+    }
   }
 ]
