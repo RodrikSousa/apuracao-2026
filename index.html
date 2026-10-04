@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apuração Eleições 2026 - Exterior</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 800px; margin: 20px auto; padding: 0 15px; color: #222; }
+    h1 { margin-bottom: 5px; }
+    .subtitle { color: #666; margin-bottom: 25px; }
+    .candidate-row { margin-bottom: 12px; }
+    .candidate-header { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .bar-container { background: #eee; border-radius: 4px; height: 22px; width: 100%; overflow: hidden; }
+    .bar { height: 100%; background: #3b82f6; transition: width 0.4s ease; border-radius: 4px; }
+    .Lula { background: #dc2626; }
+    .Flávio { background: #2563eb; }
+    .loader { font-size: 14px; color: #666; font-style: italic; }
+  </style>
+</head>
+<body>
+  <h1>Apuração 1º Turno 2026 (Exterior)</h1>
+  <div class="subtitle" id="stats">A carregar dados em tempo real...</div>
+  <div id="chart"><div class="loader">A atualizar gráfico...</div></div>
+
+  <script>
+    async function carregarDados() {
+      try {
+        // O timestamp evita que os telemóveis dos teus amigos guardem os números velhos em cache
+        const response = await fetch('dados.json?t=' + new Date().getTime());
+        const dados = await response.json();
+        renderizar(dados);
+      } catch (error) {
+        console.error("Erro ao carregar os dados:", error);
+      }
+    }
+
+    function renderizar(dados) {
+      dados.sort((a, b) => b.votos - a.votos);
+      const totalVotos = dados.reduce((acc, c) => acc + c.votos, 0);
+      document.getElementById("stats").textContent = `Total de votos válidos apurados: ${totalVotos.toLocaleString('pt-BR')}`;
+
+      const container = document.getElementById("chart");
+      container.innerHTML = "";
+
+      dados.forEach(c => {
+        const pct = totalVotos > 0 ? ((c.votos / totalVotos) * 100).toFixed(1) : 0;
+        const row = document.createElement("div");
+        row.className = "candidate-row";
+
+        const corClasse = c.nome.includes("Lula") ? "Lula" : (c.nome.includes("Bolsonaro") ? "Flávio" : "");
+
+        row.innerHTML = `
+          <div class="candidate-header">
+            <span>${c.nome}</span>
+            <span>${c.votos.toLocaleString('pt-BR')} (${pct}%)</span>
+          </div>
+          <div class="bar-container">
+            <div class="bar ${corClasse}" style="width: ${pct}%"></div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // Carrega quando a página abre e depois atualiza sozinho de 30 em 30 segundos
+    carregarDados();
+    setInterval(carregarDados, 30000);
+  </script>
+</body>
+</html>
