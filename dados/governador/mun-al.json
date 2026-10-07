@@ -3,36 +3,36 @@
     {
       "cod": "27014",
       "nome": "Água Branca",
-      "votos": { "Flávio Bolsonaro": 1230, "Lula": 9576, "Escritor Augusto Cury": 134, "Renan Santos": 117, "Ronaldo Caiado": 38, "Zema": 3, "Samara": 2, "Hertz Dias": 2, "Clariana Barão": 0, "Edmilson Costa": 2, "Veterinário Wilson Grassi": 2, "Rui Costa Pimenta": 0 },
-      "brancos": 119,
-      "nulos": 599,
+      "votos": { "JHC": 4125, "Renan Filho": 6438, "Lenilda Luna": 23, "Márcio Jambo": 2 },
+      "brancos": 204,
+      "nulos": 1030,
       "secoes": [46, 46],
-      "eleitorado": 16513
+      "eleitorado": 16511
     },
     {
       "cod": "27030",
       "nome": "Anadia",
-      "votos": { "Flávio Bolsonaro": 2600, "Lula": 6524, "Escritor Augusto Cury": 207, "Renan Santos": 63, "Ronaldo Caiado": 34, "Zema": 3, "Samara": 3, "Hertz Dias": 3, "Clariana Barão": 3, "Edmilson Costa": 1, "Veterinário Wilson Grassi": 0, "Rui Costa Pimenta": 0 },
-      "brancos": 165,
-      "nulos": 538,
+      "votos": { "JHC": 4009, "Renan Filho": 4677, "Lenilda Luna": 11, "Márcio Jambo": 3 },
+      "brancos": 288,
+      "nulos": 1156,
       "secoes": [46, 46],
-      "eleitorado": 13090
+      "eleitorado": 13089
     },
     {
       "cod": "27057",
       "nome": "Arapiraca",
-      "votos": { "Flávio Bolsonaro": 56513, "Lula": 60304, "Escritor Augusto Cury": 3809, "Renan Santos": 2103, "Ronaldo Caiado": 830, "Zema": 64, "Samara": 80, "Hertz Dias": 31, "Clariana Barão": 48, "Edmilson Costa": 20, "Veterinário Wilson Grassi": 10, "Rui Costa Pimenta": 9 },
-      "brancos": 2295,
-      "nulos": 4760,
+      "votos": { "JHC": 58667, "Renan Filho": 57088, "Lenilda Luna": 432, "Márcio Jambo": 52 },
+      "brancos": 4165,
+      "nulos": 10186,
       "secoes": [446, 446],
-      "eleitorado": 158990
+      "eleitorado": 158652
     },
     {
       "cod": "27073",
       "nome": "Atalaia",
-      "votos": { "Flávio Bolsonaro": 8726, "Lula": 14076, "Escritor Augusto Cury": 443, "Renan Santos": 297, "Ronaldo Caiado": 179, "Zema": 5, "Samara": 11, "Hertz Dias": 6, "Clariana Barão": 6, "Edmilson Costa": 4, "Veterinário Wilson Grassi": 1, "Rui Costa Pimenta": 0 },
-      "brancos": 475,
-      "nulos": 1231,
+      "votos": { "JHC": 11312, "Renan Filho": 10475, "Lenilda Luna": 44, "Márcio Jambo": 4 },
+      "brancos": 889,
+      "nulos": 2736,
       "secoes": [113, 113],
       "eleitorado": 32403
     }
