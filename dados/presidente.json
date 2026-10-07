@@ -84,6 +84,24 @@
       "nulos": 39384,
       "secoes": [100, 100],
       "eleitorado": 2798611
+    },
+    "BA": {
+      "votos": { "Lula": 5664771, 
+                 "Flávio Bolsonaro": 2442585,
+                 "Escritor Augusto Cury": 195451,
+                 "Renan Santos": 117518,
+                 "Ronaldo Caiado": 122705,
+                 "Zema": 6497,
+                 "Samara": 4649,
+                 "Hertz Dias": 1791,
+                 "Clariana Barão": 1676,
+                 "Edmilson Costa": 1299,
+                 "Veterinário Wilson Grassi": 625,
+                 "Rui Costa Pimenta": 724},
+      "brancos": 154936,
+      "nulos": 338375,
+      "secoes": [100, 100],
+      "eleitorado": 11312752
     }
   }
 }
