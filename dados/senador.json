@@ -5,6 +5,9 @@
     },
     "AL": {
       "candidatos": { "Arthur Lira": { "partido": "PP" }, "Marina JHC": { "partido": "PSDB" }, "Renan": { "partido": "MDB" }, "Dr. Wanderley": { "partido": "MDB" }, "Davi Davino Filho": { "partido": "REPUBLICANOS" }, "Alexandre Fleming": { "partido": "UP" }, "Mariedson": { "partido": "DEMOCRATA" }}
+    },
+    "DF": {
+      "candidatos": { "Michelle Bolsonaro": { "partido": "PL" }, "Bia Kicis": { "partido": "PL" }, "Leila do Vôlei": { "partido": "PDT" }, "Erika Kokay": { "partido": "PT" }, "Sebastião Coelho": { "partido": "NOVO" }, "Professor Guilherme Amorim": { "partido": "UP" }, "Guto Felício dos Santos": { "partido": "PSDB" }, "Marley": { "partido": "AVANTE" }, "Tiago": { "partido": "AGIR" }, "Zanata": { "partido": "PSTU" }, "David Horn": { "partido": "PCO" }}
     }
   }
 }
