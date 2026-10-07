@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <title>Apuração 1º Turno 2026 · Presidente, Governador e Senador</title>
+  <title>Apuração 1º Turno 2026 · Presidente, Governador, Senador e Deputado Federal</title>
 
   <script>
     // Define o tema antes de pintar a página (evita "flash" ao carregar)
@@ -364,6 +364,7 @@
         <button type="button" data-cargo="presidente" class="on">Presidente</button>
         <button type="button" data-cargo="governador">Governador</button>
         <button type="button" data-cargo="senador">Senador</button>
+        <button type="button" data-cargo="deputado">Dep. Federal</button>
       </div>
 
       <div class="top-right">
@@ -428,6 +429,13 @@
           <div class="partidos" id="senLista"></div>
         </section>
 
+        <section class="panel pad reveal" id="depPanel" style="animation-delay:.2s" hidden>
+          <div class="panel-head">
+            <div><h2 id="depTitulo">Deputados federais eleitos</h2><p class="sub" id="depSub"></p></div>
+          </div>
+          <div class="partidos" id="depLista"></div>
+        </section>
+
         <section class="panel results reveal" id="semDados" hidden>
           <div class="empty" id="semDadosTxt">Ainda não há resultados para esta seleção.</div>
         </section>
@@ -481,9 +489,12 @@
            "ufs": { "SP": { ...RESULTADO, "candidatos": { "Nome": { "partido": "PL", "numero": 22 } } }, ... } }
        dados/senador.json   (igual ao do governador; cada eleitor tem 2 votos e cada UF elege 2 senadores)
          { "ufs": { "SP": { "candidatos": { "Nome": { "partido": "PL" } } }, ... } }
+       dados/deputado.json  (deputado federal; cada UF tem N cadeiras, eleição proporcional)
+         { "ufs": { "SP": { "candidatos": { "Nome": { "partido": "PL", "federacao": "Nome da federação (opcional)" } } }, ... } }
        dados/presidente/mun-sp.json   (um ficheiro por UF; para o Exterior: mun-zz.json, onde cada "município" é um país)
        dados/governador/mun-sp.json
        dados/senador/mun-sp.json
+       dados/deputado/mun-sp.json   (RESULTADO com campo extra opcional "legenda": { "PT": 1234, ... } = votos de legenda)
          { "municipios": [ { "cod": "71072", "nome": "São Paulo", ...RESULTADO } ] }
        RESULTADO = { "votos": { "Nome do candidato": 123456, ... },
                      "brancos": 1000, "nulos": 2000,          (opcionais)
@@ -521,11 +532,16 @@
     const CARGOS = {
       presidente: { nome: 'Presidente', ufs: TODAS, nacional: true },
       governador: { nome: 'Governador', ufs: TODAS.filter(u => u !== 'ZZ'), nacional: false },
-      senador: { nome: 'Senador', ufs: TODAS.filter(u => u !== 'ZZ'), nacional: false, vagas: 2 }    // 2 vagas por UF em 2026 (renovação de 2/3)
+      senador: { nome: 'Senador', ufs: TODAS.filter(u => u !== 'ZZ'), nacional: false, vagas: 2 },    // 2 vagas por UF em 2026 (renovação de 2/3)
+      deputado: { nome: 'Deputado Federal', ufs: TODAS.filter(u => u !== 'ZZ'), nacional: false, cadeiras: true }
     };
 
     // Cores fixas por nome (só no cargo de Presidente), iguais às da versão anterior
     const FIXAS = [[/lula/i, '#ef4444'], [/bolsonaro|fl[áa]vio/i, '#3b82f6'], [/cury/i, '#f97316'], [/renan/i, '#eab308'], [/caiado/i, '#22c55e']];
+    // Cadeiras de deputado federal por UF (513 no total)
+    const CADEIRAS = { AC: 8, AL: 9, AP: 8, AM: 8, BA: 39, CE: 22, DF: 8, ES: 10, GO: 17, MA: 18, MT: 8, MS: 8, MG: 53, PA: 17, PB: 12, PR: 30, PE: 25, PI: 10, RJ: 46, RN: 8, RS: 31, RO: 8, RR: 8, SC: 16, SP: 70, SE: 8, TO: 8 };
+    const SOBRAS_ABERTAS = true;      // sobras: true = todos os partidos concorrem (decisão do STF em 2024); false = só os que atingem 80% do quociente
+    const OUTROS = 'Outros candidatos', TOPO = 12;
     const PARTIDOS = {
       pt: '#ef4444', pl: '#2563eb', psd: '#0891b2', mdb: '#16a34a', uniao: '#0ea5e9', uniaobrasil: '#0ea5e9', pp: '#6366f1', republicanos: '#0284c7',
       psb: '#f59e0b', pdt: '#e11d48', psol: '#c026d3', novo: '#f97316', psdb: '#38bdf8', pode: '#14b8a6', podemos: '#14b8a6', pcdob: '#b91c1c',
@@ -572,11 +588,12 @@
     }
 
     function somar(rs) {
-      const out = { votos: {}, brancos: 0, nulos: 0, secoes: null, eleitorado: null };
+      const out = { votos: {}, legenda: {}, brancos: 0, nulos: 0, secoes: null, eleitorado: null };
       let a = 0, t = 0, temS = false, e = 0, temE = false;
       rs.forEach(r => {
         if (!r) return;
         for (const [k, v] of Object.entries(r.votos || {})) out.votos[k] = (out.votos[k] || 0) + (+v || 0);
+        for (const [k, v] of Object.entries(r.legenda || {})) out.legenda[k] = (out.legenda[k] || 0) + (+v || 0);
         out.brancos += +r.brancos || 0;
         out.nulos += +r.nulos || 0;
         if (Array.isArray(r.secoes)) { a += +r.secoes[0] || 0; t += +r.secoes[1] || 0; temS = true; }
@@ -637,6 +654,7 @@
     }
     function corDe(nome, uf, cargo) {
       cargo = cargo || estado.cargo;
+      if (nome === OUTROS) return '#94a3b8';
       if (cargo === 'presidente') for (const [re, c] of FIXAS) if (re.test(nome)) return c;
       const p = meta(nome, uf, cargo).partido;
       if (p) { const c = PARTIDOS[semAcento(p).replace(/[^a-z]/g, '')]; if (c) return c; }
@@ -716,6 +734,7 @@
     function demoCand(cargo, uf) {
       if (cargo === 'presidente') return [['Lula', .40], ['Flávio Bolsonaro', .38], ['Caiado', .10], ['Cury', .07], ['Renan', .05]].map(([nome, base]) => ({ nome, base }));
       const r = rng(hash('cand:' + uf));
+      if (cargo === 'deputado') return Array.from({ length: 40 }, (_, i) => ({ nome: 'Candidato ' + (i + 1), base: Math.pow(0.88, i), partido: DEMO_PARTIDOS[(i * 5 + hash(uf)) % DEMO_PARTIDOS.length] }));
       const n = 4 + Math.floor(r() * 3);
       const parts = DEMO_PARTIDOS.slice();
       for (let i = parts.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [parts[i], parts[j]] = [parts[j], parts[i]]; }
@@ -931,13 +950,14 @@
         return;
       }
       if (!d) {
-        ['resPanel', 'senPanel', 'mapaPanel', 'vitPanel', 'semDados'].forEach(id => { $(id).hidden = true; });
+        ['resPanel', 'senPanel', 'depPanel', 'mapaPanel', 'vitPanel', 'semDados'].forEach(id => { $(id).hidden = true; });
         $('cList').innerHTML = '<div class="empty">A carregar…</div>';
         return;
       }
       renderKPIs();
       renderResultado();
       renderSenado();
+      renderCamara();
       renderMapa();
       renderVitorias();
       renderLista();
@@ -980,6 +1000,10 @@
           const top = tabelaSenado()[0];
           if (top) { setKPI(4, { l: 'Partido com mais senadores', v: top.partido, txt: true, s: top.membros.length + (top.membros.length === 1 ? ' senador' : ' senadores') + ' entre os 2 primeiros', cor: top.cor }); return; }
         }
+        if (CARGOS[cargo].cadeiras) {
+          const top = tabelaCamara()[0];
+          if (top) { setKPI(4, { l: 'Partido com mais deputados', v: top.titulo, txt: true, s: top.membros.length + (top.membros.length === 1 ? ' deputado' : ' deputados') + ' federais', cor: top.cor }); return; }
+        }
         const porP = new Map();
         com.forEach(([uf, r]) => { const s = resumo(r); if (s && s.lider) { const p = meta(s.lider, uf).partido; if (p) porP.set(p, (porP.get(p) || 0) + 1); } });
         const top = [...porP.entries()].sort((a, b) => b[1] - a[1])[0];
@@ -997,7 +1021,12 @@
       if (l && D.total > 0) {
         const cor = corDe(l.nome);
         setKPI(3, { l: 'Líder', v: l.nome, txt: true, title: l.nome, s: fmtPct(l.votos / D.total * 100) + ' dos votos válidos', cor });
-        if (CARGOS[cargo].vagas) {
+        if (CARGOS[cargo].cadeiras && n === 'uf') {
+          const c = calcularDeputados(estado.uf);
+          if (c) setKPI(4, { l: 'Quociente eleitoral', num: c.qe, s: c.n + ' cadeiras · votos ÷ cadeiras', cor });
+          else setKPI(4, { l: 'Quociente eleitoral', v: '—', s: 'sem votos apurados' });
+        }
+        else if (CARGOS[cargo].vagas) {
           if (D.lista.length > 2) setKPI(4, { l: 'Margem pela 2ª vaga', num: D.lista[1].votos - D.lista[2].votos, s: fmtPp((D.lista[1].votos - D.lista[2].votos) / D.total * 100) + ' sobre ' + D.lista[2].nome + ' (3º)', cor });
           else setKPI(4, { l: 'Margem pela 2ª vaga', v: '—', s: 'precisa de 3 candidatos' });
         }
@@ -1105,6 +1134,10 @@
       }
       painel.hidden = false;
       const D = detalhe(r);
+      if (CARGOS[estado.cargo].cadeiras && D.lista.length > TOPO + 1) {      // muitos candidatos: mostra os mais votados e agrupa o resto
+        const resto = D.lista.slice(TOPO);
+        D.lista = D.lista.slice(0, TOPO).concat([{ nome: OUTROS, votos: resto.reduce((a, c) => a + c.votos, 0) }]);
+      }
       estado.atual = { lista: D.lista, total: D.total };
       if (estado.foco && !D.lista.some(c => c.nome === estado.foco)) estado.foco = null;
       $('scopeName').textContent = nomeEscopo();
@@ -1117,6 +1150,8 @@
         partes.push('<span>Brancos: <strong class="num">' + fmtInt(D.brancos) + '</strong> (' + fmtPct(D.brancos / D.comp * 100) + ')</span>');
         partes.push('<span>Nulos: <strong class="num">' + fmtInt(D.nulos) + '</strong> (' + fmtPct(D.nulos / D.comp * 100) + ')</span>');
       }
+      const leg = Object.values(r.legenda || {}).reduce((a, v) => a + (+v || 0), 0);
+      if (leg > 0) partes.push('<span>Votos de legenda: <strong class="num">' + fmtInt(leg) + '</strong></span>');
       if (r.eleitorado) partes.push('<span>Eleitorado: <strong class="num">' + fmtInt(r.eleitorado) + '</strong></span>');
       $('resFoot').innerHTML = partes.join('');
       $('resFoot').hidden = !partes.length;
@@ -1154,6 +1189,87 @@
         '<div class="p-head"><span class="dot"></span><span class="p-nome">' + esc(g.partido) + '</span><span class="p-n num">' + g.membros.length + '</span></div>' +
         '<div class="p-membros">' + g.membros.map(m => '<button type="button" class="membro' + (m.final ? '' : ' parcial') + '" data-uf="' + m.uf + '" title="' + esc(m.nome + ' · ' + UFS[m.uf][0] + (m.final ? ' · eleito' : ' · ainda em apuração')) + '">' +
           '<span class="m-nome">' + esc(m.nome) + '</span><span class="m-uf">' + m.uf + '</span></button>').join('') + '</div></div>').join('');
+    }
+
+    /* ---------- Câmara: sistema proporcional (quociente eleitoral + sobras por D'Hondt) ---------- */
+    function calcularDeputados(uf) {
+      const cargo = 'deputado', N = CADEIRAS[uf], r = resUF(cargo, uf);
+      if (!r || !N) return null;
+      const grupos = new Map(), deGrupo = new Map();
+      const obter = k => { let g = grupos.get(k); if (!g) { g = { chave: k, votos: 0, cands: [], cadeiras: 0 }; grupos.set(k, g); } return g; };
+      let total = 0;
+      for (const [nome, v] of Object.entries(r.votos || {})) {
+        const n = +v || 0, m = meta(nome, uf, cargo), partido = m.partido || 'Sem partido', g = obter(m.federacao || partido);
+        g.votos += n; g.cands.push({ nome, votos: n, partido }); total += n;
+        deGrupo.set(partido, g.chave);
+      }
+      for (const [k, v] of Object.entries(r.legenda || {})) { const n = +v || 0; obter(deGrupo.get(k) || k).votos += n; total += n; }
+      if (total <= 0) return null;
+      const q = total / N, qe = Math.max(1, q % 1 > 0.5 ? Math.ceil(q) : Math.floor(q));
+      const todos = [...grupos.values()], aptos = todos.filter(g => g.votos >= 0.8 * qe);
+      aptos.forEach(g => { g.cadeiras = Math.floor(g.votos / qe); });
+      let resto = N - todos.reduce((a, g) => a + g.cadeiras, 0);
+      const pool = SOBRAS_ABERTAS ? todos.filter(g => g.votos > 0) : aptos;
+      while (resto > 0 && pool.length) {
+        let melhor = pool[0];
+        pool.forEach(g => { if (g.votos / (g.cadeiras + 1) > melhor.votos / (melhor.cadeiras + 1)) melhor = g; });
+        melhor.cadeiras++; resto--;
+      }
+      const eleitos = [];
+      todos.forEach(g => {
+        g.cands.sort((a, b) => b.votos - a.votos);
+        const ok = g.cands.filter(c => c.votos >= 0.2 * qe), fora = g.cands.filter(c => c.votos < 0.2 * qe);
+        g.eleitos = ok.concat(fora).slice(0, g.cadeiras);
+        g.eleitos.forEach(c => eleitos.push({ ...c, grupo: g.chave, uf }));
+      });
+      eleitos.sort((a, b) => b.votos - a.votos);
+      const ordem = todos.filter(g => g.cadeiras > 0).sort((a, b) => b.cadeiras - a.cadeiras || b.votos - a.votos);
+      return { uf, n: N, qe, total, grupos: ordem, eleitos, final: ufCompleta(r) };
+    }
+    function tabelaCamara() {      // deputados eleitos de todo o país, por partido do candidato
+      const por = new Map();
+      CARGOS.deputado.ufs.forEach(uf => {
+        const c = calcularDeputados(uf);
+        if (!c) return;
+        c.eleitos.forEach(e => {
+          const g = por.get(e.partido) || { titulo: e.partido, membros: [], cor: PARTIDOS[semAcento(e.partido).replace(/[^a-z]/g, '')] || '#94a3b8' };
+          g.membros.push({ nome: e.nome, uf, final: c.final, sub: fmtInt(e.votos) + ' votos' });
+          por.set(e.partido, g);
+        });
+      });
+      por.forEach(g => g.membros.sort((a, b) => a.uf.localeCompare(b.uf) || a.nome.localeCompare(b.nome, 'pt')));
+      return [...por.values()].sort((a, b) => b.membros.length - a.membros.length || a.titulo.localeCompare(b.titulo, 'pt'));
+    }
+    function cartoes(tab, comUF) {
+      return tab.map(g => '<div class="partido" style="--c:' + g.cor + '">' +
+        '<div class="p-head"><span class="dot"></span><span class="p-nome">' + esc(g.titulo) + '</span><span class="p-n num">' + g.membros.length + '</span></div>' +
+        '<div class="p-membros">' + g.membros.map(m => '<button type="button" class="membro' + (m.final ? '' : ' parcial') + '" data-uf="' + m.uf + '" title="' + esc(m.nome + ' · ' + UFS[m.uf][0] + ' · ' + m.sub + (m.final ? '' : ' · ainda em apuração')) + '">' +
+          '<span class="m-nome">' + esc(m.nome) + '</span><span class="m-uf">' + (comUF ? m.uf : esc(m.sub)) + '</span></button>').join('') + '</div></div>').join('');
+    }
+    function renderCamara() {
+      const painel = $('depPanel'), n = nivel();
+      if (estado.cargo !== 'deputado' || n === 'mun') { painel.hidden = true; return; }
+      if (n === 'br') {
+        const tab = tabelaCamara();
+        if (!tab.length) { painel.hidden = true; return; }
+        const tot = Object.values(CADEIRAS).reduce((a, b) => a + b, 0);
+        const todos = tab.reduce((a, g) => a + g.membros.length, 0), def = tab.reduce((a, g) => a + g.membros.filter(m => m.final).length, 0);
+        $('depTitulo').textContent = 'Deputados federais eleitos';
+        $('depSub').textContent = def + ' de ' + tot + ' cadeiras definidas · ' + (todos - def) + ' ainda em apuração (projeção com os votos atuais) · ' + tab.length + (tab.length === 1 ? ' partido' : ' partidos');
+        $('depLista').innerHTML = cartoes(tab, true);
+        painel.hidden = false;
+        return;
+      }
+      const c = calcularDeputados(estado.uf);
+      if (!c) { painel.hidden = true; return; }
+      const tab = c.grupos.map(g => ({
+        titulo: g.chave, cor: PARTIDOS[semAcento(g.chave).replace(/[^a-z]/g, '')] || corDe(g.eleitos[0] ? g.eleitos[0].nome : g.chave, estado.uf),
+        membros: g.eleitos.map(e => ({ nome: e.nome, uf: estado.uf, final: c.final, sub: fmtInt(e.votos) + ' votos' }))
+      }));
+      $('depTitulo').textContent = 'Deputados federais · ' + UFS[estado.uf][0];
+      $('depSub').textContent = c.n + ' cadeiras · quociente eleitoral ' + fmtInt(c.qe) + (c.final ? '' : ' · projeção, ainda em apuração');
+      $('depLista').innerHTML = cartoes(tab, false);
+      painel.hidden = false;
     }
 
     const rotuloCurto = (nome, uf) => (!CARGOS[estado.cargo].nacional && meta(nome, uf).partido) || nome.split(/\s+/)[0];
@@ -1254,6 +1370,10 @@
       if (!b) return;
       if (nivel() === 'br') ir(estado.cargo, b.dataset.cod, null);
       else ir(estado.cargo, estado.uf, b.dataset.cod);
+    });
+    $('depLista').addEventListener('click', e => {
+      const b = e.target.closest('button[data-uf]');
+      if (b && nivel() === 'br') ir(estado.cargo, b.dataset.uf, null);
     });
     $('senLista').addEventListener('click', e => {
       const b = e.target.closest('button[data-uf]');
