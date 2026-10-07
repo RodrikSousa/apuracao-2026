@@ -1,5 +1,4 @@
 {
-  "atualizado": "2026-10-04T21:30:00-03:00",
   "candidatos": { "Lula": { "partido": "PT", "numero": 13 }, 
                   "Flávio Bolsonaro": { "partido": "PL", "numero": 22 },
                   "Escritor Augusto Cury": { "partido": "AVANTE", "numero": 70 },
@@ -14,13 +13,42 @@
                   "Rui Costa Pimenta": { "partido": "PCO", "numero": 29 }
                 },
   "ufs": {
-    "SP": {
-      "votos": { "Lula": 1000, "Flávio Bolsonaro": 800 },
-      "brancos": 50,
-      "nulos": 80,
-      "secoes": [90, 100],
-      "eleitorado": 3000
+    "AC": {
+      "votos": { "Lula": 134770, 
+                 "Flávio Bolsonaro": 302807,
+                 "Escritor Augusto Cury": 13523,
+                 "Renan Santos": 7980,
+                 "Ronaldo Caiado": 8594,
+                 "Zema": 573,
+                 "Samara": 314,
+                 "Hertz Dias": 71,
+                 "Clariana Barão": 215,
+                 "Edmilson Costa": 140,
+                 "Veterinário Wilson Grassi": 39,
+                 "Rui Costa Pimenta": 40},
+      "brancos": 5579,
+      "nulos": 13685,
+      "secoes": [100, 100],
+      "eleitorado": 613742
     },
-    "ZZ": { "votos": { "Lula": 300, "Flávio Bolsonaro": 500 } }
+    "AL": {
+      "votos": { "Lula": 995459, 
+                 "Flávio Bolsonaro": 735718,
+                 "Escritor Augusto Cury": 42427,
+                 "Renan Santos": 26851,
+                 "Ronaldo Caiado": 14198,
+                 "Zema": 1168,
+                 "Samara": 1345,
+                 "Hertz Dias": 431,
+                 "Clariana Barão": 636,
+                 "Edmilson Costa": 267,
+                 "Veterinário Wilson Grassi": 246,
+                 "Rui Costa Pimenta": 110},
+      "brancos": 33712,
+      "nulos": 85860,
+      "secoes": [100, 100],
+      "eleitorado": 2442126
+    }
+  }
   }
 }
