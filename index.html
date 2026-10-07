@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <title>Apuração 1º Turno 2026 · Presidente e Governador</title>
+  <title>Apuração 1º Turno 2026 · Presidente, Governador e Senador</title>
 
   <script>
     // Define o tema antes de pintar a página (evita "flash" ao carregar)
@@ -257,6 +257,18 @@
     /* Quem lidera onde */
     .stack { display: flex; gap: 2px; height: 14px; border-radius: 999px; overflow: hidden; background: var(--track); }
     .stack span { display: block; min-width: 4px; transition: flex .6s; }
+    .partidos { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+    .partido { padding: 12px 14px; border-radius: 14px; background: color-mix(in srgb, var(--c) 8%, var(--surface-solid)); border: 1px solid color-mix(in srgb, var(--c) 28%, var(--border)); }
+    .p-head { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+    .p-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); flex: none; }
+    .p-nome { font-weight: 700; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .p-n { margin-left: auto; font-size: 22px; font-weight: 800; color: var(--c); }
+    .p-membros { display: flex; flex-wrap: wrap; gap: 6px; }
+    .membro { display: inline-flex; align-items: center; gap: 7px; max-width: 100%; padding: 4px 6px 4px 10px; font: inherit; font-size: 12.5px; color: var(--text); background: var(--surface-solid); border: 1px solid var(--border); border-radius: 999px; cursor: pointer; }
+    .membro:hover { border-color: var(--c); }
+    .membro.parcial { border-style: dashed; color: var(--muted); }
+    .m-nome { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+    .m-uf { flex: none; padding: 1px 7px; font-size: 10.5px; font-weight: 800; letter-spacing: .05em; color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); border-radius: 999px; }
     .legend { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px 22px; margin-top: 16px; }
     .lg { display: flex; align-items: center; gap: 9px; font-size: 14px; min-width: 0; }
     .lg .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
@@ -351,6 +363,7 @@
       <div class="cargo-sw" role="group" aria-label="Cargo">
         <button type="button" data-cargo="presidente" class="on">Presidente</button>
         <button type="button" data-cargo="governador">Governador</button>
+        <button type="button" data-cargo="senador">Senador</button>
       </div>
 
       <div class="top-right">
@@ -408,6 +421,13 @@
           <div class="res-foot" id="resFoot"></div>
         </section>
 
+        <section class="panel pad reveal" id="senPanel" style="animation-delay:.2s" hidden>
+          <div class="panel-head">
+            <div><h2>Senadores eleitos</h2><p class="sub" id="senSub"></p></div>
+          </div>
+          <div class="partidos" id="senLista"></div>
+        </section>
+
         <section class="panel results reveal" id="semDados" hidden>
           <div class="empty" id="semDadosTxt">Ainda não há resultados para esta seleção.</div>
         </section>
@@ -459,8 +479,11 @@
        dados/governador.json
          { "atualizado": "...", "turno": 1,
            "ufs": { "SP": { ...RESULTADO, "candidatos": { "Nome": { "partido": "PL", "numero": 22 } } }, ... } }
+       dados/senador.json   (igual ao do governador; cada eleitor tem 2 votos e cada UF elege 2 senadores)
+         { "ufs": { "SP": { "candidatos": { "Nome": { "partido": "PL" } } }, ... } }
        dados/presidente/mun-sp.json   (um ficheiro por UF; para o Exterior: mun-zz.json, onde cada "município" é um país)
        dados/governador/mun-sp.json
+       dados/senador/mun-sp.json
          { "municipios": [ { "cod": "71072", "nome": "São Paulo", ...RESULTADO } ] }
        RESULTADO = { "votos": { "Nome do candidato": 123456, ... },
                      "brancos": 1000, "nulos": 2000,          (opcionais)
@@ -497,7 +520,8 @@
     const TODAS = Object.keys(UFS);
     const CARGOS = {
       presidente: { nome: 'Presidente', ufs: TODAS, nacional: true },
-      governador: { nome: 'Governador', ufs: TODAS.filter(u => u !== 'ZZ'), nacional: false }
+      governador: { nome: 'Governador', ufs: TODAS.filter(u => u !== 'ZZ'), nacional: false },
+      senador: { nome: 'Senador', ufs: TODAS.filter(u => u !== 'ZZ'), nacional: false, vagas: 2 }    // 2 vagas por UF em 2026 (renovação de 2/3)
     };
 
     // Cores fixas por nome (só no cargo de Presidente), iguais às da versão anterior
@@ -727,7 +751,7 @@
       const ufs = {};
       CARGOS[cargo].ufs.forEach(uf => {
         ufs[uf] = somar(demoMuns(cargo, uf));
-        if (cargo === 'governador') { ufs[uf].candidatos = {}; demoCand(cargo, uf).forEach(c => { ufs[uf].candidatos[c.nome] = { partido: c.partido }; }); }
+        if (!CARGOS[cargo].nacional) { ufs[uf].candidatos = {}; demoCand(cargo, uf).forEach(c => { ufs[uf].candidatos[c.nome] = { partido: c.partido }; }); }
       });
       return { atualizado: new Date().toISOString(), turno: 1, candidatos: {}, brasil: null, ufs, parcial: false };
     }
@@ -907,12 +931,13 @@
         return;
       }
       if (!d) {
-        ['resPanel', 'mapaPanel', 'vitPanel', 'semDados'].forEach(id => { $(id).hidden = true; });
+        ['resPanel', 'senPanel', 'mapaPanel', 'vitPanel', 'semDados'].forEach(id => { $(id).hidden = true; });
         $('cList').innerHTML = '<div class="empty">A carregar…</div>';
         return;
       }
       renderKPIs();
       renderResultado();
+      renderSenado();
       renderMapa();
       renderVitorias();
       renderLista();
@@ -945,12 +970,16 @@
     function renderKPIs() {
       const cargo = estado.cargo, d = dadosAtuais(), n = nivel();
       if (n === 'br' && !CARGOS[cargo].nacional) {      // governador: visão geral dos estados
-        const com = Object.keys(d.ufs).map(uf => [uf, resUF(cargo, uf)]).filter(e => e[1]);
+        const com = CARGOS[cargo].ufs.map(uf => [uf, resUF(cargo, uf)]).filter(e => e[1] && resumo(e[1]));
         const S = somar(com.map(e => e[1])), D = detalhe(S);
         setKPI(1, { l: 'Votos válidos', num: D.total, s: 'Soma dos estados' });
         if (S.secoes && S.secoes[1] > 0) setKPI(2, { l: 'Seções apuradas', v: fmtApur(S.secoes[0] / S.secoes[1] * 100), s: fmtInt(S.secoes[0]) + ' de ' + fmtInt(S.secoes[1]), bar: S.secoes[0] / S.secoes[1] * 100 });
         else setKPI(2, { l: 'Votos em branco', num: S.brancos, s: 'Soma de todos os estados' });
         setKPI(3, { l: 'Estados com resultado', v: com.length + ' de ' + CARGOS[cargo].ufs.length, s: 'com dados importados' });
+        if (CARGOS[cargo].vagas) {
+          const top = tabelaSenado()[0];
+          if (top) { setKPI(4, { l: 'Partido com mais senadores', v: top.partido, txt: true, s: top.membros.length + (top.membros.length === 1 ? ' senador' : ' senadores') + ' entre os 2 primeiros', cor: top.cor }); return; }
+        }
         const porP = new Map();
         com.forEach(([uf, r]) => { const s = resumo(r); if (s && s.lider) { const p = meta(s.lider, uf).partido; if (p) porP.set(p, (porP.get(p) || 0) + 1); } });
         const top = [...porP.entries()].sort((a, b) => b[1] - a[1])[0];
@@ -968,7 +997,11 @@
       if (l && D.total > 0) {
         const cor = corDe(l.nome);
         setKPI(3, { l: 'Líder', v: l.nome, txt: true, title: l.nome, s: fmtPct(l.votos / D.total * 100) + ' dos votos válidos', cor });
-        if (D.lista.length > 1) setKPI(4, { l: 'Vantagem', num: l.votos - D.lista[1].votos, s: fmtPp((l.votos - D.lista[1].votos) / D.total * 100) + ' sobre ' + D.lista[1].nome, cor });
+        if (CARGOS[cargo].vagas) {
+          if (D.lista.length > 2) setKPI(4, { l: 'Margem pela 2ª vaga', num: D.lista[1].votos - D.lista[2].votos, s: fmtPp((D.lista[1].votos - D.lista[2].votos) / D.total * 100) + ' sobre ' + D.lista[2].nome + ' (3º)', cor });
+          else setKPI(4, { l: 'Margem pela 2ª vaga', v: '—', s: 'precisa de 3 candidatos' });
+        }
+        else if (D.lista.length > 1) setKPI(4, { l: 'Vantagem', num: l.votos - D.lista[1].votos, s: fmtPp((l.votos - D.lista[1].votos) / D.total * 100) + ' sobre ' + D.lista[1].nome, cor });
         else setKPI(4, { l: 'Vantagem', v: '—', s: 'precisa de 2 candidatos' });
       } else {
         setKPI(3, { l: 'Líder', v: '—', s: 'sem votos apurados', cor: '#94a3b8' });
@@ -1004,7 +1037,9 @@
         el.style.setProperty('--c', corDe(c.nome));
         el._r.rank.textContent = i + 1;
         el._r.part.textContent = [m.partido, m.numero].filter(x => x != null && x !== '').join(' · ');
-        el._r.tag.hidden = !(i === 0 && total > 0 && lista.length > 1);
+        const vagas = CARGOS[estado.cargo].vagas;
+        if (vagas && nivel() === 'uf' && total > 0 && i < vagas) { el._r.tag.hidden = false; el._r.tag.textContent = ufCompleta(resultadoAtual()) ? 'Eleito' : 'Na frente'; }
+        else { el._r.tag.hidden = !(i === 0 && total > 0 && lista.length > 1); el._r.tag.textContent = 'Líder'; }
         el._r.votes.textContent = fmtInt(c.votos);
         el._r.pct.textContent = fmtPct(pct);
         if (el._novo) { void el.offsetWidth; el._novo = false; }
@@ -1087,12 +1122,46 @@
       $('resFoot').hidden = !partes.length;
     }
 
-    const rotuloCurto = (nome, uf) => (estado.cargo === 'governador' && meta(nome, uf).partido) || nome.split(/\s+/)[0];
+    /* ---------- Senado: os 2 mais votados de cada UF ---------- */
+    const ufCompleta = r => !!(r && Array.isArray(r.secoes) && r.secoes[1] > 0 && r.secoes[0] >= r.secoes[1]);
+    function tabelaSenado() {
+      const cargo = 'senador', vagas = CARGOS[cargo].vagas, por = new Map();
+      CARGOS[cargo].ufs.forEach(uf => {
+        const r = resUF(cargo, uf);
+        if (!r) return;
+        const D = detalhe(r);
+        if (D.total <= 0) return;
+        const final = ufCompleta(r);
+        D.lista.slice(0, vagas).forEach(c => {
+          const partido = meta(c.nome, uf, cargo).partido || 'Sem partido';
+          const g = por.get(partido) || { partido, membros: [], cor: PARTIDOS[semAcento(partido).replace(/[^a-z]/g, '')] || '#94a3b8' };
+          g.membros.push({ nome: c.nome, uf, final, votos: c.votos });
+          por.set(partido, g);
+        });
+      });
+      por.forEach(g => g.membros.sort((a, b) => a.uf.localeCompare(b.uf) || b.votos - a.votos));
+      return [...por.values()].sort((a, b) => b.membros.length - a.membros.length || a.partido.localeCompare(b.partido, 'pt'));
+    }
+    function renderSenado() {
+      const painel = $('senPanel');
+      const tab = estado.cargo === 'senador' && nivel() === 'br' ? tabelaSenado() : [];
+      if (!tab.length) { painel.hidden = true; return; }
+      painel.hidden = false;
+      const vagas = CARGOS.senador.vagas * CARGOS.senador.ufs.length;
+      const n = tab.reduce((s, g) => s + g.membros.length, 0), def = tab.reduce((s, g) => s + g.membros.filter(m => m.final).length, 0);
+      $('senSub').textContent = def + ' de ' + vagas + ' vagas definidas · ' + (n - def) + ' ainda em apuração (os 2 mais votados de cada estado) · ' + tab.length + (tab.length === 1 ? ' partido' : ' partidos');
+      $('senLista').innerHTML = tab.map(g => '<div class="partido" style="--c:' + g.cor + '">' +
+        '<div class="p-head"><span class="dot"></span><span class="p-nome">' + esc(g.partido) + '</span><span class="p-n num">' + g.membros.length + '</span></div>' +
+        '<div class="p-membros">' + g.membros.map(m => '<button type="button" class="membro' + (m.final ? '' : ' parcial') + '" data-uf="' + m.uf + '" title="' + esc(m.nome + ' · ' + UFS[m.uf][0] + (m.final ? ' · eleito' : ' · ainda em apuração')) + '">' +
+          '<span class="m-nome">' + esc(m.nome) + '</span><span class="m-uf">' + m.uf + '</span></button>').join('') + '</div></div>').join('');
+    }
+
+    const rotuloCurto = (nome, uf) => (!CARGOS[estado.cargo].nacional && meta(nome, uf).partido) || nome.split(/\s+/)[0];
     function renderMapa() {
       const painel = $('mapaPanel');
       if (nivel() !== 'br') { painel.hidden = true; return; }
       painel.hidden = false;
-      const gov = estado.cargo === 'governador';
+      const gov = !CARGOS[estado.cargo].nacional;
       $('mapaSub').textContent = (gov ? 'Cor = partido do candidato à frente' : 'Cor = candidato à frente') + ' · quanto mais forte, maior a percentagem · clica para abrir';
       const por = {};
       filhosAtuais().forEach(f => { por[f.cod] = f; });
@@ -1119,7 +1188,7 @@
       const com = fl ? fl.filter(f => f.s && f.s.lider) : [];
       if (!com.length) { painel.hidden = true; return; }
       painel.hidden = false;
-      const porPartido = estado.cargo === 'governador' && n === 'br';
+      const porPartido = !CARGOS[estado.cargo].nacional && n === 'br';
       const mapa = new Map();
       com.forEach(f => {
         const uf = n === 'br' ? f.cod : estado.uf;
@@ -1186,6 +1255,10 @@
       if (nivel() === 'br') ir(estado.cargo, b.dataset.cod, null);
       else ir(estado.cargo, estado.uf, b.dataset.cod);
     });
+    $('senLista').addEventListener('click', e => {
+      const b = e.target.closest('button[data-uf]');
+      if (b) ir(estado.cargo, b.dataset.uf, null);
+    });
     $('tiles').addEventListener('click', e => {
       const b = e.target.closest('button[data-uf]');
       if (b) ir(estado.cargo, b.dataset.uf, null);
@@ -1224,4 +1297,3 @@
   </script>
 </body>
 </html>
-
