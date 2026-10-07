@@ -1,0 +1,40 @@
+{
+  "municipios": [
+    {
+      "cod": "27014",
+      "nome": "Água Branca",
+      "votos": { "Arthur Lira": 6302, "Marina JHC": 4749, "Renan": 5728, "Dr. Wanderley": 3265, "Davi Davino Filho": 475, "Alexandre Fleming": 80, "Mariedson": 4},
+      "brancos": 749,
+      "nulos": 2292,
+      "secoes": [46, 46],
+      "eleitorado": 16511
+    },
+    {
+      "cod": "27030",
+      "nome": "Anadia",
+      "votos": { "Arthur Lira": 6703, "Marina JHC": 4105, "Renan": 4344, "Dr. Wanderley": 1245, "Davi Davino Filho": 586, "Alexandre Fleming": 38, "Mariedson": 1},
+      "brancos": 1073,
+      "nulos": 2193,
+      "secoes": [46, 46],
+      "eleitorado": 13089
+    },
+    {
+      "cod": "27057",
+      "nome": "Arapiraca",
+      "votos": { "Arthur Lira": 63776, "Marina JHC": 61036, "Renan": 53352, "Dr. Wanderley": 28577, "Davi Davino Filho": 14742, "Alexandre Fleming": 1982, "Mariedson": 134},
+      "brancos": 16074,
+      "nulos": 21507,
+      "secoes": [446, 446],
+      "eleitorado": 158652
+    },
+    {
+      "cod": "27073",
+      "nome": "Atalaia",
+      "votos": { "Arthur Lira": 13610, "Marina JHC": 12360, "Renan": 9465, "Dr. Wanderley": 2929, "Davi Davino Filho": 4445, "Alexandre Fleming": 173, "Mariedson": 16},
+      "brancos": 3210,
+      "nulos": 4712,
+      "secoes": [113, 113],
+      "eleitorado": 32403
+    }
+  ]
+}
