@@ -2,7 +2,17 @@
   { "AC": 
     {
     "votos": 
-      { "Mailza Assis": 218760, "Alan Rick": 141859, "Tião Bocalom": 44946, "Thor Dantas": 32963, "Eudo Rafael": 715, "Dr. Luisinho": 404},
+      { "Mailza Assis": 218760, 
+        "Alan Rick": 141859, 
+        "Tião Bocalom": 44946, 
+        "Thor Dantas": 32963, 
+        "Eudo Rafael": 715, 
+        "Dr. Luisinho": 404},
     "candidatos": 
-      { "Mailza Assis": { "partido": "PP" }, "Alan Rick": { "partido": "Republicanos" }}
-} } }
+      { "Mailza Assis": { "partido": "PP" }, 
+        "Alan Rick": { "partido": "Republicanos" }, 
+        "Tião Bocalom": { "partido": "PSDB" }, 
+        "Thor Dantas": { "partido": "PSB" }, 
+        "Eudo Rafael": { "partido": "PCB" }, 
+        "Dr. Luisinho": { "partido": "AGIR" }
+    } } } }
