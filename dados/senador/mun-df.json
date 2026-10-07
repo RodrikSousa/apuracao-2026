@@ -1,0 +1,13 @@
+{
+  "municipios": [
+    {
+      "cod": "97012",
+      "nome": "Brasília",
+      "votos": { "Michelle Bolsonaro": 938496, "Bia Kicis": 886616, "Leila do Vôlei": 686340, "Erika Kokay": 610950, "Sebastião Coelho": 67396, "Professor Guilherme Amorim": 14861, "Guto Felício dos Santos": 9534, "Marley": 6522, "Tiago": 4238, "Zanata": 3572, "David Horn": 2032},
+      "brancos": 200921,
+      "nulos": 204364,
+      "secoes": [6969, 6969],
+      "eleitorado": 2243988
+    }
+  ]
+}
