@@ -33,7 +33,7 @@
       "brancos": 2964,
       "nulos": 24308,
       "secoes": [100, 100],
-      "eleitorado": 576359
+      "eleitorado": 576359,
       "candidatos": {
         "Dr. Furlan": { "partido": "PSD" },
         "Clécio": { "partido": "UNIÃO" },
@@ -47,7 +47,7 @@
       "brancos": 50340,
       "nulos": 109946,
       "secoes": [100, 100],
-      "eleitorado": 2796053
+      "eleitorado": 2796053,
       "candidatos": {
         "Omar Aziz": { "partido": "PSD" },
         "Professora Maria do Carmo": { "partido": "PL" },
@@ -55,7 +55,7 @@
         "David Almeida": { "partido": "AVANTE" },
         "Cabo Daciolo": { "partido": "MOBILIZA"},
         "Isael Munduruku": { "partido": "REDE"},
-        "Gilberto Vasconcelos": { "partido": "PSTU"},
+        "Gilberto Vasconcelos": { "partido": "PSTU"}
       }
     }
   }
