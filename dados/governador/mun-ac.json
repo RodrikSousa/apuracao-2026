@@ -26,6 +26,15 @@
       "nulos": 1387,
       "secoes": [74, 74],
       "eleitorado": 19975
+    },
+    {
+      "cod": "01007",
+      "nome": "Bujari",
+      "votos": { "Mailza Assis": 4292, "Alan Rick": 2019, "Tião Bocalom": 883, "Thor Dantas": 467, "Eudo Rafael": 8, "Dr. Luisinho": 6 },
+      "brancos": 135,
+      "nulos": 847,
+      "secoes": [41, 41],
+      "eleitorado": 11152
     }
   ]
 }
