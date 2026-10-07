@@ -855,9 +855,11 @@
       const d = dadosAtuais();
       if (!d) return null;
       const n = nivel();
-      if (n === 'br') if (!CARGOS[estado.cargo].nacional) return null;
+      if (n === 'br') {
+        if (!CARGOS[estado.cargo].nacional) return null;
         const temMuns = Object.keys(d.ufs).some(uf => { const L = listaMuns(estado.cargo, uf); return L && !L.erro && L.lista.length; });
         return temMuns || !d.brasil ? somar(Object.keys(d.ufs).map(uf => resUF(estado.cargo, uf))) : d.brasil;
+      }
       if (n === 'uf') return resUF(estado.cargo, estado.uf);
       const L = listaMuns(estado.cargo, estado.uf);
       return (L && L.porCod[estado.mun]) || null;
@@ -1222,3 +1224,4 @@
   </script>
 </body>
 </html>
+
