@@ -1,0 +1,40 @@
+{
+  "municipios": [
+    {
+      "cod": "74012",
+      "nome": "Abatiá",
+      "votos": { "Flávio Bolsonaro": 2635, "Lula": 1444, "Escritor Augusto Cury": 88, "Renan Santos": 54, "Ronaldo Caiado": 72, "Zema": 5, "Samara": 2, "Hertz Dias": 2, "Clariana Barão": 2, "Edmilson Costa": 1, "Veterinário Wilson Grassi": 1, "Rui Costa Pimenta": 0 },
+      "brancos": 69,
+      "nulos": 77,
+      "secoes": [18, 18],
+      "eleitorado": 5976
+    },
+    {
+      "cod": "74039",
+      "nome": "Adrianópolis",
+      "votos": { "Flávio Bolsonaro": 1726, "Lula": 2225, "Escritor Augusto Cury": 80, "Renan Santos": 65, "Ronaldo Caiado": 96, "Zema": 6, "Samara": 1, "Hertz Dias": 0, "Clariana Barão": 1, "Edmilson Costa": 0, "Veterinário Wilson Grassi": 0, "Rui Costa Pimenta": 1 },
+      "brancos": 67,
+      "nulos": 83,
+      "secoes": [23, 23],
+      "eleitorado": 5781
+    },
+    {
+      "cod": "74055",
+      "nome": "Agudos Do Sul",
+      "votos": { "Flávio Bolsonaro": 4544, "Lula": 2002, "Escritor Augusto Cury": 132, "Renan Santos": 97, "Ronaldo Caiado": 146, "Zema": 9, "Samara": 3, "Hertz Dias": 1, "Clariana Barão": 0, "Edmilson Costa": 1, "Veterinário Wilson Grassi": 2, "Rui Costa Pimenta": 0 },
+      "brancos": 176,
+      "nulos": 149,
+      "secoes": [26, 26],
+      "eleitorado": 8981
+    },
+    {
+      "cod": "74071",
+      "nome": "Almirante Tamandaré",
+      "votos": { "Flávio Bolsonaro": 31191, "Lula": 19638, "Escritor Augusto Cury": 2073, "Renan Santos": 1858, "Ronaldo Caiado": 1804, "Zema": 136, "Samara": 61, "Hertz Dias": 21, "Clariana Barão": 35, "Edmilson Costa": 11, "Veterinário Wilson Grassi": 6, "Rui Costa Pimenta": 7 },
+      "brancos": 1600,
+      "nulos": 1423,
+      "secoes": [211, 211],
+      "eleitorado": 77677
+    }
+  ]
+}
