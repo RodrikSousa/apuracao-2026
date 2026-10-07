@@ -57,6 +57,21 @@
         "Isael Munduruku": { "partido": "REDE"},
         "Gilberto Vasconcelos": { "partido": "PSTU"}
       }
+    },
+    "BA": {
+      "votos": { "Jerônimo Rodrigues": 4626509, "ACM Neto": 3625227, "Ronaldo Mansur": 27243, "Aroldo Felix": 5238, "Maria Bona": 4028, "Ariel Capistrano": 2845 },
+      "brancos": 233096,
+      "nulos": 521993,
+      "secoes": [100, 100],
+      "eleitorado": 11304314,
+      "candidatos": {
+        "Jerônimo Rodrigues": { "partido": "PT" },
+        "ACM Neto": { "partido": "UNIÃO" },
+        "Ronaldo Mansur": { "partido": "PSOL" },
+        "Aroldo Felix": { "partido": "UP" },
+        "Maria Bona": { "partido": "PCO"},
+        "Ariel Capistrano": { "partido": "DC"}
+      }
     }
   }
 }
