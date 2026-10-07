@@ -102,6 +102,42 @@
       "nulos": 338375,
       "secoes": [100, 100],
       "eleitorado": 11312752
+    },
+    "CE": {
+      "votos": { "Lula": 3555263, 
+                 "Flávio Bolsonaro": 1756850,
+                 "Escritor Augusto Cury": 140524,
+                 "Renan Santos": 107587,
+                 "Ronaldo Caiado": 45604,
+                 "Zema": 4310,
+                 "Samara": 3352,
+                 "Hertz Dias": 1491,
+                 "Clariana Barão": 1071,
+                 "Edmilson Costa": 783,
+                 "Veterinário Wilson Grassi": 481,
+                 "Rui Costa Pimenta": 498},
+      "brancos": 103295,
+      "nulos": 189362,
+      "secoes": [100, 100],
+      "eleitorado": 6996545
+    },
+    "DF": {
+      "votos": { "Lula": 675627, 
+                 "Flávio Bolsonaro": 906616,
+                 "Escritor Augusto Cury": 45979,
+                 "Renan Santos": 46714,
+                 "Ronaldo Caiado": 85076,
+                 "Zema": 4915,
+                 "Samara": 2297,
+                 "Hertz Dias": 828,
+                 "Clariana Barão": 716,
+                 "Edmilson Costa": 334,
+                 "Veterinário Wilson Grassi": 324,
+                 "Rui Costa Pimenta": 382},
+      "brancos": 25362,
+      "nulos": 33226,
+      "secoes": [100, 100],
+      "eleitorado": 2258320
     }
   }
 }
