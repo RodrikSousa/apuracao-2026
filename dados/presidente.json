@@ -1,1 +1,26 @@
-
+{
+  "atualizado": "2026-10-04T21:30:00-03:00",
+  "candidatos": { "Lula": { "partido": "PT", "numero": 13 }, 
+                  "Flávio Bolsonaro": { "partido": "PL", "numero": 22 },
+                  "Escritor Augusto Cury": { "partido": "AVANTE", "numero": 70 },
+                  "Renan Santos": { "partido": "MISSÃO", "numero": 14 },
+                  "Ronaldo Caiado": { "partido": "PSD", "numero": 55 },
+                  "Zema": { "partido": "NOVO", "numero": 30 },
+                  "Samara": { "partido": "UP", "numero": 80 },
+                  "Hertz Dias": { "partido": "PSTU", "numero": 16 },
+                  "Clariana Barão": { "partido": "DC", "numero": 27 },
+                  "Edmilson Costa": { "partido": "PCB", "numero": 21 },
+                  "Veterinário Wilson Grassi": { "partido": "DEMOCRATA", "numero": 35 },
+                  "Rui Costa Pimenta": { "partido": "PCO", "numero": 29 }
+                },
+  "ufs": {
+    "SP": {
+      "votos": { "Lula": 1000, "Flávio Bolsonaro": 800 },
+      "brancos": 50,
+      "nulos": 80,
+      "secoes": [90, 100],
+      "eleitorado": 3000
+    },
+    "ZZ": { "votos": { "Lula": 300, "Flávio Bolsonaro": 500 } }
+  }
+}
