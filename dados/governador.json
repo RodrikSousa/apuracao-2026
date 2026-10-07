@@ -10,11 +10,26 @@
         "Dr. Luisinho": 404},
     "candidatos": 
       { "Mailza Assis": { "partido": "PP" }, 
-        "Alan Rick": { "partido": "Republicanos" }, 
+        "Alan Rick": { "partido": "REPUBLICANOS" }, 
         "Tião Bocalom": { "partido": "PSDB" }, 
         "Thor Dantas": { "partido": "PSB" }, 
         "Eudo Rafael": { "partido": "PCB" }, 
         "Dr. Luisinho": { "partido": "AGIR" }
+      } 
+    } 
+  },
+  { "AL": 
+    {
+    "votos": 
+      { "JHC": 892484, 
+        "Renan Filho": 809796, 
+        "Lenilda Luna": 6454, 
+        "Márcio Jambo": 32963},
+    "candidatos": 
+      { "JHC": { "partido": "PSDB" }, 
+        "Renan Filho": { "partido": "MDB" }, 
+        "Lenilda Luna": { "partido": "UP" }, 
+        "Márcio Jambo": { "partido": "DEMOCRATA" }
       } 
     } 
   } 
