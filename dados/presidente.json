@@ -48,7 +48,25 @@
       "nulos": 85860,
       "secoes": [100, 100],
       "eleitorado": 2442126
-    }
+    },
+    "AP": {
+      "votos": { "Lula": 212503, 
+                 "Flávio Bolsonaro": 212278,
+                 "Escritor Augusto Cury": 19057,
+                 "Renan Santos": 11342,
+                 "Ronaldo Caiado": 8304,
+                 "Zema": 341,
+                 "Samara": 508,
+                 "Hertz Dias": 132,
+                 "Clariana Barão": 229,
+                 "Edmilson Costa": 62,
+                 "Veterinário Wilson Grassi": 49,
+                 "Rui Costa Pimenta": 53},
+      "brancos": 4415,
+      "nulos": 7289,
+      "secoes": [100, 100],
+      "eleitorado": 576988
+    },
   }
 }
 
