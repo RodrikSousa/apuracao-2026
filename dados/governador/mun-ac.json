@@ -6,7 +6,7 @@
       "votos": { "Mailza Assis": 2348, "Alan Rick": 2495, "Tião Bocalom": 2360, "Thor Dantas": 157, "Eudo Rafael": 6, "Dr. Luisinho": 6 },
       "brancos": 86,
       "nulos": 596,
-      "secoes": [100, 100],
+      "secoes": [45, 45],
       "eleitorado": 10206
     },
     {
@@ -15,7 +15,7 @@
       "votos": { "Mailza Assis": 2826, "Alan Rick": 1377, "Tião Bocalom": 201, "Thor Dantas": 645, "Eudo Rafael": 3, "Dr. Luisinho": 0 },
       "brancos": 45,
       "nulos": 648,
-      "secoes": [100, 100],
+      "secoes": [28, 28],
       "eleitorado": 7294
     }
   ]
