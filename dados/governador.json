@@ -19,6 +19,16 @@
         "Lenilda Luna": { "partido": "UP" },
         "Márcio Jambo": { "partido": "DEMOCRATA" }
       }
+    },
+    "AP": {
+      "votos": { "Dr. Furlan": 281595, "Clécio": 165900, "Carlos Cley": 561, "Delegado Marcos": 376, "Jairo Palheta": 315 },
+      "candidatos": {
+        "Dr. Furlan": { "partido": "PSD" },
+        "Clécio": { "partido": "UNIÃO" },
+        "Carlos Cley": { "partido": "PSTU" },
+        "Delegado Marcos": { "partido": "DEMOCRATA" },
+        "Jairo Palheta": { "partido": "PCO"}
+      }
     }
   }
 }
