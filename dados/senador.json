@@ -2,6 +2,9 @@
   "ufs": {
     "AC": {
       "candidatos": { "Marcio Bittar": { "partido": "PL" }, "Mara Rocha": { "partido": "REPUBLICANOS" }, "Gladson Camelí": { "partido": "PP" }, "Jorge Viana": { "partido": "PT" }, "Eduardo Velloso": { "partido": "SOLIDARIEDADE" }, "Petecão": { "partido": "PSD" }, "Professor Inácio Moreira": { "partido": "PSOL" }, "Dr. Junior Feitosa": { "partido": "DC" }}
+    },
+    "AL": {
+      "candidatos": { "Arthur Lira": { "partido": "PP" }, "Marina JHC": { "partido": "PSDB" }, "Renan": { "partido": "MDB" }, "Dr. Wanderley": { "partido": "MDB" }, "Davi Davino Filho": { "partido": "REPUBLICANOS" }, "Alexandre Fleming": { "partido": "UP" }, "Mariedson": { "partido": "DEMOCRATA" }}
     }
   }
 }
