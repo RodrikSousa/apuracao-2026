@@ -72,6 +72,41 @@
         "Maria Bona": { "partido": "PCO"},
         "Ariel Capistrano": { "partido": "DC"}
       }
+    },
+    "CE": {
+      "votos": { "Elmano de Freitas": 2875573, "Ciro Gomes": 2498891, "Delegado Huggo": 17219, "Vera Lúcia": 5701, "Serley Leal": 4344, "Zé Batista": 2161, "Danilo Soares": 1743, "Ieri Braga": 463},
+      "brancos": 170316,
+      "nulos": 329111,
+      "secoes": [100, 100],
+      "eleitorado": 6991044,
+      "candidatos": {
+        "Elmano de Freitas": { "partido": "PT" },
+        "Ciro Gomes": { "partido": "UNIÃO" },
+        "Vera Lúcia": { "partido": "NOVO" },
+        "Serley Leal": { "partido": "UP" },
+        "Zé Batista": { "partido": "PSTU"},
+        "Danilo Soares": { "partido": "DC"},
+        "Ieri Braga": { "partido": "PCO"}
+      }
+    },
+    "DF": {
+      "votos": { "Celina Leão": 825530, "Leandro Grass": 569930, "Paula Belmonte": 140765, "Kiko Caputo": 72148, "Capelli": 36828, "Professora Samara Mineiro": 3958, "Professor Robson": 1640, "Elisson": 1172, "Rico Pinheiro": 671, "Expedito Mendonça": 595 },
+      "brancos": 74774,
+      "nulos": 89910,
+      "secoes": [100, 100],
+      "eleitorado": 2243988,
+      "candidatos": {
+        "Celina Leão": { "partido": "PP" },
+        "Leandro Grass": { "partido": "PT" },
+        "Paula Belmonte": { "partido": "PSDB" },
+        "Kiko Caputo": { "partido": "NOVO" },
+        "Capelli": { "partido": "PSB"},
+        "Professora Samara Mineiro": { "partido": "UP"},
+        "Professor Robson": { "partido": "PSTU" },
+        "Elisson": { "partido": "AGIR" },
+        "Rico Pinheiro": { "partido": "PRTB"},
+        "Expedito Mendonça": { "partido": "PCO"}
+      }
     }
   }
 }
