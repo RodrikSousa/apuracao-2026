@@ -1,7 +1,7 @@
 {
   "municipios": [
     {
-      "cod": "1200013",
+      "cod": "01120",
       "nome": "Acrelândia",
       "votos": { "Flávio Bolsonaro": 5940, "Lula": 1508, "Escritor Augusto Cury": 114, "Renan Santos": 85, "Ronaldo Caiado": 136, "Zema": 3, "Samara": 2, "Hertz Dias": 1, "Clariana Barão": 2, "Edmilson Costa": 0, "Veterinário Wilson Grassi": 0, "Rui Costa Pimenta": 0 },
       "brancos": 56,
@@ -10,13 +10,22 @@
       "eleitorado": 10207
     },
     {
-      "cod": "1200054",
+      "cod": "01570",
       "nome": "Assis Brasil",
       "votos": { "Flávio Bolsonaro": 3274, "Lula": 2015, "Escritor Augusto Cury": 123, "Renan Santos": 38, "Ronaldo Caiado": 50, "Zema": 8, "Samara": 2, "Hertz Dias": 2, "Clariana Barão": 2, "Edmilson Costa": 5, "Veterinário Wilson Grassi": 1, "Rui Costa Pimenta": 2 },
       "brancos": 20,
       "nulos": 204,
       "secoes": [28, 28],
       "eleitorado": 7294
+    },
+    {
+      "cod": "01058",
+      "nome": "Brasiléia",
+      "votos": { "Flávio Bolsonaro": 10709, "Lula": 3965, "Escritor Augusto Cury": 295, "Renan Santos": 200, "Ronaldo Caiado": 192, "Zema": 15, "Samara": 2, "Hertz Dias": 1, "Clariana Barão": 2, "Edmilson Costa": 6, "Veterinário Wilson Grassi": 0, "Rui Costa Pimenta": 0 },
+      "brancos": 135,
+      "nulos": 385,
+      "secoes": [74, 74],
+      "eleitorado": 19978
     }
   ]
 }
