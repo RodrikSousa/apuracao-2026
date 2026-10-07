@@ -1,1 +1,40 @@
-
+{
+  "municipios": [
+    {
+      "cod": "01120",
+      "nome": "Acrelândia",
+      "votos": { "Marcio Bittar": 3605, "Mara Rocha": 4700, "Gladson Camelí": 1268, "Jorge Viana": 969, "Eduardo Velloso": 1495, "Petecão": 2129, "Professor Inácio Moreira": 67, "Dr. Junior Feitosa": 268},
+      "brancos": 451,
+      "nulos": 1156,
+      "secoes": [45, 45],
+      "eleitorado": 10206
+    },
+    {
+      "cod": "01570",
+      "nome": "Assis Brasil",
+      "votos": { "Marcio Bittar": 2226, "Mara Rocha": 1420, "Gladson Camelí": 1928, "Jorge Viana": 1619, "Eduardo Velloso": 679, "Petecão": 2034, "Professor Inácio Moreira": 378, "Dr. Junior Feitosa": 64},
+      "brancos": 179,
+      "nulos": 963,
+      "secoes": [28, 28],
+      "eleitorado": 7294
+    },
+    {
+      "cod": "01058",
+      "nome": "Brasiléia",
+      "votos": { "Marcio Bittar": 8315, "Mara Rocha": 5494, "Gladson Camelí": 4627, "Jorge Viana": 3257, "Eduardo Velloso": 2448, "Petecão": 3871, "Professor Inácio Moreira": 268, "Dr. Junior Feitosa": 176},
+      "brancos": 1188,
+      "nulos": 2164,
+      "secoes": [74, 74],
+      "eleitorado": 19975
+    },
+    {
+      "cod": "01007",
+      "nome": "Bujari",
+      "votos": { "Marcio Bittar": 4270, "Mara Rocha": 2964, "Gladson Camelí": 2960, "Jorge Viana": 1958, "Eduardo Velloso": 1192, "Petecão": 1859, "Professor Inácio Moreira": 177, "Dr. Junior Feitosa": 126},
+      "brancos": 590,
+      "nulos": 1218,
+      "secoes": [41, 41],
+      "eleitorado": 11152
+    }
+  ]
+}
