@@ -1,0 +1,40 @@
+{
+  "municipios": [
+    {
+      "cod": "56014",
+      "nome": "Afonso Cláudio",
+      "votos": { "Flávio Bolsonaro": 10999, "Lula": 6192, "Escritor Augusto Cury": 514, "Renan Santos": 307, "Ronaldo Caiado": 380, "Zema": 46, "Samara": 15, "Hertz Dias": 5, "Clariana Barão": 6, "Edmilson Costa": 5, "Veterinário Wilson Grassi": 0, "Rui Costa Pimenta": 3 },
+      "brancos": 343,
+      "nulos": 543,
+      "secoes": [83, 83],
+      "eleitorado": 26254
+    },
+    {
+      "cod": "56022",
+      "nome": "Água Doce do Norte",
+      "votos": { "Flávio Bolsonaro": 3834, "Lula": 3930, "Escritor Augusto Cury": 159, "Renan Santos": 119, "Ronaldo Caiado": 102, "Zema": 16, "Samara": 6, "Hertz Dias": 0, "Clariana Barão": 3, "Edmilson Costa": 0, "Veterinário Wilson Grassi": 0, "Rui Costa Pimenta": 0 },
+      "brancos": 133,
+      "nulos": 273,
+      "secoes": [46, 46],
+      "eleitorado": 11111
+    },
+    {
+      "cod": "57991",
+      "nome": "Águia Branca",
+      "votos": { "Flávio Bolsonaro": 3094, "Lula": 3478, "Escritor Augusto Cury": 193, "Renan Santos": 80, "Ronaldo Caiado": 95, "Zema": 8, "Samara": 1, "Hertz Dias": 0, "Clariana Barão": 0, "Edmilson Costa": 0, "Veterinário Wilson Grassi": 0, "Rui Costa Pimenta": 1 },
+      "brancos": 99,
+      "nulos": 118,
+      "secoes": [32, 32],
+      "eleitorado": 8898
+    },
+    {
+      "cod": "56030",
+      "nome": "Alegre",
+      "votos": { "Flávio Bolsonaro": 8645, "Lula": 7395, "Escritor Augusto Cury": 360, "Renan Santos": 315, "Ronaldo Caiado": 304, "Zema": 29, "Samara": 17, "Hertz Dias": 5, "Clariana Barão": 3, "Edmilson Costa": 3, "Veterinário Wilson Grassi": 2, "Rui Costa Pimenta": 0 },
+      "brancos": 203,
+      "nulos": 569,
+      "secoes": [93, 93],
+      "eleitorado": 23554
+    }
+  ]
+}
