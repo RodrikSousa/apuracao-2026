@@ -1,0 +1,13 @@
+{
+  "municipios": [
+    {
+      "cod": "97012",
+      "nome": "Brasília",
+      "votos": { "Flávio Bolsonaro": 909616, "Lula": 675627, "Escritor Augusto Cury": 45979, "Renan Santos": 46714, "Ronaldo Caiado": 85076, "Zema": 4915, "Samara": 2297, "Hertz Dias": 828, "Clariana Barão": 716, "Edmilson Costa": 334, "Veterinário Wilson Grassi": 324, "Rui Costa Pimenta": 382 },
+      "brancos": 25362,
+      "nulos": 33226,
+      "secoes": [6969, 6969],
+      "eleitorado": 2258320
+    }
+  ]
+}
