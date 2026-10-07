@@ -24,13 +24,13 @@
       { "JHC": 892484, 
         "Renan Filho": 809796, 
         "Lenilda Luna": 6454, 
-        "Márcio Jambo": 32963},
+        "Márcio Jambo": 32963}
     "candidatos": 
       { "JHC": { "partido": "PSDB" }, 
-        "Renan Filho": { "partido": "MDB" }, 
-        "Lenilda Luna": { "partido": "UP" }, 
-        "Márcio Jambo": { "partido": "DEMOCRATA" }
-      } 
+       "Renan Filho": { "partido": "MDB" }, 
+      "Lenilda Luna": { "partido": "UP" }, 
+      "Márcio Jambo": { "partido": "DEMOCRATA" }
     } 
   } 
-}
+} 
+
