@@ -1,0 +1,270 @@
+{
+  "ufs": {
+    "AC": {
+      "candidatos": {
+        "Socorro Neri": {
+          "partido": "PP"
+        },
+        "Dr. Fábio Rueda": {
+          "partido": "UNIÃO"
+        },
+        "Coronel Ulysses": {
+          "partido": "UNIÃO"
+        },
+        "Pedro Longo": {
+          "partido": "MDB"
+        },
+        "Roberto Duarte": {
+          "partido": "REPUBLICANOS"
+        },
+        "Zé Adriano": {
+          "partido": "PP"
+        },
+        "Perpétua Almeida": {
+          "partido": "PCDOB"
+        },
+        "Júnior Betão": {
+          "partido": "PL"
+        },
+        "Ney Amorim": {
+          "partido": "MDB"
+        },
+        "Zezinho Barbary": {
+          "partido": "PP"
+        },
+        "Minoru Kinpara": {
+          "partido": "MDB"
+        },
+        "Manoel Gerônimo": {
+          "partido": "REPUBLICANOS"
+        },
+        "João Bittar": {
+          "partido": "PL"
+        },
+        "Mazinho Serafim": {
+          "partido": "UNIÃO"
+        },
+        "Marcio Alecio": {
+          "partido": "PT"
+        },
+        "André Kamai": {
+          "partido": "PT"
+        },
+        "Vanda Milani": {
+          "partido": "REPUBLICANOS"
+        },
+        "Vagner Sales": {
+          "partido": "MDB"
+        },
+        "Lindemberg da Citolab": {
+          "partido": "PL"
+        },
+        "Cacilda Barbosa": {
+          "partido": "PL"
+        },
+        "Jesus Sérgio": {
+          "partido": "PL"
+        },
+        "Mirla Miranda": {
+          "partido": "REPUBLICANOS"
+        },
+        "Leila Galvão": {
+          "partido": "PP"
+        },
+        "Virgílio Viana": {
+          "partido": "PV"
+        },
+        "Eden Azevedo": {
+          "partido": "PL"
+        },
+        "Cacique Ninawá Huni Kui": {
+          "partido": "PT"
+        },
+        "Coronel Edvan": {
+          "partido": "REPUBLICANOS"
+        },
+        "Eber Machado": {
+          "partido": "REPUBLICANOS"
+        },
+        "Pr. Prof. Clemilton": {
+          "partido": "PL"
+        },
+        "Terezinha de Feijó": {
+          "partido": "PL"
+        },
+        "Leonardo Melo": {
+          "partido": "MDB"
+        },
+        "Blandina Menezes": {
+          "partido": "PL"
+        },
+        "Sheila Andrade": {
+          "partido": "REPUBLICANOS"
+        },
+        "Fábio Araújo": {
+          "partido": "MDB"
+        },
+        "Drª. Kel Guimarães": {
+          "partido": "MDB"
+        },
+        "Neide Lopes": {
+          "partido": "PT"
+        },
+        "Professora Sirlene Luz": {
+          "partido": "MDB"
+        },
+        "Leticia Ribeiro": {
+          "partido": "UNIÃO"
+        },
+        "Rizo Araujo": {
+          "partido": "REPUBLICANOS"
+        },
+        "Eneias Marques": {
+          "partido": "REPUBLICANOS"
+        },
+        "Hechylen Davila": {
+          "partido": "UNIÃO"
+        },
+        "Joãozinho": {
+          "partido": "PCDOB"
+        },
+        "Sidilene Silva": {
+          "partido": "PV"
+        },
+        "Marinilda Nascimento": {
+          "partido": "PT"
+        },
+        "Pedro Pascoal": {
+          "partido": "PSDB"
+        },
+        "Antônia Lúcia": {
+          "partido": "MDB"
+        },
+        "João Marcos Luz": {
+          "partido": "PSDB"
+        },
+        "Kelen Bocalom": {
+          "partido": "PSDB"
+        },
+        "Halida Prado": {
+          "partido": "PSDB"
+        },
+        "Irineia Barbosa": {
+          "partido": "PSDB"
+        },
+        "Prof. Roger": {
+          "partido": "PSDB"
+        },
+        "Djê Cavalcante": {
+          "partido": "PDT"
+        },
+        "Rosa Maria": {
+          "partido": "AVANTE"
+        },
+        "Leandro Costa": {
+          "partido": "CIDADANIA"
+        },
+        "Juma Aguiar": {
+          "partido": "NOVO"
+        },
+        "Juliet": {
+          "partido": "CIDADANIA"
+        },
+        "Pastor Val": {
+          "partido": "NOVO"
+        },
+        "Manelzinho": {
+          "partido": "NOVO"
+        },
+        "Marcio Albion": {
+          "partido": "SOLIDARIEDADE"
+        },
+        "Fernando Melo": {
+          "partido": "PODE"
+        },
+        "Reidivan Rocha": {
+          "partido": "PDT"
+        },
+        "Dr. Raimundo Castro": {
+          "partido": "SOLIDARIEDADE"
+        },
+        "Pricila Paulino": {
+          "partido": "PRD"
+        },
+        "Ana Paula": {
+          "partido": "SOLIDARIEDADE"
+        },
+        "Augusto Henrique": {
+          "partido": "PSB"
+        },
+        "Pastor Maanain": {
+          "partido": "SOLIDARIEDADE"
+        },
+        "Leidiane Dornelas": {
+          "partido": "NOVO"
+        },
+        "Marcos Torres": {
+          "partido": "SOLIDARIEDADE"
+        },
+        "My Parfan": {
+          "partido": "AVANTE"
+        },
+        "Rose Silva": {
+          "partido": "PRD"
+        },
+        "Delegado Judson": {
+          "partido": "NOVO"
+        },
+        "Riza": {
+          "partido": "PSOL"
+        },
+        "Jéssica Souza": {
+          "partido": "PODE"
+        },
+        "Amanda Souza": {
+          "partido": "PSOL"
+        },
+        "Cristiane de Paula": {
+          "partido": "PDT"
+        },
+        "Célio Rocha": {
+          "partido": "PSOL"
+        },
+        "Rudson Ribeiro": {
+          "partido": "PODE"
+        },
+        "Marcelo Bira": {
+          "partido": "PSB"
+        },
+        "Andreia Lima": {
+          "partido": "SOLIDARIEDADE"
+        },
+        "Wstany Silva": {
+          "partido": "PODE"
+        },
+        "Marquinhos Tchukas": {
+          "partido": "PSOL"
+        },
+        "Jéssica Neves": {
+          "partido": "PODE"
+        },
+        "Nauan Aragão": {
+          "partido": "AVANTE"
+        },
+        "Zé Carlos": {
+          "partido": "PRD"
+        },
+        "Daiane Fontinele": {
+          "partido": "AVANTE"
+        },
+        "Suzana Nunes": {
+          "partido": "DEMOCRATA"
+        },
+        "Rosangela Santos": {
+          "partido": "DEMOCRATA"
+        }
+      }
+    }
+  }
+}
+}
