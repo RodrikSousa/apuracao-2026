@@ -1,108 +1,25 @@
 {
   "ufs": {
     "AC": {
-      "candidatos": {
-        "Mailza Assis": { "partido": "PP" },
-        "Alan Rick": { "partido": "REPUBLICANOS" },
-        "Tião Bocalom": { "partido": "PSDB" },
-        "Thor Dantas": { "partido": "PSB" },
-        "Eudo Rafael": { "partido": "PCB" },
-        "Dr. Luisinho": { "partido": "AGIR" }
-      }
+      "candidatos": { "Mailza Assis": { "partido": "PP" }, "Alan Rick": { "partido": "REPUBLICANOS" }, "Tião Bocalom": { "partido": "PSDB" }, "Thor Dantas": { "partido": "PSB" }, "Eudo Rafael": { "partido": "PCB" }, "Dr. Luisinho": { "partido": "AGIR" }}
     },
     "AL": {
-      "votos": { "JHC": 892484, "Renan Filho": 809796, "Lenilda Luna": 6454, "Márcio Jambo": 32963 },
-      "brancos": 56303,
-      "nulos": 169903,
-      "secoes": [100, 100],
-      "eleitorado": 2439190,
-      "candidatos": {
-        "JHC": { "partido": "PSDB" },
-        "Renan Filho": { "partido": "MDB" },
-        "Lenilda Luna": { "partido": "UP" },
-        "Márcio Jambo": { "partido": "DEMOCRATA" }
-      }
+      "candidatos": { "JHC": { "partido": "PSDB" }, "Renan Filho": { "partido": "MDB" }, "Lenilda Luna": { "partido": "UP" }, "Márcio Jambo": { "partido": "DEMOCRATA" }}
     },
-    "AP": {
-      "votos": { "Dr. Furlan": 281595, "Clécio": 165900, "Carlos Cley": 561, "Delegado Marcos": 376, "Jairo Palheta": 315 },
-      "brancos": 2964,
-      "nulos": 24308,
-      "secoes": [100, 100],
-      "eleitorado": 576359,
-      "candidatos": {
-        "Dr. Furlan": { "partido": "PSD" },
-        "Clécio": { "partido": "UNIÃO" },
-        "Carlos Cley": { "partido": "PSTU" },
-        "Delegado Marcos": { "partido": "DEMOCRATA" },
-        "Jairo Palheta": { "partido": "PCO"}
-      }
+    "AP": { 
+      "candidatos": { "Dr. Furlan": { "partido": "PSD" }, "Clécio": { "partido": "UNIÃO" }, "Carlos Cley": { "partido": "PSTU" }, "Delegado Marcos": { "partido": "DEMOCRATA" }, "Jairo Palheta": { "partido": "PCO"}}
     },
     "AM": {
-      "votos": { "Omar Aziz": 841846, "Professora Maria do Carmo": 507335, "Roberto Cidade": 453896, "David Almeida": 218490, "Cabo Daciolo": 36176, "Isael Munduruku": 11459, "Gilberto Vasconcelos": 2783 },
-      "brancos": 50340,
-      "nulos": 109946,
-      "secoes": [100, 100],
-      "eleitorado": 2796053,
-      "candidatos": {
-        "Omar Aziz": { "partido": "PSD" },
-        "Professora Maria do Carmo": { "partido": "PL" },
-        "Roberto Cidade": { "partido": "UNIÃO" },
-        "David Almeida": { "partido": "AVANTE" },
-        "Cabo Daciolo": { "partido": "MOBILIZA"},
-        "Isael Munduruku": { "partido": "REDE"},
-        "Gilberto Vasconcelos": { "partido": "PSTU"}
-      }
+      "candidatos": { "Omar Aziz": { "partido": "PSD" }, "Professora Maria do Carmo": { "partido": "PL" }, "Roberto Cidade": { "partido": "UNIÃO" }, "David Almeida": { "partido": "AVANTE" }, "Cabo Daciolo": { "partido": "MOBILIZA"}, "Isael Munduruku": { "partido": "REDE"}, "Gilberto Vasconcelos": { "partido": "PSTU"}}
     },
     "BA": {
-      "votos": { "Jerônimo Rodrigues": 4626509, "ACM Neto": 3625227, "Ronaldo Mansur": 27243, "Aroldo Felix": 5238, "Maria Bona": 4028, "Ariel Capistrano": 2845 },
-      "brancos": 233096,
-      "nulos": 521993,
-      "secoes": [100, 100],
-      "eleitorado": 11304314,
-      "candidatos": {
-        "Jerônimo Rodrigues": { "partido": "PT" },
-        "ACM Neto": { "partido": "UNIÃO" },
-        "Ronaldo Mansur": { "partido": "PSOL" },
-        "Aroldo Felix": { "partido": "UP" },
-        "Maria Bona": { "partido": "PCO"},
-        "Ariel Capistrano": { "partido": "DC"}
-      }
+      "candidatos": { "Jerônimo Rodrigues": { "partido": "PT" }, "ACM Neto": { "partido": "UNIÃO" }, "Ronaldo Mansur": { "partido": "PSOL" }, "Aroldo Felix": { "partido": "UP" }, "Maria Bona": { "partido": "PCO"}, "Ariel Capistrano": { "partido": "DC"}}
     },
     "CE": {
-      "votos": { "Elmano de Freitas": 2875573, "Ciro Gomes": 2498891, "Delegado Huggo": 17219, "Vera Lúcia": 5701, "Serley Leal": 4344, "Zé Batista": 2161, "Danilo Soares": 1743, "Ieri Braga": 463},
-      "brancos": 170316,
-      "nulos": 329111,
-      "secoes": [100, 100],
-      "eleitorado": 6991044,
-      "candidatos": {
-        "Elmano de Freitas": { "partido": "PT" },
-        "Ciro Gomes": { "partido": "UNIÃO" },
-        "Delegado Huggo": { "partido": "MISSÃO" },
-        "Vera Lúcia": { "partido": "NOVO" },
-        "Serley Leal": { "partido": "UP" },
-        "Zé Batista": { "partido": "PSTU"},
-        "Danilo Soares": { "partido": "DC"},
-        "Ieri Braga": { "partido": "PCO"}
-      }
+      "candidatos": { "Elmano de Freitas": { "partido": "PT" }, "Ciro Gomes": { "partido": "UNIÃO" }, "Delegado Huggo": { "partido": "MISSÃO" }, "Vera Lúcia": { "partido": "NOVO" }, "Serley Leal": { "partido": "UP" }, "Zé Batista": { "partido": "PSTU"}, "Danilo Soares": { "partido": "DC"}, "Ieri Braga": { "partido": "PCO"}}
     },
     "DF": {
-      "votos": { "Celina Leão": 825530, "Leandro Grass": 569930, "Paula Belmonte": 140765, "Kiko Caputo": 72148, "Capelli": 36828, "Professora Samara Mineiro": 3958, "Professor Robson": 1640, "Elisson": 1172, "Rico Pinheiro": 671, "Expedito Mendonça": 595 },
-      "brancos": 74774,
-      "nulos": 89910,
-      "secoes": [100, 100],
-      "eleitorado": 2243988,
-      "candidatos": {
-        "Celina Leão": { "partido": "PP" },
-        "Leandro Grass": { "partido": "PT" },
-        "Paula Belmonte": { "partido": "PSDB" },
-        "Kiko Caputo": { "partido": "NOVO" },
-        "Capelli": { "partido": "PSB"},
-        "Professora Samara Mineiro": { "partido": "UP"},
-        "Professor Robson": { "partido": "PSTU" },
-        "Elisson": { "partido": "AGIR" },
-        "Rico Pinheiro": { "partido": "PRTB"},
-        "Expedito Mendonça": { "partido": "PCO"}
-      }
+      "candidatos": { "Celina Leão": { "partido": "PP" }, "Leandro Grass": { "partido": "PT" }, "Paula Belmonte": { "partido": "PSDB" }, "Kiko Caputo": { "partido": "NOVO" }, "Capelli": { "partido": "PSB"}, "Professora Samara Mineiro": { "partido": "UP"}, "Professor Robson": { "partido": "PSTU" }, "Elisson": { "partido": "AGIR" }, "Rico Pinheiro": { "partido": "PRTB"}, "Expedito Mendonça": { "partido": "PCO"}}
     }
   }
 }
