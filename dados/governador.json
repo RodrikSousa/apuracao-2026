@@ -1,1 +1,7 @@
-
+{ "ufs": 
+  { "AC": 
+    {
+    "votos": 
+      { "Mailza Assis": 218760, "Alan Rick": 141859 },
+    "candidatos": { "Mailza Assis": { "partido": "PP" } }
+} } }
