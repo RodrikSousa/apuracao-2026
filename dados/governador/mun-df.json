@@ -1,0 +1,13 @@
+{
+  "municipios": [
+    {
+      "cod": "97012",
+      "nome": "Brasília",
+      "votos": { "Celina Leão": 825530, "Leandro Grass": 569930, "Paula Belmonte": 140765, "Kiko Caputo": 72148, "Capelli": 36828, "Professora Samara Mineiro": 3958, "Professor Robson": 1640, "Elisson": 1172, "Rico Pinheiro": 671, "Expedito Mendonça": 595 },
+      "brancos": 74774,
+      "nulos": 89910,
+      "secoes": [6969, 6969],
+      "eleitorado": 2243988
+    }
+  ]
+}
