@@ -2,6 +2,10 @@
   "ufs": {
     "AC": {
       "votos": { "Mailza Assis": 218760, "Alan Rick": 141859, "Tião Bocalom": 44946, "Thor Dantas": 32963, "Eudo Rafael": 715, "Dr. Luisinho": 404 },
+      "brancos": 8926,
+      "nulos": 39398,
+      "secoes": [100, 100],
+      "eleitorado": 613316,
       "candidatos": {
         "Mailza Assis": { "partido": "PP" },
         "Alan Rick": { "partido": "REPUBLICANOS" },
@@ -13,6 +17,10 @@
     },
     "AL": {
       "votos": { "JHC": 892484, "Renan Filho": 809796, "Lenilda Luna": 6454, "Márcio Jambo": 32963 },
+      "brancos": 56303,
+      "nulos": 169903,
+      "secoes": [100, 100],
+      "eleitorado": 2439190,
       "candidatos": {
         "JHC": { "partido": "PSDB" },
         "Renan Filho": { "partido": "MDB" },
@@ -22,12 +30,32 @@
     },
     "AP": {
       "votos": { "Dr. Furlan": 281595, "Clécio": 165900, "Carlos Cley": 561, "Delegado Marcos": 376, "Jairo Palheta": 315 },
+      "brancos": 2964,
+      "nulos": 24308,
+      "secoes": [100, 100],
+      "eleitorado": 576359
       "candidatos": {
         "Dr. Furlan": { "partido": "PSD" },
         "Clécio": { "partido": "UNIÃO" },
         "Carlos Cley": { "partido": "PSTU" },
         "Delegado Marcos": { "partido": "DEMOCRATA" },
         "Jairo Palheta": { "partido": "PCO"}
+      }
+    },
+    "AM": {
+      "votos": { "Omar Aziz": 841846, "Professora Maria do Carmo": 507335, "Roberto Cidade": 453896, "David Almeida": 218490, "Cabo Daciolo": 36176, "Isael Munduruku": 11459, "Gilberto Vasconcelos": 2783 },
+      "brancos": 50340,
+      "nulos": 109946,
+      "secoes": [100, 100],
+      "eleitorado": 2796053
+      "candidatos": {
+        "Omar Aziz": { "partido": "PSD" },
+        "Professora Maria do Carmo": { "partido": "PL" },
+        "Roberto Cidade": { "partido": "UNIÃO" },
+        "David Almeida": { "partido": "AVANTE" },
+        "Cabo Daciolo": { "partido": "MOBILIZA"},
+        "Isael Munduruku": { "partido": "REDE"},
+        "Gilberto Vasconcelos": { "partido": "PSTU"},
       }
     }
   }
