@@ -26,6 +26,15 @@
       "nulos": 385,
       "secoes": [74, 74],
       "eleitorado": 19978
+    },
+    {
+      "cod": "01007",
+      "nome": "Brasiléia",
+      "votos": { "Flávio Bolsonaro": 5531, "Lula": 2394, "Escritor Augusto Cury": 165, "Renan Santos": 68, "Ronaldo Caiado": 133, "Zema": 3, "Samara": 3, "Hertz Dias": 3, "Clariana Barão": 3, "Edmilson Costa": 3, "Veterinário Wilson Grassi": 0, "Rui Costa Pimenta": 2 },
+      "brancos": 98,
+      "nulos": 251,
+      "secoes": [41, 41],
+      "eleitorado": 11152
     }
   ]
 }
