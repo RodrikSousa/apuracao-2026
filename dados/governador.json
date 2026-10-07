@@ -1,11 +1,6 @@
 {
   "ufs": {
     "AC": {
-      "votos": { "Mailza Assis": 218760, "Alan Rick": 141859, "Tião Bocalom": 44946, "Thor Dantas": 32963, "Eudo Rafael": 715, "Dr. Luisinho": 404 },
-      "brancos": 8926,
-      "nulos": 39398,
-      "secoes": [100, 100],
-      "eleitorado": 613316,
       "candidatos": {
         "Mailza Assis": { "partido": "PP" },
         "Alan Rick": { "partido": "REPUBLICANOS" },
