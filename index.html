@@ -818,8 +818,11 @@
       const cargo = estado.cargo, uf = estado.uf;
       let mudou = false, falhou = false;
       try { mudou = await carregarCargo(cargo); } catch (e) { falhou = true; console.error('Erro ao carregar dados:', e); }
-      if (!falhou && uf) {
-        try { if (await carregarMuns(cargo, uf)) mudou = true; } catch (e) { console.error('Erro ao carregar municípios:', e); }
+      if (!falhou) {
+        // numa UF carrega os seus municípios; no Brasil carrega os de todas as UFs para somar os totais
+        const alvo = uf ? [uf] : (estado.demo || estado.dados[cargo].parcial ? [] : CARGOS[cargo].ufs);
+        const rs = await Promise.all(alvo.map(u => carregarMuns(cargo, u).catch(e => { console.error('Erro ao carregar municípios:', e); return false; })));
+        if (rs.some(Boolean)) mudou = true;
       }
       if (tk !== estado.tk) return;           // houve navegação entretanto
       const primeira = !estado.tentou[cargo];
@@ -840,17 +843,23 @@
     const dadosAtuais = () => estado.dados[estado.cargo] || null;
     const listaMuns = (cargo, uf) => estado.muns[cargo + ':' + uf] || null;
 
+    // Resultado de uma UF: soma dos municípios com dados; sem lista de municípios, usa o total do JSON do cargo
+    function resUF(cargo, uf) {
+      const L = estado.muns[cargo + ':' + uf];
+      if (L && !L.erro && L.lista.length) return somar(L.lista);
+      const d = estado.dados[cargo];
+      return (d && d.ufs[uf]) || null;
+    }
+
     function resultadoAtual() {
       const d = dadosAtuais();
       if (!d) return null;
       const n = nivel();
-      if (n === 'br') return CARGOS[estado.cargo].nacional ? (d.brasil || somar(Object.values(d.ufs))) : null;
+      if (n === 'br') if (!CARGOS[estado.cargo].nacional) return null;
+        const temMuns = Object.keys(d.ufs).some(uf => { const L = listaMuns(estado.cargo, uf); return L && !L.erro && L.lista.length; });
+        return temMuns || !d.brasil ? somar(Object.keys(d.ufs).map(uf => resUF(estado.cargo, uf))) : d.brasil;
+      if (n === 'uf') return resUF(estado.cargo, estado.uf);
       const L = listaMuns(estado.cargo, estado.uf);
-      if (n === 'uf') {
-        // com lista de municípios: soma só os que já têm dados; senão usa o total da UF no JSON do cargo
-        if (L && !L.erro && L.lista.length) return somar(L.lista);
-        return d.ufs[estado.uf] || null;
-      }
       return (L && L.porCod[estado.mun]) || null;
     }
     function nomeMunAtual() {
@@ -868,7 +877,7 @@
     function filhosAtuais() {
       const d = dadosAtuais();
       if (!d) return null;
-      if (nivel() === 'br') return CARGOS[estado.cargo].ufs.map(uf => { const r = d.ufs[uf] || null; return { cod: uf, nome: UFS[uf][0], r, s: resumo(r) }; });
+      if (nivel() === 'br') return CARGOS[estado.cargo].ufs.map(uf => { const r = resUF(estado.cargo, uf); return { cod: uf, nome: UFS[uf][0], r, s: resumo(r) }; });
       const L = listaMuns(estado.cargo, estado.uf);
       if (!L || L.erro) return null;
       return L.lista.map(m => ({ cod: m.cod, nome: m.nome, r: m, s: resumo(m) }));
@@ -934,7 +943,7 @@
     function renderKPIs() {
       const cargo = estado.cargo, d = dadosAtuais(), n = nivel();
       if (n === 'br' && !CARGOS[cargo].nacional) {      // governador: visão geral dos estados
-        const com = Object.entries(d.ufs);
+        const com = Object.keys(d.ufs).map(uf => [uf, resUF(cargo, uf)]).filter(e => e[1]);
         const S = somar(com.map(e => e[1])), D = detalhe(S);
         setKPI(1, { l: 'Votos válidos', num: D.total, s: 'Soma dos estados' });
         if (S.secoes && S.secoes[1] > 0) setKPI(2, { l: 'Seções apuradas', v: fmtApur(S.secoes[0] / S.secoes[1] * 100), s: fmtInt(S.secoes[0]) + ' de ' + fmtInt(S.secoes[1]), bar: S.secoes[0] / S.secoes[1] * 100 });
