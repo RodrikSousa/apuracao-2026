@@ -14,22 +14,7 @@
                 },
   "ufs": {
     "AC": {
-      "votos": { "Lula": 134770, 
-                 "Flávio Bolsonaro": 302807,
-                 "Escritor Augusto Cury": 13523,
-                 "Renan Santos": 7980,
-                 "Ronaldo Caiado": 8594,
-                 "Zema": 573,
-                 "Samara": 314,
-                 "Hertz Dias": 71,
-                 "Clariana Barão": 215,
-                 "Edmilson Costa": 140,
-                 "Veterinário Wilson Grassi": 39,
-                 "Rui Costa Pimenta": 40},
-      "brancos": 5579,
-      "nulos": 13685,
-      "secoes": [100, 100],
-      "eleitorado": 613742
+      
     },
     "AL": {
       "votos": { "Lula": 995459, 
