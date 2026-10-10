@@ -1,1419 +1,480 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
-  <title>Apuração 1º Turno 2026 · Presidente, Governador, Senador e Deputado Federal</title>
+<title>Liga CS2 Portugal</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;600&display=swap">
+<style>
+/* Layout: cabeçalho, separadores, cartões de equipa com painel de detalhe (dialog), tabelas roláveis. */
+:root {
+  --bg: #f6f5f1;
+  --surface: #ffffff;
+  --fg: #16181d;
+  --muted: #646a75;
+  --line: #dcdcd6;
+  --accent: #c8102e;
+  --accent-fg: #ffffff;
+  --win: #1f7a4d;
+  --draw: #8a6d00;
+  --loss: #b3261e;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1115;
+    --surface: #181b22;
+    --fg: #eceef2;
+    --muted: #9aa1ad;
+    --line: #2a2f3a;
+    --accent: #ff4d64;
+    --accent-fg: #0f1115;
+    --win: #4cc38a;
+    --draw: #e0b84a;
+    --loss: #ff7a70;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1115;
+  --surface: #181b22;
+  --fg: #eceef2;
+  --muted: #9aa1ad;
+  --line: #2a2f3a;
+  --accent: #ff4d64;
+  --accent-fg: #0f1115;
+  --win: #4cc38a;
+  --draw: #e0b84a;
+  --loss: #ff7a70;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.5;
+  padding-inline: 16px;
+}
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 24px 48px; }
+header.top {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: 12px; padding-block: 8px 16px; border-bottom: 2px solid var(--fg);
+}
+.brand { font-family: var(--display); font-weight: 800; font-size: 40px; line-height: 1; text-transform: uppercase; letter-spacing: 0.01em; margin: 0; }
+.brand span { color: var(--accent); }
+.tag { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; }
+nav.tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-block: 16px 24px; }
+nav.tabs button {
+  font-family: var(--display); font-weight: 700; text-transform: uppercase; font-size: 18px; letter-spacing: 0.02em;
+  background: none; color: var(--muted); border: 0; border-bottom: 3px solid transparent; padding: 6px 14px; cursor: pointer;
+}
+nav.tabs button[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--accent); }
+nav.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+h2 { font-family: var(--display); font-weight: 700; text-transform: uppercase; font-size: 28px; margin: 0 0 4px; letter-spacing: 0.01em; }
+.lede { color: var(--muted); margin: 0 0 20px; max-width: 64ch; }
+.note { font-size: 13px; color: var(--muted); border-left: 3px solid var(--accent); padding: 4px 12px; margin: 0 0 20px; }
+.hidden-panel[hidden] { display: none; }
 
-  <script>
-    // Define o tema antes de pintar a página (evita "flash" ao carregar)
-    (function () {
-      try {
-        var t = localStorage.getItem('tema');
-        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', t);
-      } catch (e) {
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
-    })();
-  </script>
+/* Equipas */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.team-btn {
+  all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px 16px; text-align: center; min-width: 0;
+}
+.team-btn:hover { border-color: var(--accent); }
+.team-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.logo {
+  width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; overflow: hidden;
+  background: var(--bg); border: 2px solid var(--line); font-family: var(--display); font-weight: 800; font-size: 24px; color: var(--accent);
+}
+.logo img { width: 100%; height: 100%; object-fit: contain; max-width: 100%; }
+.team-btn .nome { font-weight: 600; overflow-wrap: anywhere; }
+.team-btn .cidade { font-size: 13px; color: var(--muted); }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+dialog {
+  background: var(--surface); color: var(--fg); border: 1px solid var(--line); border-radius: 8px;
+  padding: 0; width: min(560px, calc(100% - 32px)); max-height: calc(100% - 32px);
+}
+dialog::backdrop { background: rgb(0 0 0 / 0.5); }
+.dlg-head { display: flex; gap: 14px; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+.dlg-head .logo { width: 56px; height: 56px; font-size: 18px; }
+.dlg-head h3 { margin: 0; font-family: var(--display); font-size: 26px; text-transform: uppercase; line-height: 1.1; }
+.dlg-head p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+.dlg-body { padding: 16px 20px 20px; overflow: auto; }
+.sec-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 8px; }
+.roster { list-style: none; margin: 0 0 18px; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; }
+.roster li { background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 6px 10px; font-size: 14px; min-width: 0; overflow-wrap: anywhere; }
+.roster li.coach { border-color: var(--accent); }
+.roster li small { display: block; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+.forma { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+.chip {
+  display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 4px;
+  font-family: var(--display); font-weight: 800; font-size: 16px; color: var(--accent-fg);
+}
+.chip.W { background: var(--win); }
+.chip.D { background: var(--draw); }
+.chip.L { background: var(--loss); }
+.forma-detail { font-size: 13px; color: var(--muted); }
+.close { margin-top: 16px; font: inherit; font-weight: 600; background: var(--accent); color: var(--accent-fg); border: 0; border-radius: 4px; padding: 8px 16px; cursor: pointer; }
+.close:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 
-  <style>
-    :root {
-      --bg: #f4f6fb;
-      --surface: rgba(255, 255, 255, 0.82);
-      --surface-solid: #ffffff;
-      --surface-2: #eef1f8;
-      --border: rgba(15, 23, 42, 0.08);
-      --text: #0b1220;
-      --muted: #5b6578;
-      --track: #e6e9f2;
-      --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 14px 34px -14px rgba(15, 23, 42, 0.16);
-      --ring: rgba(59, 130, 246, 0.45);
-      --radius: 20px;
-    }
-    :root[data-theme="dark"] {
-      --bg: #080c16;
-      --surface: rgba(20, 26, 42, 0.72);
-      --surface-solid: #121829;
-      --surface-2: #1a2238;
-      --border: rgba(255, 255, 255, 0.08);
-      --text: #eef2ff;
-      --muted: #93a0bb;
-      --track: #1e2740;
-      --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 22px 44px -22px rgba(0, 0, 0, 0.7);
-      --ring: rgba(96, 165, 250, 0.55);
-    }
+/* Calendário */
+.round { margin-bottom: 18px; }
+.round h3 { font-family: var(--display); text-transform: uppercase; font-size: 18px; margin: 0 0 8px; color: var(--muted); }
+.match { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; margin-bottom: 8px; }
+.match .side { min-width: 0; overflow-wrap: anywhere; }
+.match .side.r { text-align: right; }
+.match .score { font-family: var(--display); font-weight: 700; font-size: 22px; min-width: 84px; text-align: center; font-variant-numeric: tabular-nums; }
+.match.scheduled .score { color: var(--muted); font-size: 16px; font-weight: 600; }
+.match .meta { grid-column: 1 / -1; font-size: 12px; color: var(--muted); }
+.match .win { color: var(--win); }
 
-    * { box-sizing: border-box; }
-    [hidden] { display: none !important; }
-    html { -webkit-text-size-adjust: 100%; }
-    body {
-      margin: 0;
-      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      color: var(--text);
-      background: var(--bg);
-      line-height: 1.45;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background:
-        radial-gradient(620px 420px at 8% -8%, rgba(34, 197, 94, 0.20), transparent 62%),
-        radial-gradient(520px 420px at 92% 0%, rgba(250, 204, 21, 0.15), transparent 62%),
-        radial-gradient(720px 520px at 60% 112%, rgba(59, 130, 246, 0.16), transparent 62%);
-    }
-    :root[data-theme="dark"] body::before {
-      background:
-        radial-gradient(620px 420px at 8% -8%, rgba(34, 197, 94, 0.16), transparent 62%),
-        radial-gradient(520px 420px at 92% 0%, rgba(250, 204, 21, 0.09), transparent 62%),
-        radial-gradient(720px 520px at 60% 112%, rgba(59, 130, 246, 0.18), transparent 62%);
-    }
-    .num { font-variant-numeric: tabular-nums; }
-    :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+/* Classificação */
+.tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+td.num, th.num { text-align: right; }
+tr:last-child td { border-bottom: 0; }
+td.pos { font-family: var(--display); font-weight: 700; font-size: 18px; width: 40px; }
+td.team { white-space: normal; overflow-wrap: anywhere; }
+tr.qualif td.pos { color: var(--win); }
 
-    /* Barra de progresso até à próxima atualização */
-    .refresh-bar {
-      position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 50;
-      background: linear-gradient(90deg, #22c55e, #facc15, #3b82f6);
-      transform: scaleX(0); transform-origin: left; opacity: 0.85;
-    }
-    .refresh-bar.run { animation: carga 30s linear forwards; }
-    @keyframes carga { to { transform: scaleX(1); } }
+/* Taça */
+.bracket { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; align-items: start; }
+.bracket h3 { font-family: var(--display); text-transform: uppercase; font-size: 18px; margin: 0 0 8px; color: var(--muted); }
+.tie { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; margin-bottom: 10px; font-size: 14px; }
+.tie div { display: flex; justify-content: space-between; gap: 8px; padding: 2px 0; min-width: 0; }
+.tie div span:first-child { overflow-wrap: anywhere; }
+.tie div span:last-child { font-variant-numeric: tabular-nums; font-weight: 600; flex-shrink: 0; }
+.tie .win { color: var(--win); font-weight: 700; }
+.tie .date { font-size: 12px; color: var(--muted); margin-top: 6px; }
+.participantes { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+.participantes span { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 4px 10px; font-size: 13px; }
 
-    .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 48px; }
+footer { margin-top: 40px; font-size: 12px; color: var(--muted); }
+</style>
 
-    /* Cabeçalho */
-    .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
-    .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
-    .mark {
-      width: 46px; height: 46px; flex: none; border-radius: 14px; display: grid; place-items: center;
-      background: linear-gradient(135deg, #22c55e 0%, #facc15 55%, #3b82f6 100%);
-      box-shadow: 0 8px 20px -8px rgba(34, 197, 94, 0.6);
-    }
-    .mark svg { width: 26px; height: 26px; }
-    .brand h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; }
-    .brand p { margin: 3px 0 0; font-size: 14px; color: var(--muted); }
+<div class="wrap">
+  <header class="top">
+    <h1 class="brand">Liga <span>CS2</span> Portugal</h1>
+    <div class="tag">Temporada 2026/27 · Dados de exemplo</div>
+  </header>
 
-    .cargo-sw {
-      display: inline-grid; grid-auto-flow: column; gap: 4px; padding: 4px;
-      background: var(--surface); border: 1px solid var(--border); border-radius: 15px;
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    }
-    .cargo-sw button {
-      padding: 9px 20px; font: inherit; font-size: 14px; font-weight: 700; color: var(--muted);
-      background: transparent; border: 0; border-radius: 11px; cursor: pointer; transition: color .15s, background .15s;
-    }
-    .cargo-sw button:hover { color: var(--text); }
-    .cargo-sw button.on { color: #fff; background: linear-gradient(135deg, #16a34a, #2563eb); box-shadow: 0 6px 16px -8px rgba(37, 99, 235, 0.7); }
+  <nav class="tabs" role="tablist" aria-label="Secções">
+    <button role="tab" id="t-equipas" aria-controls="p-equipas" aria-selected="true" data-tab="equipas">Equipas</button>
+    <button role="tab" id="t-calendario" aria-controls="p-calendario" aria-selected="false" data-tab="calendario">Calendário</button>
+    <button role="tab" id="t-classificacao" aria-controls="p-classificacao" aria-selected="false" data-tab="classificacao">Classificação</button>
+    <button role="tab" id="t-taca" aria-controls="p-taca" aria-selected="false" data-tab="taca">Taça da Liga</button>
+    <button role="tab" id="t-noticias" aria-controls="p-noticias" aria-selected="false" data-tab="noticias">Notícias</button>
+  </nav>
 
-    .top-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .badge {
-      display: inline-flex; align-items: center; gap: 9px; padding: 8px 14px; font-size: 13px; font-weight: 600;
-      color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    }
-    .live-dot { width: 9px; height: 9px; border-radius: 50%; background: #94a3b8; flex: none; }
-    .badge[data-s="live"] .live-dot { background: #22c55e; animation: pulso 1.8s infinite; }
-    .badge[data-s="stale"] .live-dot { background: #f59e0b; }
-    .badge[data-s="erro"] .live-dot { background: #ef4444; }
-    .badge[data-s="demo"] .live-dot { background: #a855f7; }
-    @keyframes pulso {
-      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
-      70% { box-shadow: 0 0 0 9px rgba(34, 197, 94, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-    }
-    .icon-btn {
-      width: 40px; height: 40px; display: grid; place-items: center; color: var(--text);
-      background: var(--surface); border: 1px solid var(--border); border-radius: 50%; cursor: pointer;
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); transition: transform .15s, background .15s;
-    }
-    .icon-btn:hover { transform: translateY(-1px); background: var(--surface-solid); }
-    .icon-btn svg { width: 19px; height: 19px; }
-    .icon-btn .sun { display: none; }
-    :root[data-theme="dark"] .icon-btn .sun { display: block; }
-    :root[data-theme="dark"] .icon-btn .moon { display: none; }
+  <section id="p-equipas" role="tabpanel" aria-labelledby="t-equipas">
+    <h2>Equipas</h2>
+    <p class="lede">Clica numa equipa para ver o plantel, o treinador e os últimos resultados.</p>
+    <p class="note">Nomes, logótipos, jogadores e resultados são exemplos. Os dados vêm da folha de gestão.</p>
+    <div class="grid" id="grid-equipas"></div>
+  </section>
 
-    /* Avisos */
-    .demo-banner, .aviso {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      padding: 12px 16px; margin-bottom: 16px; border-radius: 14px; font-size: 14px; font-weight: 600; flex-wrap: wrap;
-    }
-    .demo-banner { background: color-mix(in srgb, #a855f7 14%, var(--surface-solid)); border: 1px solid color-mix(in srgb, #a855f7 45%, transparent); }
-    .aviso { background: color-mix(in srgb, #f59e0b 13%, var(--surface-solid)); border: 1px solid color-mix(in srgb, #f59e0b 45%, transparent); }
-    .btn {
-      padding: 9px 16px; font: inherit; font-size: 13.5px; font-weight: 700; color: #fff; cursor: pointer;
-      background: linear-gradient(135deg, #16a34a, #2563eb); border: 0; border-radius: 11px;
-    }
-    .btn.ghost { color: var(--text); background: var(--surface-2); border: 1px solid var(--border); }
+  <section id="p-calendario" role="tabpanel" aria-labelledby="t-calendario" hidden class="hidden-panel">
+    <h2>Calendário</h2>
+    <p class="lede">Jornadas da fase regular, todas em BO1 com 24 rondas no total. Os resultados são preenchidos à medida que os jogos acontecem.</p>
+    <div id="calendario"></div>
+  </section>
 
-    /* Navegação (migalhas) */
-    .crumbs { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; font-size: 14px; font-weight: 600; }
-    .crumbs a { color: var(--muted); text-decoration: none; padding: 4px 8px; border-radius: 8px; }
-    .crumbs a:hover { background: var(--surface-2); color: var(--text); }
-    .crumbs [aria-current] { color: var(--text); padding: 4px 8px; }
-    .crumbs .sep { color: var(--muted); opacity: .6; }
-
-    /* Estrutura */
-    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
-    .main { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
-    .panel {
-      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    }
-    .panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
-    .panel-head h2 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
-    .panel-head .sub { margin: 3px 0 0; font-size: 13px; color: var(--muted); }
-    .chip {
-      padding: 6px 12px; font-size: 13px; font-weight: 600; color: var(--text); background: var(--surface-2);
-      border: 1px solid var(--border); border-radius: 999px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-
-    /* Cartões de resumo */
-    .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-    .kpi { position: relative; overflow: hidden; padding: 18px 18px; --c: #3b82f6; container-type: inline-size; }
-    .kpi::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--c); opacity: .9; }
-    .kpi .l { font-size: 11.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
-    /* o tamanho do número acompanha a largura do cartão, para nunca ser cortado */
-    .kpi .v { margin-top: 8px; font-size: 23px; font-size: clamp(17px, 16cqi, 27px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; white-space: nowrap; }
-    .kpi .v.txt {
-      font-size: 21px; font-size: clamp(16px, 12cqi, 22px); line-height: 1.2; white-space: normal; overflow-wrap: anywhere;
-      display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-    }
-    .kpi .s { margin-top: 4px; font-size: 13px; line-height: 1.35; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .mini { margin-top: 10px; height: 6px; border-radius: 999px; background: var(--track); overflow: hidden; }
-    .mini i { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #22c55e, #16a34a); transition: width .8s cubic-bezier(.22, 1, .36, 1); }
-
-    /* Resultados */
-    .results { padding: 22px; }
-    .results-body { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 30px; align-items: center; }
-    .donut-wrap { position: relative; width: 100%; max-width: 240px; margin: 0 auto; aspect-ratio: 1; }
-    .donut { width: 100%; height: 100%; display: block; overflow: visible; }
-    .donut .trk { fill: none; stroke: var(--track); stroke-width: 22; }
-    .donut .seg {
-      fill: none; stroke-width: 22; cursor: pointer;
-      transition: stroke-dasharray .9s cubic-bezier(.22, 1, .36, 1), stroke-dashoffset .9s cubic-bezier(.22, 1, .36, 1), opacity .2s, stroke-width .2s;
-    }
-    .donut.has-foco .seg:not(.is-foco) { opacity: .25; }
-    .donut .seg.is-foco { stroke-width: 27; }
-    .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 52px; pointer-events: none; }
-    .donut-center .t { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
-    .donut-center .b { margin-top: 4px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-    .cands { display: flex; flex-direction: column; gap: 6px; }
-    .cand { --c: #3b82f6; padding: 12px 14px; border-radius: 16px; outline-offset: -2px; transition: background .15s, opacity .2s; animation: subir .5s ease both; }
-    .cand:hover, .cand.is-foco { background: var(--surface-2); }
-    .cands.has-foco .cand:not(.is-foco) { opacity: .5; }
-    .cand-top { display: flex; align-items: center; gap: 12px; }
-    .rank { width: 16px; font-size: 12px; font-weight: 700; color: var(--muted); text-align: center; flex: none; }
-    .avatar {
-      width: 34px; height: 34px; flex: none; display: grid; place-items: center; font-size: 12px; font-weight: 800; letter-spacing: .02em;
-      color: var(--c); background: color-mix(in srgb, var(--c) 18%, transparent); border: 1.5px solid color-mix(in srgb, var(--c) 45%, transparent); border-radius: 50%;
-    }
-    .name-wrap { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; }
-    .name { font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .part { flex: none; font-size: 12px; font-weight: 600; color: var(--muted); }
-    .tag { flex: none; padding: 2px 8px; font-size: 10.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); border-radius: 999px; }
-    .nums { text-align: right; flex: none; }
-    .votes { display: block; font-size: 15px; font-weight: 700; }
-    .pct { display: block; font-size: 13px; font-weight: 600; color: var(--c); }
-    .track { margin-top: 10px; height: 8px; border-radius: 999px; background: var(--track); overflow: hidden; }
-    .fill { height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, color-mix(in srgb, var(--c) 65%, #ffffff), var(--c)); transition: width .9s cubic-bezier(.22, 1, .36, 1); }
-    .res-foot { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; gap: 8px 22px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
-    .res-foot strong { color: var(--text); }
-    .empty { padding: 28px 8px; text-align: center; color: var(--muted); font-size: 14px; }
-
-    /* Painel por estado */
-    .pad { padding: 22px; }
-    .reg { margin-bottom: 16px; }
-    .reg:last-child { margin-bottom: 0; }
-    .reg h3 { margin: 0 0 8px; font-size: 11.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
-    .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
-    .tile {
-      --c: #94a3b8; --k: 20%; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; gap: 1px;
-      padding: 10px 11px 14px; font: inherit; color: var(--text); text-align: left; cursor: pointer; border-radius: 14px;
-      border: 1px solid color-mix(in srgb, var(--c) 35%, var(--border));
-      background: color-mix(in srgb, var(--c) var(--k), var(--surface-solid));
-      transition: transform .12s, box-shadow .12s;
-    }
-    .tile::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: var(--c); }
-    .tile:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -12px color-mix(in srgb, var(--c) 80%, transparent); }
-    .tile .t-uf { font-size: 15px; font-weight: 800; letter-spacing: -.01em; }
-    .tile .t-l { max-width: 100%; font-size: 11.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .tile .t-p { font-size: 13px; font-weight: 700; }
-    .tile.off { background: transparent; border-style: dashed; border-color: var(--border); color: var(--muted); }
-    .tile.off::after { display: none; }
-
-    /* Quem lidera onde */
-    .stack { display: flex; gap: 2px; height: 14px; border-radius: 999px; overflow: hidden; background: var(--track); }
-    .stack span { display: block; min-width: 4px; transition: flex .6s; }
-    .partidos { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-    .partido { padding: 12px 14px; border-radius: 14px; background: color-mix(in srgb, var(--c) 8%, var(--surface-solid)); border: 1px solid color-mix(in srgb, var(--c) 28%, var(--border)); }
-    .p-head { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
-    .p-head .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); flex: none; }
-    .p-nome { font-weight: 700; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .p-n { margin-left: auto; font-size: 22px; font-weight: 800; color: var(--c); }
-    .p-membros { display: flex; flex-wrap: wrap; gap: 6px; }
-    .membro { display: inline-flex; align-items: center; gap: 7px; max-width: 100%; padding: 4px 6px 4px 10px; font: inherit; font-size: 12.5px; color: var(--text); background: var(--surface-solid); border: 1px solid var(--border); border-radius: 999px; cursor: pointer; }
-    .membro:hover { border-color: var(--c); }
-    .membro.parcial { border-style: dashed; color: var(--muted); }
-    .m-nome { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
-    .m-uf { flex: none; padding: 1px 7px; font-size: 10.5px; font-weight: 800; letter-spacing: .05em; color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); border-radius: 999px; }
-    .legend { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px 22px; margin-top: 16px; }
-    .lg { display: flex; align-items: center; gap: 9px; font-size: 14px; min-width: 0; }
-    .lg .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
-    .lg .nm { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .lg .n { margin-left: auto; font-weight: 700; }
-    .lg .p { width: 54px; text-align: right; color: var(--muted); font-size: 13px; }
-
-    /* Painel lateral */
-    .countries { position: sticky; top: 16px; display: flex; flex-direction: column; max-height: calc(100vh - 32px); padding: 18px; }
-    .countries-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; gap: 8px; }
-    .countries-head h2 { margin: 0; font-size: 16px; font-weight: 700; }
-    .countries-head span { font-size: 12.5px; color: var(--muted); }
-    .back {
-      display: block; width: 100%; margin-bottom: 10px; padding: 9px 12px; font: inherit; font-size: 13.5px; font-weight: 700; text-align: left;
-      color: var(--text); background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; cursor: pointer;
-    }
-    .back:hover { border-color: var(--ring); }
-    .search { position: relative; margin-bottom: 10px; }
-    .search svg { position: absolute; left: 13px; top: 50%; width: 16px; height: 16px; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
-    .search input { width: 100%; padding: 11px 14px 11px 38px; font: inherit; font-size: 14px; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; }
-    .search input::placeholder { color: var(--muted); }
-    .seg-ctrl { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 12px; background: var(--surface-2); border-radius: 12px; }
-    .seg-ctrl button { padding: 7px 10px; font: inherit; font-size: 13px; font-weight: 600; color: var(--muted); background: transparent; border: 0; border-radius: 9px; cursor: pointer; }
-    .seg-ctrl button.on { color: var(--text); background: var(--surface-solid); box-shadow: 0 1px 3px rgba(0, 0, 0, .12); }
-    .c-list { overflow-y: auto; margin: 0 -6px; padding: 0 6px; display: flex; flex-direction: column; gap: 2px; min-height: 0; }
-    .c-item {
-      --c: #94a3b8; display: flex; align-items: center; gap: 11px; width: 100%; padding: 10px 12px; font: inherit; color: var(--text); text-align: left;
-      background: transparent; border: 1px solid transparent; border-radius: 12px; cursor: pointer; transition: background .12s;
-      content-visibility: auto; contain-intrinsic-size: auto 54px;
-    }
-    .c-item:hover { background: var(--surface-2); }
-    .c-item.on { background: var(--surface-2); border-color: var(--border); }
-    .c-item .dot { width: 10px; height: 10px; flex: none; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 22%, transparent); }
-    .c-main { flex: 1; min-width: 0; }
-    .c-name { display: block; font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .c-sub { display: block; font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .c-right { flex: none; text-align: right; }
-    .c-total { display: block; font-size: 13px; font-weight: 600; color: var(--muted); }
-    .c-ap { display: block; font-size: 11px; font-weight: 700; color: #d97706; }
-
-    .foot { margin-top: 26px; text-align: center; font-size: 12.5px; color: var(--muted); }
-
-    /* Estado vazio e carregamento */
-    .vazio-card { padding: 38px 26px; text-align: center; }
-    .vazio-card h2 { margin: 0 0 8px; font-size: 20px; }
-    .vazio-card p { margin: 0 auto 10px; max-width: 560px; color: var(--muted); font-size: 14.5px; }
-    .vazio-card code { padding: 2px 7px; font-size: 13px; background: var(--surface-2); border-radius: 6px; }
-    .vazio-card .acoes { margin-top: 18px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-    @keyframes brilho { to { background-position: -200% 0; } }
-    body.carregando .kpi .v, body.carregando .kpi .s {
-      color: transparent; background: linear-gradient(90deg, var(--track) 25%, var(--surface-2) 50%, var(--track) 75%); background-size: 200% 100%;
-      animation: brilho 1.4s linear infinite; border-radius: 8px; user-select: none; width: fit-content; max-width: 100%;
-    }
-    @keyframes subir { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-    .reveal { animation: subir .55s ease both; }
-
-    /* Responsivo */
-    @media (max-width: 1020px) {
-      .layout { grid-template-columns: 1fr; }
-      .countries { position: static; max-height: none; }
-      .c-list { max-height: 460px; }
-      .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 720px) {
-      .wrap { padding: 20px 14px 40px; }
-      .brand h1 { font-size: 22px; }
-      .cargo-sw { order: 3; width: 100%; grid-auto-flow: row; grid-template-columns: 1fr 1fr; }
-      .results-body { grid-template-columns: 1fr; gap: 22px; }
-      .results, .pad { padding: 18px; }
-    }
-    @media (max-width: 460px) { .kpis { grid-template-columns: 1fr; } }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
-  </style>
-</head>
-<body class="carregando">
-  <div class="refresh-bar" id="barra" aria-hidden="true"></div>
-
-  <div class="wrap">
-    <header class="top">
-      <div class="brand">
-        <div class="mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 11h14v8a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8z"/><path d="M9 11V7.5M15 11V7.5"/><path d="M9.5 15.2l1.7 1.7 3.4-3.4"/><path d="M8 4.5h8"/>
-          </svg>
-        </div>
-        <div>
-          <h1>Apuração 2026</h1>
-          <p>1º turno · resultados por estado e município</p>
-        </div>
-      </div>
-
-      <div class="cargo-sw" role="group" aria-label="Cargo">
-        <button type="button" data-cargo="presidente" class="on">Presidente</button>
-        <button type="button" data-cargo="governador">Governador</button>
-        <button type="button" data-cargo="senador">Senador</button>
-        <button type="button" data-cargo="deputado">Dep. Federal</button>
-      </div>
-
-      <div class="top-right">
-        <div class="badge" id="status" data-s="loading" role="status" aria-live="polite"><span class="live-dot"></span><span id="statusTxt">A carregar…</span></div>
-        <button class="icon-btn" id="tema" type="button" aria-label="Alternar tema claro/escuro" title="Alternar tema">
-          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-      </div>
-    </header>
-
-    <div class="demo-banner" id="demoBanner" hidden>
-      <span>🧪 <strong>Demonstração</strong> · todos os números são fictícios e gerados no navegador. Não são resultados reais.</span>
-      <button type="button" class="btn ghost" id="sairDemo">Sair da demonstração</button>
+  <section id="p-classificacao" role="tabpanel" aria-labelledby="t-classificacao" hidden class="hidden-panel">
+    <h2>Classificação</h2>
+    <p class="lede">Vitória vale 3 pontos e empate vale 1 ponto para cada equipa. Em caso de igualdade de pontos, desempata-se pela diferença de rondas.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>#</th><th>Equipa</th><th class="num">J</th><th class="num">V</th><th class="num">E</th><th class="num">D</th><th class="num">RM</th><th class="num">RS</th><th class="num">Dif.</th><th class="num">Pts</th></tr></thead>
+        <tbody id="tabela"></tbody>
+      </table>
     </div>
-    <div class="aviso" id="aviso" hidden></div>
+    <p class="note" style="margin-top:12px">RM = rondas marcadas, RS = rondas sofridas.</p>
+  </section>
 
-    <nav class="crumbs" id="crumbs" aria-label="Navegação"></nav>
+  <section id="p-taca" role="tabpanel" aria-labelledby="t-taca" hidden class="hidden-panel">
+    <h2>Taça da Liga</h2>
+    <p class="lede">Competição à parte da liga, disputada pelas equipas inscritas. Eliminatória a eliminar, em BO1 (MR12). As chaves não dependem da classificação da liga.</p>
+    <div class="participantes" id="participantes"></div>
+    <div class="bracket" id="taca"></div>
+  </section>
 
-    <div class="panel vazio-card reveal" id="vazio" hidden>
-      <h2 id="vazioTitulo">Ainda não há dados</h2>
-      <p id="vazioTexto"></p>
-      <div class="acoes">
-        <button type="button" class="btn" id="verDemo">Ver com dados de demonstração</button>
-        <button type="button" class="btn ghost" id="tentar">Tentar de novo</button>
-      </div>
-    </div>
+  <section id="p-noticias" role="tabpanel" aria-labelledby="t-noticias" hidden class="hidden-panel">
+    <h2>Notícias</h2>
+    <p class="lede">Comunicados e novidades da liga. Notícias mais recentes primeiro.</p>
+    <div id="noticias"></div>
+  </section>
 
-    <div class="layout" id="conteudo">
-      <section class="main">
-        <div class="kpis">
-          <div class="panel kpi reveal" id="k1c"><div class="l" id="k1l">Votos válidos</div><div class="v num" id="k1v">0000000</div><div class="s" id="k1s">a carregar dados</div><div class="mini" hidden><i></i></div></div>
-          <div class="panel kpi reveal" id="k2c" style="animation-delay:.05s"><div class="l" id="k2l">Seções apuradas</div><div class="v num" id="k2v">000</div><div class="s" id="k2s">a carregar dados</div><div class="mini" hidden><i></i></div></div>
-          <div class="panel kpi reveal" id="k3c" style="animation-delay:.1s"><div class="l" id="k3l">Líder</div><div class="v" id="k3v">Carregando</div><div class="s" id="k3s">a carregar dados</div><div class="mini" hidden><i></i></div></div>
-          <div class="panel kpi reveal" id="k4c" style="animation-delay:.15s"><div class="l" id="k4l">Vantagem</div><div class="v num" id="k4v">0000000</div><div class="s" id="k4s">a carregar dados</div><div class="mini" hidden><i></i></div></div>
-        </div>
+  <footer>Os dados vêm da folha de gestão (Google Sheets).</footer>
+</div>
 
-        <section class="panel results reveal" id="resPanel" style="animation-delay:.2s" hidden>
-          <div class="panel-head">
-            <div><h2>Distribuição dos votos</h2><p class="sub" id="resSub">Percentagens sobre os votos válidos</p></div>
-            <span class="chip" id="scopeName">Brasil</span>
-          </div>
-          <div class="results-body">
-            <div class="donut-wrap">
-              <svg class="donut" id="donut" viewBox="0 0 200 200" role="img" aria-label="Gráfico em anel com a distribuição dos votos">
-                <g transform="rotate(-90 100 100)" id="donutG"><circle class="trk" cx="100" cy="100" r="76"></circle></g>
-              </svg>
-              <div class="donut-center" aria-hidden="true"><div class="t num" id="centroT">—</div><div class="b" id="centroB">votos válidos</div></div>
-            </div>
-            <div>
-              <div class="cands" id="candList"></div>
-              <div class="empty" id="vazio2" hidden>Ainda não há votos apurados para esta seleção.</div>
-            </div>
-          </div>
-          <div class="res-foot" id="resFoot"></div>
-        </section>
+<dialog id="dlg" aria-labelledby="dlg-nome">
+  <div class="dlg-head" id="dlg-head"></div>
+  <div class="dlg-body" id="dlg-body"></div>
+</dialog>
 
-        <section class="panel pad reveal" id="senPanel" style="animation-delay:.2s" hidden>
-          <div class="panel-head">
-            <div><h2>Senadores eleitos</h2><p class="sub" id="senSub"></p></div>
-          </div>
-          <div class="partidos" id="senLista"></div>
-        </section>
+<script>
+// ===== DADOS: preenchidos a partir da folha =====
+let DADOS = null;
 
-        <section class="panel pad reveal" id="depPanel" style="animation-delay:.2s" hidden>
-          <div class="panel-head">
-            <div><h2 id="depTitulo">Deputados federais eleitos</h2><p class="sub" id="depSub"></p></div>
-          </div>
-          <div class="partidos" id="depLista"></div>
-        </section>
+// ===== LÓGICA =====
+const equipaDe = id => DADOS.equipas.find(e => e.id === id);
+const nomeDe = id => equipaDe(id)?.nome ?? id;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtData = iso => new Date(iso + "T12:00:00").toLocaleDateString("pt-PT", { weekday: "short", day: "numeric", month: "short" });
+// Regras MR12: 24 rondas no máximo, 13 rondas ganham o jogo, 12-12 é empate.
+const valido = (ra, rb) => {
+  if (!Number.isInteger(ra) || !Number.isInteger(rb) || ra < 0 || rb < 0 || ra > 13 || rb > 13) return false;
+  if (ra === 12 && rb === 12) return true;
+  return Math.max(ra, rb) === 13 && Math.min(ra, rb) <= 12;
+};
+const jogados = () => DADOS.jornadas.flatMap(j => j.jogos.map(([a, b, ra, rb]) => ({ a, b, ra, rb, data: j.data, n: j.n })))
+  .filter(m => m.ra !== null && m.rb !== null && valido(m.ra, m.rb));
 
-        <section class="panel results reveal" id="semDados" hidden>
-          <div class="empty" id="semDadosTxt">Ainda não há resultados para esta seleção.</div>
-        </section>
+// Resultado: vitória 3, empate 1 para cada, derrota 0. Desempate: pontos, depois diferença de rondas.
+function classificacao() {
+  const s = {};
+  DADOS.equipas.forEach(e => s[e.id] = { id: e.id, J: 0, V: 0, E: 0, D: 0, RM: 0, RS: 0, P: 0 });
+  jogados().forEach(({ a, b, ra, rb }) => {
+    const A = s[a], B = s[b];
+    A.J++; B.J++; A.RM += ra; A.RS += rb; B.RM += rb; B.RS += ra;
+    if (ra > rb) { A.V++; B.D++; A.P += 3; }
+    else if (rb > ra) { B.V++; A.D++; B.P += 3; }
+    else { A.E++; B.E++; A.P += 1; B.P += 1; }
+  });
+  return Object.values(s).sort((x, y) =>
+    y.P - x.P || (y.RM - y.RS) - (x.RM - x.RS) || nomeDe(x.id).localeCompare(nomeDe(y.id)));
+}
 
-        <section class="panel pad reveal" id="mapaPanel" style="animation-delay:.25s" hidden>
-          <div class="panel-head">
-            <div><h2>Panorama por estado</h2><p class="sub" id="mapaSub"></p></div>
-          </div>
-          <div id="tiles"></div>
-        </section>
+// Últimos resultados de uma equipa, do mais recente para o mais antigo.
+function forma(id) {
+  return jogados().filter(m => m.a === id || m.b === id).map(m => {
+    const eCasa = m.a === id;
+    const rm = eCasa ? m.ra : m.rb, rs = eCasa ? m.rb : m.ra;
+    const adv = eCasa ? m.b : m.a;
+    const res = rm > rs ? "W" : rm < rs ? "L" : "D";
+    return { res, rm, rs, adv, data: m.data, n: m.n };
+  }).reverse();
+}
 
-        <section class="panel pad reveal" id="vitPanel" style="animation-delay:.3s" hidden>
-          <div class="panel-head">
-            <div><h2 id="vitTitulo">Onde cada candidato lidera</h2><p class="sub" id="vitSub"></p></div>
-          </div>
-          <div class="stack" id="stack" role="img" aria-label="Distribuição de quem lidera"></div>
-          <div class="legend" id="legend"></div>
-        </section>
-      </section>
+function renderEquipas() {
+  document.getElementById("grid-equipas").innerHTML = DADOS.equipas.map(e => `
+    <button class="team-btn" data-id="${esc(e.id)}" aria-haspopup="dialog">
+      ${logoHtml(e)}
+      <span class="nome">${esc(e.nome)}</span>
+      <span class="cidade">${esc(e.cidade)}</span>
+    </button>`).join("");
+}
 
-      <aside class="panel countries reveal" id="lateral" style="animation-delay:.2s" aria-label="Lista de localidades">
-        <div class="countries-head"><h2 id="latTitulo">Estados</h2><span id="latCount">—</span></div>
-        <button type="button" class="back" id="voltar" hidden>← Brasil</button>
-        <div class="search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          <input type="search" id="busca" placeholder="Pesquisar…" autocomplete="off" aria-label="Pesquisar">
-        </div>
-        <div class="seg-ctrl" role="group" aria-label="Ordenar">
-          <button type="button" data-ordem="votos" class="on">Mais votos</button>
-          <button type="button" data-ordem="az">A – Z</button>
-        </div>
-        <div class="c-list" id="cList"></div>
-      </aside>
-    </div>
+function logoHtml(e) {
+  return `<div class="logo">${e.logo ? `<img src="${esc(e.logo)}" alt="Logótipo ${esc(e.nome)}">` : esc(e.id)}</div>`;
+}
 
-    <p class="foot" id="rodape">Atualização automática a cada 30 segundos</p>
-  </div>
+function abreEquipa(id) {
+  const e = equipaDe(id);
+  const f = forma(id);
+  const ultimos = f.slice(0, 5);
+  document.getElementById("dlg-head").innerHTML = `
+    ${logoHtml(e)}
+    <div><h3 id="dlg-nome">${esc(e.nome)}</h3><p>${esc(e.cidade)}</p></div>`;
+  document.getElementById("dlg-body").innerHTML = `
+    <div class="sec-label">Plantel e treinador</div>
+    <ul class="roster">
+      <li class="coach">${esc(e.coach)}<small>Treinador</small></li>
+      ${e.jogadores.map(j => `<li>${esc(j)}<small>Jogador</small></li>`).join("")}
+    </ul>
+    <div class="sec-label">Últimos resultados</div>
+    ${ultimos.length ? `
+      <div class="forma">${ultimos.map(r => `<span class="chip ${r.res}" title="J${r.n} vs ${esc(nomeDe(r.adv))}">${r.res}</span>`).join("")}</div>
+      <div class="forma-detail">${ultimos.map(r => `J${r.n} vs ${esc(nomeDe(r.adv))}: ${r.rm}-${r.rs}`).join(" · ")}</div>`
+      : `<p class="forma-detail">Ainda sem jogos disputados.</p>`}
+    <button class="close" type="button" id="fecha">Fechar</button>`;
+  const dlg = document.getElementById("dlg");
+  dlg.showModal();
+  document.getElementById("fecha").addEventListener("click", () => dlg.close());
+}
 
-  <script>
-    /* =====================================================================
-       FORMATO DOS DADOS QUE ESTA PÁGINA LÊ  (a preencher na fase do .json)
-       ---------------------------------------------------------------------
-       dados/presidente.json
-         { "atualizado": "2026-10-04T21:30:00-03:00",
-           "turno": 1,
-           "candidatos": { "Lula": { "partido": "PT", "numero": 13 }, ... },   (opcional)
-           "brasil": RESULTADO,            (opcional: se faltar, soma-se as UFs)
-           "ufs": { "SP": RESULTADO, ..., "ZZ": RESULTADO } }   ZZ = Exterior
-       dados/governador.json
-         { "atualizado": "...", "turno": 1,
-           "ufs": { "SP": { ...RESULTADO, "candidatos": { "Nome": { "partido": "PL", "numero": 22 } } }, ... } }
-       dados/senador.json   (igual ao do governador; cada eleitor tem 2 votos e cada UF elege 2 senadores)
-         { "ufs": { "SP": { "candidatos": { "Nome": { "partido": "PL" } } }, ... } }
-       dados/deputado.json  (deputado federal; cada UF tem N cadeiras, eleição proporcional)
-         { "ufs": { "SP": { "candidatos": { "Nome": { "partido": "PL", "federacao": "Nome da federação (opcional)" } } }, ... } }
-       dados/presidente/mun-sp.json   (um ficheiro por UF; para o Exterior: mun-zz.json, onde cada "município" é um país)
-       dados/governador/mun-sp.json
-       dados/senador/mun-sp.json
-       dados/deputado/mun-sp.json   (RESULTADO com campo extra opcional "legenda": { "PT": 1234, ... } = votos de legenda)
-         { "municipios": [ { "cod": "71072", "nome": "São Paulo", ...RESULTADO } ] }
-       RESULTADO = { "votos": { "Nome do candidato": 123456, ... },
-                     "brancos": 1000, "nulos": 2000,          (opcionais)
-                     "secoes": [apuradas, total],             (opcional)
-                     "eleitorado": 500000 }                   (opcional)
-       Compatibilidade: se dados/presidente.json não existir, usa o dados.json
-       antigo ([{ "pais": "...", "votos": {...} }]) e mostra apenas o Exterior.
-       ===================================================================== */
+document.getElementById("grid-equipas").addEventListener("click", ev => {
+  const btn = ev.target.closest(".team-btn");
+  if (btn) abreEquipa(btn.dataset.id);
+});
+document.getElementById("dlg").addEventListener("click", ev => {
+  if (ev.target.id === "dlg") ev.target.close(); // clique fora do conteúdo fecha
+});
 
-    /* ---------- Utilitários ---------- */
-    const $ = id => document.getElementById(id);
-    const NS = 'http://www.w3.org/2000/svg';
-    const fmtInt = n => Math.round(n).toLocaleString('pt-BR');
-    const fmt1 = { minimumFractionDigits: 1, maximumFractionDigits: 1 };
-    const fmtPct = n => n.toLocaleString('pt-BR', fmt1) + '%';
-    const fmtPp = n => n.toLocaleString('pt-BR', fmt1) + ' p.p.';
-    const fmtApur = p => (Math.floor(p * 10) / 10).toLocaleString('pt-BR', fmt1) + '%';   // nunca arredonda para 100% se faltar apurar
-    const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-    const semAcento = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-    const reduzMov = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const hash = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+function renderCalendario() {
+  document.getElementById("calendario").innerHTML = DADOS.jornadas.map(j => `
+    <div class="round">
+      <h3>Jornada ${j.n} · ${fmtData(j.data)}</h3>
+      ${j.jogos.map(([a, b, ra, rb]) => {
+        const ok = ra !== null && rb !== null;
+        const score = ok
+          ? `<span class="${ra > rb ? "win" : ""}">${ra}</span> – <span class="${rb > ra ? "win" : ""}">${rb}</span>`
+          : "vs";
+        const estado = !ok ? "Por disputar"
+          : !valido(ra, rb) ? "Resultado inválido (não conta para a classificação)"
+          : ra === rb ? "Empate (12-12)" : "Terminado";
+        return `<div class="match ${ok ? "played" : "scheduled"}">
+          <div class="side">${esc(nomeDe(a))}</div>
+          <div class="score">${score}</div>
+          <div class="side r">${esc(nomeDe(b))}</div>
+          <div class="meta">${estado} · BO1</div>
+        </div>`;
+      }).join("")}
+    </div>`).join("");
+}
 
-    /* ---------- Constantes ---------- */
-    const UFS = {
-      AC: ['Acre', 'Norte'], AP: ['Amapá', 'Norte'], AM: ['Amazonas', 'Norte'], PA: ['Pará', 'Norte'], RO: ['Rondônia', 'Norte'], RR: ['Roraima', 'Norte'], TO: ['Tocantins', 'Norte'],
-      AL: ['Alagoas', 'Nordeste'], BA: ['Bahia', 'Nordeste'], CE: ['Ceará', 'Nordeste'], MA: ['Maranhão', 'Nordeste'], PB: ['Paraíba', 'Nordeste'], PE: ['Pernambuco', 'Nordeste'],
-      PI: ['Piauí', 'Nordeste'], RN: ['Rio Grande do Norte', 'Nordeste'], SE: ['Sergipe', 'Nordeste'],
-      DF: ['Distrito Federal', 'Centro-Oeste'], GO: ['Goiás', 'Centro-Oeste'], MT: ['Mato Grosso', 'Centro-Oeste'], MS: ['Mato Grosso do Sul', 'Centro-Oeste'],
-      ES: ['Espírito Santo', 'Sudeste'], MG: ['Minas Gerais', 'Sudeste'], RJ: ['Rio de Janeiro', 'Sudeste'], SP: ['São Paulo', 'Sudeste'],
-      PR: ['Paraná', 'Sul'], RS: ['Rio Grande do Sul', 'Sul'], SC: ['Santa Catarina', 'Sul'],
-      ZZ: ['Exterior', 'Exterior']
-    };
-    const REGIOES = ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul', 'Exterior'];
-    const TODAS = Object.keys(UFS);
-    const CARGOS = {
-      presidente: { nome: 'Presidente', ufs: TODAS, nacional: true },
-      governador: { nome: 'Governador', ufs: TODAS.filter(u => u !== 'ZZ'), nacional: false },
-      senador: { nome: 'Senador', ufs: TODAS.filter(u => u !== 'ZZ'), nacional: false, vagas: 2 },    // 2 vagas por UF em 2026 (renovação de 2/3)
-      deputado: { nome: 'Deputado Federal', ufs: TODAS.filter(u => u !== 'ZZ'), nacional: false, cadeiras: true }
-    };
+function renderTabela() {
+  document.getElementById("tabela").innerHTML = classificacao().map((r, i) => {
+    const dif = r.RM - r.RS;
+    return `<tr>
+      <td class="pos">${i + 1}</td>
+      <td class="team"><strong>${esc(nomeDe(r.id))}</strong></td>
+      <td class="num">${r.J}</td><td class="num">${r.V}</td><td class="num">${r.E}</td><td class="num">${r.D}</td>
+      <td class="num">${r.RM}</td><td class="num">${r.RS}</td>
+      <td class="num">${(dif > 0 ? "+" : "") + dif}</td>
+      <td class="num"><strong>${r.P}</strong></td>
+    </tr>`;
+  }).join("");
+}
 
-    // Cores fixas por nome (só no cargo de Presidente), iguais às da versão anterior
-    const FIXAS = [[/lula/i, '#ef4444'], [/bolsonaro|fl[áa]vio/i, '#3b82f6'], [/cury/i, '#f97316'], [/renan/i, '#eab308'], [/caiado/i, '#22c55e']];
-    // Cadeiras de deputado federal por UF (513 no total)
-    const CADEIRAS = { AC: 8, AL: 9, AP: 8, AM: 8, BA: 39, CE: 22, DF: 8, ES: 10, GO: 17, MA: 18, MT: 8, MS: 8, MG: 53, PA: 17, PB: 12, PR: 30, PE: 25, PI: 10, RJ: 46, RN: 8, RS: 31, RO: 8, RR: 8, SC: 16, SP: 70, SE: 8, TO: 8 };
-    const SOBRAS_ABERTAS = true;      // sobras: true = todos os partidos concorrem (decisão do STF em 2024); false = só os que atingem 80% do quociente
-    const OUTROS = 'Outros candidatos', TOPO = 12;
-    const PARTIDOS = {
-      pt: '#ef4444', pl: '#2563eb', psd: '#0891b2', mdb: '#16a34a', uniao: '#0ea5e9', uniaobrasil: '#0ea5e9', pp: '#6366f1', republicanos: '#0284c7',
-      psb: '#f59e0b', pdt: '#e11d48', psol: '#c026d3', novo: '#f97316', psdb: '#38bdf8', pode: '#14b8a6', podemos: '#14b8a6', pcdob: '#b91c1c',
-      cidadania: '#db2777', prd: '#7c3aed', solidariedade: '#fb923c', avante: '#84cc16', missao: '#eab308'
-    };
-    const PALETA = ['#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6', '#f59e0b', '#6366f1', '#84cc16', '#f43f5e', '#0ea5e9', '#a855f7', '#10b981', '#d97706'];
-    const PALETA_PRES = ['#8b5cf6', '#06b6d4', '#ec4899', '#14b8a6', '#a855f7', '#6366f1'];
+function renderTaca() {
+  document.getElementById("participantes").innerHTML = DADOS.equipas
+    .map(e => `<span>${esc(e.nome)}</span>`).join("");
+  document.getElementById("taca").innerHTML = DADOS.taca.map(f => `
+    <div class="col">
+      <h3>${esc(f.fase)}</h3>
+      ${f.eliminatorias.map(t => {
+        const ok = t.ra !== null && t.rb !== null;
+        return `<div class="tie">
+          <div><span>${esc(t.a)}</span><span class="${ok && t.ra > t.rb ? "win" : ""}">${ok ? t.ra : "–"}</span></div>
+          <div><span>${esc(t.b)}</span><span class="${ok && t.rb > t.ra ? "win" : ""}">${ok ? t.rb : "–"}</span></div>
+          <div class="date">${fmtData(f.data)} · BO1</div>
+        </div>`;
+      }).join("")}
+    </div>`).join("");
+}
 
-    /* ---------- Estado ---------- */
-    const estado = {
-      cargo: 'presidente', uf: null, mun: null,
-      busca: '', ordem: 'votos', chaveLista: '',
-      demo: false, tk: 0,
-      dados: {},      // cargo -> dados normalizados
-      fontes: {},     // cargo -> texto do último JSON (deteta mudanças)
-      muns: {},       // 'cargo:UF' -> { lista, porCod, texto }
-      tentou: {},     // cargo -> já tentou carregar?
-      atual: { lista: [], total: 0 },
-      foco: null
-    };
-    const linhas = new Map();
-    const segs = new Map();
+function renderNoticias() {
+  document.getElementById("noticias").innerHTML = DADOS.noticias.map(n => `
+    <article class="card" style="margin-bottom:12px">
+      <div class="sec-label">${fmtData(n.data)}</div>
+      <h3 style="margin:0 0 6px;font-family:var(--display);font-size:22px;text-transform:uppercase">${esc(n.titulo)}</h3>
+      <p style="margin:0">${esc(n.texto)}</p>
+    </article>`).join("");
+}
 
-    /* ---------- Dados: cálculo ---------- */
-    function apur(r) { return Array.isArray(r.secoes) && r.secoes[1] > 0 ? (r.secoes[0] / r.secoes[1]) * 100 : null; }
+// Separadores (#equipas, #calendario, #classificacao, #taca, #noticias)
+const TABS = ["equipas", "calendario", "classificacao", "taca", "noticias"];
+function mostra(nome) {
+  if (!TABS.includes(nome)) nome = "equipas";
+  document.querySelectorAll("nav.tabs button").forEach(b => {
+    const on = b.dataset.tab === nome;
+    b.setAttribute("aria-selected", on);
+    b.tabIndex = on ? 0 : -1;
+  });
+  TABS.forEach(t => document.getElementById("p-" + t).hidden = t !== nome);
+}
+document.querySelectorAll("nav.tabs button").forEach(b => {
+  b.addEventListener("click", () => mostra(b.dataset.tab));
+});
 
-    function resumo(r) {     // versão leve (para listas e mapa)
-      if (!r || !r.votos) return null;
-      let total = 0, lider = null, v1 = -1;
-      for (const k in r.votos) {
-        const v = +r.votos[k] || 0;
-        total += v;
-        if (v > v1) { v1 = v; lider = k; }
-      }
-      if (total <= 0) lider = null;
-      return { total, lider, pct: total > 0 ? (Math.max(v1, 0) / total) * 100 : 0, ap: apur(r) };
-    }
+// ===== CARREGAMENTO =====
+// Os dados vêm de 4 separadores publicados da folha, em CSV.
+// Cada separador é identificado pelo cabeçalho, por isso não depende da ordem dos links.
+const FOLHAS = [
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQeUcoe7cB2mBd_m0eRgpp_S4-MfRY3ysekfYognoqzl-ryuQqwpPFKbrFuDEsKcsI4ejwcdlqVNGNV/pub?gid=1972424717&single=true&output=csv",
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQeUcoe7cB2mBd_m0eRgpp_S4-MfRY3ysekfYognoqzl-ryuQqwpPFKbrFuDEsKcsI4ejwcdlqVNGNV/pub?gid=475912284&single=true&output=csv",
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQeUcoe7cB2mBd_m0eRgpp_S4-MfRY3ysekfYognoqzl-ryuQqwpPFKbrFuDEsKcsI4ejwcdlqVNGNV/pub?gid=1404282622&single=true&output=csv",
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQeUcoe7cB2mBd_m0eRgpp_S4-MfRY3ysekfYognoqzl-ryuQqwpPFKbrFuDEsKcsI4ejwcdlqVNGNV/pub?gid=1045190968&single=true&output=csv"
+];
 
-    function detalhe(r) {
-      const lista = Object.entries(r.votos || {}).map(([nome, v]) => ({ nome, votos: +v || 0 })).sort((a, b) => b.votos - a.votos);
-      const total = lista.reduce((s, c) => s + c.votos, 0);
-      const brancos = +r.brancos || 0, nulos = +r.nulos || 0;
-      return { lista, total, brancos, nulos, comp: total + brancos + nulos, temBN: r.brancos != null || r.nulos != null, secoes: Array.isArray(r.secoes) ? r.secoes : null };
-    }
+function parseCSV(texto) {
+  const rows = [];
+  let row = [], cur = "", aspas = false;
+  for (let i = 0; i < texto.length; i++) {
+    const c = texto[i];
+    if (aspas) {
+      if (c === '"') {
+        if (texto[i + 1] === '"') { cur += '"'; i++; } else aspas = false;
+      } else cur += c;
+    } else if (c === '"') aspas = true;
+    else if (c === ",") { row.push(cur); cur = ""; }
+    else if (c === "\n") { row.push(cur); rows.push(row); row = []; cur = ""; }
+    else if (c !== "\r") cur += c;
+  }
+  if (cur.length || row.length) { row.push(cur); rows.push(row); }
+  return rows.filter(r => r.some(x => x.trim() !== ""));
+}
 
-    function somar(rs) {
-      const out = { votos: {}, legenda: {}, brancos: 0, nulos: 0, secoes: null, eleitorado: null };
-      let a = 0, t = 0, temS = false, e = 0, temE = false;
-      rs.forEach(r => {
-        if (!r) return;
-        for (const [k, v] of Object.entries(r.votos || {})) out.votos[k] = (out.votos[k] || 0) + (+v || 0);
-        for (const [k, v] of Object.entries(r.legenda || {})) out.legenda[k] = (out.legenda[k] || 0) + (+v || 0);
-        out.brancos += +r.brancos || 0;
-        out.nulos += +r.nulos || 0;
-        if (Array.isArray(r.secoes)) { a += +r.secoes[0] || 0; t += +r.secoes[1] || 0; temS = true; }
-        if (r.eleitorado) { e += +r.eleitorado; temE = true; }
-      });
-      if (temS) out.secoes = [a, t];
-      if (temE) out.eleitorado = e;
-      return out;
-    }
+function objetos(rows) {
+  if (!rows.length) return [];
+  const cab = rows[0].map(h => h.trim());
+  return rows.slice(1).map(r => Object.fromEntries(cab.map((h, i) => [h, (r[i] ?? "").trim()])))
+    .map(o => Object.assign(o, { __cab: cab }));
+}
 
-    function normalizarCargo(json) {
-      if (!json || typeof json.ufs !== 'object' || json.ufs === null) throw new Error('Formato inválido: falta "ufs"');
-      const ufs = {};
-      for (const [k, v] of Object.entries(json.ufs)) ufs[k.toUpperCase()] = v;
-      return { atualizado: json.atualizado || null, turno: json.turno || 1, candidatos: json.candidatos || {}, brasil: json.brasil || null, ufs, parcial: false };
-    }
+function paraData(s) {
+  const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s || "");
+  if (m) return `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`;
+  return s || "";
+}
+const numOuNull = v => (v === "" || v == null) ? null : Number(v);
 
-    function converterLegado(arr) {      // dados.json antigo: [{ pais, votos }]
-      if (!Array.isArray(arr)) throw new Error('dados.json inválido');
-      const mapa = new Map();
-      arr.forEach(it => {
-        if (!it || it.pais == null) return;
-        const p = mapa.get(it.pais) || { cod: String(it.pais), nome: String(it.pais), votos: {} };
-        for (const [c, q] of Object.entries(it.votos || {})) p.votos[c] = (p.votos[c] || 0) + (Number(q) || 0);
-        mapa.set(it.pais, p);
-      });
-      const lista = [...mapa.values()];
-      return { atualizado: null, turno: 1, candidatos: {}, brasil: null, ufs: { ZZ: somar(lista) }, parcial: true, legadoLista: lista };
-    }
+function montaDados(textos) {
+  const tabelas = textos.map(t => objetos(parseCSV(t)));
+  const com = cab => tabelas.find(t => t.length && t[0].__cab.includes(cab)) || [];
+  const eqRows = com("Jogador 1"), jgRows = com("Rondas casa"), tcRows = com("Equipa A"), ntRows = com("Publicada (Sim/Não)");
 
-    function indexarMuns(arr, texto, origem) {
-      const lista = arr.map(m => ({ ...m, cod: String(m.cod ?? m.nome), nome: String(m.nome ?? m.cod) }));
-      const porCod = {};
-      lista.forEach(m => { porCod[m.cod] = m; });
-      return { lista, porCod, texto: texto || null, origem: origem || null };
-    }
+  const equipas = eqRows.filter(o => o["Aprovada (Sim/Não)"] === "Sim").map(o => ({
+    id: o["ID"], nome: o["Nome"], cidade: o["Cidade"], coach: o["Treinador"],
+    jogadores: [1, 2, 3, 4, 5].map(i => o["Jogador " + i]).filter(Boolean),
+    logo: o["Logótipo (URL, opcional)"] || null
+  }));
 
-    /* ---------- Cores ---------- */
-    const atrib = {};
-    function meta(nome, uf, cargo) {
-      cargo = cargo || estado.cargo;
-      const d = estado.dados[cargo];
-      if (!d) return {};
-      const u = uf == null ? estado.uf : uf;
-      const doUF = u && d.ufs[u] && d.ufs[u].candidatos;
-      return (doUF && doUF[nome]) || (d.candidatos && d.candidatos[nome]) || {};
-    }
-    function corPaleta(nome, escopo, cargo) {
-      const pal = cargo === 'presidente' ? PALETA_PRES : PALETA;
-      const m = atrib[escopo] || (atrib[escopo] = new Map());
-      if (m.has(nome)) return m.get(nome);
-      const usadas = new Set(m.values());
-      const ini = hash(nome) % pal.length;
-      let c = '#94a3b8';
-      for (let k = 0; k < pal.length; k++) { const x = pal[(ini + k) % pal.length]; if (!usadas.has(x)) { c = x; break; } }
-      m.set(nome, c);
-      return c;
-    }
-    function corDe(nome, uf, cargo) {
-      cargo = cargo || estado.cargo;
-      if (nome === OUTROS) return '#94a3b8';
-      if (cargo === 'presidente') for (const [re, c] of FIXAS) if (re.test(nome)) return c;
-      const p = meta(nome, uf, cargo).partido;
-      if (p) { const c = PARTIDOS[semAcento(p).replace(/[^a-z]/g, '')]; if (c) return c; }
-      return corPaleta(nome, cargo + ':' + (cargo === 'presidente' ? 'br' : (uf == null ? estado.uf : uf) || 'br'), cargo);
-    }
-    function registrar(cargo) {          // atribui cores de forma estável, por ordem de votos
-      const d = estado.dados[cargo];
-      if (!d) return;
-      const ordem = r => Object.entries(r.votos || {}).sort((a, b) => b[1] - a[1]).map(e => e[0]);
-      if (cargo === 'presidente') ordem(d.brasil || somar(Object.values(d.ufs))).forEach(n => corDe(n, null, cargo));
-      else for (const [uf, r] of Object.entries(d.ufs)) ordem(r).forEach(n => corDe(n, uf, cargo));
-    }
-    function iniciais(nome) {
-      const p = nome.trim().split(/\s+/).filter(Boolean);
-      if (!p.length) return '?';
-      return (p.length === 1 ? p[0].slice(0, 2) : p[0][0] + p[1][0]).toUpperCase();
-    }
+  const jornadasMap = new Map();
+  jgRows.filter(o => o["Casa"]).forEach(o => {
+    const n = Number(o["Jornada"]);
+    if (!jornadasMap.has(n)) jornadasMap.set(n, { n, data: paraData(o["Data"]), jogos: [] });
+    jornadasMap.get(n).jogos.push([o["Casa"], o["Fora"], numOuNull(o["Rondas casa"]), numOuNull(o["Rondas fora"])]);
+  });
+  const jornadas = [...jornadasMap.values()].sort((a, b) => a.n - b.n);
 
-    /* ---------- Números animados ---------- */
-    function definirTexto(el, texto) { cancelAnimationFrame(el._raf); el._alvo = undefined; el._cur = undefined; el.textContent = texto; }
-    function animarNumero(el, alvo) {
-      if (el._alvo === alvo) return;               // já está (ou vai) a este valor: não interrompe a animação
-      const de = el._cur ?? 0;                     // continua a partir do que está no ecrã
-      el._alvo = alvo;
-      cancelAnimationFrame(el._raf);
-      if (reduzMov || de === alvo) { el._cur = alvo; el.textContent = fmtInt(alvo); return; }
-      const t0 = performance.now(), dur = 700;
-      const passo = t => {
-        const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
-        el._cur = de + (alvo - de) * e;
-        el.textContent = fmtInt(el._cur);
-        if (k < 1) el._raf = requestAnimationFrame(passo);
-      };
-      el._raf = requestAnimationFrame(passo);
-    }
+  const tacaMap = new Map();
+  tcRows.filter(o => o["Equipa A"]).forEach(o => {
+    const f = o["Fase"];
+    if (!tacaMap.has(f)) tacaMap.set(f, { fase: f, data: paraData(o["Data"]), eliminatorias: [] });
+    tacaMap.get(f).eliminatorias.push({ a: o["Equipa A"], b: o["Equipa B"], ra: numOuNull(o["Rondas A"]), rb: numOuNull(o["Rondas B"]) });
+  });
+  const taca = [...tacaMap.values()];
 
-    /* ---------- Demonstração (dados fictícios) ---------- */
-    const DEMO_MUN = {
-      AC: ['Rio Branco', 'Cruzeiro do Sul', 'Sena Madureira', 'Tarauacá', 'Feijó'],
-      AL: ['Maceió', 'Arapiraca', 'Palmeira dos Índios', 'Rio Largo', 'Penedo'],
-      AP: ['Macapá', 'Santana', 'Laranjal do Jari', 'Oiapoque', 'Mazagão'],
-      AM: ['Manaus', 'Parintins', 'Itacoatiara', 'Manacapuru', 'Tefé'],
-      BA: ['Salvador', 'Feira de Santana', 'Vitória da Conquista', 'Camaçari', 'Ilhéus'],
-      CE: ['Fortaleza', 'Caucaia', 'Juazeiro do Norte', 'Maracanaú', 'Sobral'],
-      DF: ['Brasília'],
-      ES: ['Vitória', 'Vila Velha', 'Serra', 'Cariacica', 'Linhares'],
-      GO: ['Goiânia', 'Aparecida de Goiânia', 'Anápolis', 'Rio Verde', 'Luziânia'],
-      MA: ['São Luís', 'Imperatriz', 'São José de Ribamar', 'Timon', 'Caxias'],
-      MT: ['Cuiabá', 'Várzea Grande', 'Rondonópolis', 'Sinop', 'Tangará da Serra'],
-      MS: ['Campo Grande', 'Dourados', 'Três Lagoas', 'Corumbá', 'Ponta Porã'],
-      MG: ['Belo Horizonte', 'Uberlândia', 'Contagem', 'Juiz de Fora', 'Betim'],
-      PA: ['Belém', 'Ananindeua', 'Santarém', 'Marabá', 'Castanhal'],
-      PB: ['João Pessoa', 'Campina Grande', 'Santa Rita', 'Patos', 'Bayeux'],
-      PR: ['Curitiba', 'Londrina', 'Maringá', 'Ponta Grossa', 'Cascavel'],
-      PE: ['Recife', 'Jaboatão dos Guararapes', 'Olinda', 'Caruaru', 'Petrolina'],
-      PI: ['Teresina', 'Parnaíba', 'Picos', 'Piripiri', 'Floriano'],
-      RJ: ['Rio de Janeiro', 'São Gonçalo', 'Duque de Caxias', 'Nova Iguaçu', 'Niterói'],
-      RN: ['Natal', 'Mossoró', 'Parnamirim', 'São Gonçalo do Amarante', 'Macaíba'],
-      RS: ['Porto Alegre', 'Caxias do Sul', 'Pelotas', 'Canoas', 'Santa Maria'],
-      RO: ['Porto Velho', 'Ji-Paraná', 'Ariquemes', 'Vilhena', 'Cacoal'],
-      RR: ['Boa Vista', 'Rorainópolis', 'Caracaraí', 'Pacaraima', 'Mucajaí'],
-      SC: ['Florianópolis', 'Joinville', 'Blumenau', 'São José', 'Chapecó'],
-      SP: ['São Paulo', 'Guarulhos', 'Campinas', 'São Bernardo do Campo', 'Santos'],
-      SE: ['Aracaju', 'Nossa Senhora do Socorro', 'Lagarto', 'Itabaiana', 'São Cristóvão'],
-      TO: ['Palmas', 'Araguaína', 'Gurupi', 'Porto Nacional', 'Paraíso do Tocantins'],
-      ZZ: ['Portugal', 'Estados Unidos', 'Japão', 'Reino Unido', 'Alemanha', 'Itália', 'Espanha', 'França', 'Paraguai', 'Argentina', 'Canadá', 'Suíça']
-    };
-    const PESO = { SP: 34, MG: 16.4, RJ: 12.5, BA: 11, RS: 8.5, PR: 8.5, PE: 7, CE: 6.9, PA: 6.1, SC: 5.5, GO: 5, MA: 5, PB: 3.2, ES: 3, AM: 2.7, MT: 2.5, RN: 2.5, PI: 2.4, AL: 2.3, DF: 2.2, MS: 2, SE: 1.7, RO: 1.2, TO: 1.1, AC: 0.6, AP: 0.55, RR: 0.4, ZZ: 0.7 };
-    const DEMO_PARTIDOS = ['PT', 'PL', 'PSD', 'MDB', 'União', 'PP', 'PSB', 'NOVO', 'PSOL', 'PDT', 'Republicanos', 'PSDB', 'Podemos'];
+  const noticias = ntRows.filter(o => o["Publicada (Sim/Não)"] === "Sim" && o["Título"])
+    .map(o => ({ data: paraData(o["Data"]), titulo: o["Título"], texto: o["Texto"] }))
+    .sort((a, b) => (b.data > a.data ? 1 : b.data < a.data ? -1 : 0));
 
-    function rng(seed) {
-      let a = seed >>> 0;
-      return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
-    }
-    const gauss = r => Math.sqrt(-2 * Math.log(1 - r())) * Math.cos(2 * Math.PI * r());
+  return { equipas, jornadas, taca, noticias };
+}
 
-    function demoCand(cargo, uf) {
-      if (cargo === 'presidente') return [['Lula', .40], ['Flávio Bolsonaro', .38], ['Caiado', .10], ['Cury', .07], ['Renan', .05]].map(([nome, base]) => ({ nome, base }));
-      const r = rng(hash('cand:' + uf));
-      if (cargo === 'deputado') return Array.from({ length: 40 }, (_, i) => ({ nome: 'Candidato ' + (i + 1), base: Math.pow(0.88, i), partido: DEMO_PARTIDOS[(i * 5 + hash(uf)) % DEMO_PARTIDOS.length] }));
-      const n = 4 + Math.floor(r() * 3);
-      const parts = DEMO_PARTIDOS.slice();
-      for (let i = parts.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [parts[i], parts[j]] = [parts[j], parts[i]]; }
-      const bases = [.36, .30, .16, .10, .05, .03];
-      return Array.from({ length: n }, (_, i) => ({ nome: 'Candidato ' + 'ABCDEF'[i], base: bases[i], partido: parts[i] }));
-    }
+async function carregaFolhas() {
+  const textos = await Promise.all(FOLHAS.map(u =>
+    fetch(u, { cache: "no-store" }).then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })));
+  return montaDados(textos);
+}
+// ===== FIM CARREGAMENTO =====
 
-    function demoMuns(cargo, uf) {
-      const nomes = DEMO_MUN[uf], cands = demoCand(cargo, uf);
-      const rUF = rng(hash('uf:' + cargo + uf));
-      const shift = cands.map(() => gauss(rUF) * (cargo === 'presidente' ? 0.35 : 0.5));
-      return nomes.map((nome, i) => {
-        const r = rng(hash('mun:' + cargo + uf + nome));
-        const w = nomes.length === 1 ? 1 : 0.30 * Math.pow(0.68, i);
-        const eleit = Math.round(PESO[uf] * 1e6 * w);
-        const comp = 0.76 + 0.12 * r(), bn = 0.05 + 0.04 * r();
-        const total = Math.max(1, Math.ceil(eleit / 330));
-        const frac = r() < 0.2 ? 0.55 + 0.44 * r() : 1;
-        const pesos = cands.map((c, k) => c.base * Math.exp(shift[k] + gauss(r) * 0.25));
-        const soma = pesos.reduce((a, b) => a + b, 0);
-        const base = eleit * comp * frac;
-        const votos = {};
-        cands.forEach((c, k) => { votos[c.nome] = Math.round(base * (1 - bn) * pesos[k] / soma); });
-        return {
-          cod: uf.toLowerCase() + String(i + 1).padStart(2, '0'), nome, votos,
-          brancos: Math.round(base * bn * 0.35), nulos: Math.round(base * bn * 0.65),
-          secoes: [Math.round(total * frac), total], eleitorado: eleit
-        };
-      });
-    }
+carregaFolhas()
+  .then(d => {
+    DADOS = d;
+    renderEquipas(); renderCalendario(); renderTabela(); renderTaca(); renderNoticias();
+    mostra(location.hash.slice(1));
+  })
+  .catch(err => {
+    console.error(err);
+    document.querySelector(".wrap").insertAdjacentHTML("afterbegin",
+      '<p class="note">Não foi possível ler a folha. Confirma que os separadores estão publicados em CSV.</p>');
+    mostra("equipas");
+  });
+</script>
 
-    function demoCargo(cargo) {
-      const ufs = {};
-      CARGOS[cargo].ufs.forEach(uf => {
-        ufs[uf] = somar(demoMuns(cargo, uf));
-        if (!CARGOS[cargo].nacional) { ufs[uf].candidatos = {}; demoCand(cargo, uf).forEach(c => { ufs[uf].candidatos[c.nome] = { partido: c.partido }; }); }
-      });
-      return { atualizado: new Date().toISOString(), turno: 1, candidatos: {}, brasil: null, ufs, parcial: false };
-    }
-
-    /* ---------- Carregamento ---------- */
-    async function lerJSON(url) {
-      const r = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' });
-      if (!r.ok) throw new Error(url + ' → HTTP ' + r.status);
-      const texto = await r.text();
-      return { texto, json: JSON.parse(texto) };
-    }
-
-    async function carregarCargo(cargo) {
-      if (estado.demo) {
-        if (estado.dados[cargo]) return false;
-        estado.dados[cargo] = demoCargo(cargo);
-        registrar(cargo);
-        return true;
-      }
-      let res, legado = false;
-      try { res = await lerJSON('dados/' + cargo + '.json'); }
-      catch (e) {
-        if (cargo !== 'presidente') throw e;
-        res = await lerJSON('dados.json');     // compatibilidade com o ficheiro antigo
-        legado = true;
-      }
-      if (estado.fontes[cargo] === res.texto && estado.dados[cargo]) return false;
-      estado.dados[cargo] = legado ? converterLegado(res.json) : normalizarCargo(res.json);
-      estado.fontes[cargo] = res.texto;
-      registrar(cargo);
-      return true;
-    }
-
-    async function carregarMuns(cargo, uf) {
-      const chave = cargo + ':' + uf, prev = estado.muns[chave];
-      if (estado.demo) {
-        if (prev) return false;
-        estado.muns[chave] = indexarMuns(demoMuns(cargo, uf));
-        return true;
-      }
-      const d = estado.dados[cargo];
-      if (d && d.parcial) {
-        if (uf !== 'ZZ') { if (prev) return false; estado.muns[chave] = { erro: true, lista: [], porCod: {} }; return true; }
-        if (prev && prev.origem === d.legadoLista) return false;
-        estado.muns[chave] = indexarMuns(d.legadoLista, null, d.legadoLista);
-        return true;
-      }
-      let res;
-      try { res = await lerJSON('dados/' + cargo + '/mun-' + uf.toLowerCase() + '.json'); }
-      catch (e) {
-        if (prev && !prev.erro) return false;          // mantém os dados anteriores
-        estado.muns[chave] = { erro: true, lista: [], porCod: {} };
-        return !prev;
-      }
-      if (prev && prev.texto === res.texto) return false;
-      const arr = Array.isArray(res.json) ? res.json : (res.json.municipios || []);
-      estado.muns[chave] = indexarMuns(arr, res.texto);
-      return true;
-    }
-
-    /* ---------- Navegação ---------- */
-    function lerHash() {
-      const p = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(x => { try { return decodeURIComponent(x); } catch (e) { return x; } });
-      const cargo = CARGOS[p[0]] ? p[0] : 'presidente';
-      let uf = p[1] ? p[1].toUpperCase() : null;
-      if (uf && !CARGOS[cargo].ufs.includes(uf)) uf = null;
-      return { cargo, uf, mun: uf && p[2] ? p[2] : null };
-    }
-    const hrefPara = (cargo, uf, mun) => '#/' + [cargo, uf, mun != null ? encodeURIComponent(mun) : null].filter(x => x != null && x !== '').join('/');
-    function ir(cargo, uf, mun) {
-      const h = hrefPara(cargo, uf, mun);
-      if (location.hash === h) { render(); return; }
-      location.hash = h;
-      if (innerWidth <= 1020) window.scrollTo({ top: 0, behavior: reduzMov ? 'auto' : 'smooth' });
-    }
-
-    async function navegar() {
-      const h = lerHash();
-      estado.cargo = h.cargo; estado.uf = h.uf; estado.mun = h.mun;
-      const chave = h.cargo + ':' + (h.uf || '');
-      if (chave !== estado.chaveLista) { estado.chaveLista = chave; estado.busca = ''; $('busca').value = ''; }
-      render();
-      await atualizar();
-    }
-
-    async function atualizar() {
-      const tk = ++estado.tk;
-      const cargo = estado.cargo, uf = estado.uf;
-      let mudou = false, falhou = false;
-      try { mudou = await carregarCargo(cargo); } catch (e) { falhou = true; console.error('Erro ao carregar dados:', e); }
-      if (!falhou) {
-        // numa UF carrega os seus municípios; no Brasil carrega os de todas as UFs para somar os totais
-        const alvo = uf ? [uf] : (estado.demo || estado.dados[cargo].parcial ? [] : CARGOS[cargo].ufs);
-        const rs = await Promise.all(alvo.map(u => carregarMuns(cargo, u).catch(e => { console.error('Erro ao carregar municípios:', e); return false; })));
-        if (rs.some(Boolean)) mudou = true;
-      }
-      if (tk !== estado.tk) return;           // houve navegação entretanto
-      const primeira = !estado.tentou[cargo];
-      estado.tentou[cargo] = true;
-      if (falhou) definirStatus(estado.dados[cargo] ? 'stale' : 'erro', estado.dados[cargo] ? 'Sem ligação · dados anteriores' : 'Sem dados');
-      else if (estado.demo) definirStatus('demo', 'Demonstração');
-      else definirStatus('live', 'Ao vivo · verificado às ' + horaAgora());
-      if (mudou || primeira) render();
-      if (!estado.demo) reiniciarBarra();
-    }
-
-    function definirStatus(s, texto) { $('status').dataset.s = s; $('statusTxt').textContent = texto; }
-    function horaAgora() { return new Date().toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); }
-    function reiniciarBarra() { const b = $('barra'); b.classList.remove('run'); void b.offsetWidth; b.classList.add('run'); }
-
-    /* ---------- Seleção atual ---------- */
-    const nivel = () => !estado.uf ? 'br' : !estado.mun ? 'uf' : 'mun';
-    const dadosAtuais = () => estado.dados[estado.cargo] || null;
-    const listaMuns = (cargo, uf) => estado.muns[cargo + ':' + uf] || null;
-
-    // Resultado de uma UF: soma dos municípios com dados; sem lista de municípios, usa o total do JSON do cargo
-    function resUF(cargo, uf) {
-      const L = estado.muns[cargo + ':' + uf];
-      if (L && !L.erro && L.lista.length) return somar(L.lista);
-      const d = estado.dados[cargo];
-      return (d && d.ufs[uf]) || null;
-    }
-
-    function resultadoAtual() {
-      const d = dadosAtuais();
-      if (!d) return null;
-      const n = nivel();
-      if (n === 'br') {
-        if (!CARGOS[estado.cargo].nacional) return null;
-        const temMuns = Object.keys(d.ufs).some(uf => { const L = listaMuns(estado.cargo, uf); return L && !L.erro && L.lista.length; });
-        return temMuns || !d.brasil ? somar(Object.keys(d.ufs).map(uf => resUF(estado.cargo, uf))) : d.brasil;
-      }
-      if (n === 'uf') return resUF(estado.cargo, estado.uf);
-      const L = listaMuns(estado.cargo, estado.uf);
-      return (L && L.porCod[estado.mun]) || null;
-    }
-    function nomeMunAtual() {
-      const L = listaMuns(estado.cargo, estado.uf), m = L && L.porCod[estado.mun];
-      return m ? m.nome : estado.mun;
-    }
-    function nomeEscopo() {
-      const d = dadosAtuais(), n = nivel();
-      if (n === 'br') return d && d.parcial ? 'Total disponível (só exterior)' : (CARGOS[estado.cargo].nacional ? 'Brasil' : 'Todos os estados');
-      if (n === 'uf') return UFS[estado.uf][0];
-      return nomeMunAtual() + (estado.uf === 'ZZ' ? '' : ' · ' + estado.uf);
-    }
-    const tipoFilhos = () => nivel() === 'br' ? (estado.cargo === 'presidente' ? 'estados e exterior' : 'estados') : (estado.uf === 'ZZ' ? 'países' : 'municípios');
-
-    function filhosAtuais() {
-      const d = dadosAtuais();
-      if (!d) return null;
-      if (nivel() === 'br') return CARGOS[estado.cargo].ufs.map(uf => { const r = resUF(estado.cargo, uf); return { cod: uf, nome: UFS[uf][0], r, s: resumo(r) }; });
-      const L = listaMuns(estado.cargo, estado.uf);
-      if (!L || L.erro) return null;
-      return L.lista.map(m => ({ cod: m.cod, nome: m.nome, r: m, s: resumo(m) }));
-    }
-
-    /* ---------- Renderização ---------- */
-    function render() {
-      const cargo = estado.cargo, d = dadosAtuais();
-      const falhou = !d && estado.tentou[cargo];
-      document.body.classList.toggle('carregando', !d && !estado.tentou[cargo]);
-      document.querySelectorAll('.cargo-sw button').forEach(b => b.classList.toggle('on', b.dataset.cargo === cargo));
-      $('demoBanner').hidden = !estado.demo;
-      $('vazio').hidden = !falhou;
-      $('conteudo').hidden = falhou;
-      renderMigalhas();
-      document.title = CARGOS[cargo].nome + ' · ' + nomeEscopo() + ' · Apuração 2026';
-
-      const aviso = $('aviso');
-      if (d && d.parcial) { aviso.hidden = false; aviso.textContent = 'Os resultados por estado e município ainda não foram importados. A mostrar apenas o voto no exterior, a partir do dados.json.'; }
-      else aviso.hidden = true;
-
-      if (falhou) {
-        $('vazioTitulo').textContent = 'Ainda não há dados de ' + CARGOS[cargo].nome;
-        $('vazioTexto').innerHTML = 'Não encontrei o ficheiro <code>dados/' + cargo + '.json</code>. Quando ele existir, esta página mostra os resultados por estado e município automaticamente. Para ver como fica, abre a demonstração com números fictícios.';
-        return;
-      }
-      if (!d) {
-        ['resPanel', 'senPanel', 'depPanel', 'mapaPanel', 'vitPanel', 'semDados'].forEach(id => { $(id).hidden = true; });
-        $('cList').innerHTML = '<div class="empty">A carregar…</div>';
-        return;
-      }
-      renderKPIs();
-      renderResultado();
-      renderSenado();
-      renderCamara();
-      renderMapa();
-      renderVitorias();
-      renderLista();
-      const at = d.atualizado ? new Date(d.atualizado) : null;
-      $('rodape').textContent = 'Atualização automática a cada 30 segundos' + (at && !isNaN(at) ? ' · dados de ' + at.toLocaleString('pt-PT', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '');
-    }
-
-    function renderMigalhas() {
-      const { cargo, uf, mun } = estado, n = nivel();
-      const partes = [n === 'br' ? '<span aria-current="page">Brasil</span>' : '<a href="' + hrefPara(cargo) + '">Brasil</a>'];
-      if (uf) partes.push(n === 'uf' ? '<span aria-current="page">' + esc(UFS[uf][0]) + '</span>' : '<a href="' + hrefPara(cargo, uf) + '">' + esc(UFS[uf][0]) + '</a>');
-      if (mun) partes.push('<span aria-current="page">' + esc(nomeMunAtual()) + '</span>');
-      $('crumbs').innerHTML = partes.join('<span class="sep">›</span>');
-    }
-
-    function setKPI(i, o) {
-      $('k' + i + 'l').textContent = o.l;
-      const v = $('k' + i + 'v');
-      if (o.num != null) animarNumero(v, o.num); else definirTexto(v, o.v == null ? '—' : o.v);
-      v.classList.toggle('txt', !!o.txt);
-      v.title = o.title || '';
-      $('k' + i + 's').textContent = o.s || '';
-      const c = $('k' + i + 'c');
-      c.style.setProperty('--c', o.cor || '#3b82f6');
-      const bar = c.querySelector('.mini');
-      bar.hidden = o.bar == null;
-      if (o.bar != null) bar.firstElementChild.style.width = Math.min(100, o.bar) + '%';
-    }
-
-    function renderKPIs() {
-      const cargo = estado.cargo, d = dadosAtuais(), n = nivel();
-      if (n === 'br' && !CARGOS[cargo].nacional) {      // governador: visão geral dos estados
-        const com = CARGOS[cargo].ufs.map(uf => [uf, resUF(cargo, uf)]).filter(e => e[1] && resumo(e[1]));
-        const S = somar(com.map(e => e[1])), D = detalhe(S);
-        setKPI(1, { l: 'Votos válidos', num: D.total, s: 'Soma dos estados' });
-        if (S.secoes && S.secoes[1] > 0) setKPI(2, { l: 'Seções apuradas', v: fmtApur(S.secoes[0] / S.secoes[1] * 100), s: fmtInt(S.secoes[0]) + ' de ' + fmtInt(S.secoes[1]), bar: S.secoes[0] / S.secoes[1] * 100 });
-        else setKPI(2, { l: 'Votos em branco', num: S.brancos, s: 'Soma de todos os estados' });
-        setKPI(3, { l: 'Estados com resultado', v: com.length + ' de ' + CARGOS[cargo].ufs.length, s: 'com dados importados' });
-        if (CARGOS[cargo].vagas) {
-          const top = tabelaSenado()[0];
-          if (top) { setKPI(4, { l: 'Partido com mais senadores', v: top.partido, txt: true, s: top.membros.length + (top.membros.length === 1 ? ' senador' : ' senadores') + ' entre os 2 primeiros', cor: top.cor }); return; }
-        }
-        if (CARGOS[cargo].cadeiras) {
-          const top = tabelaCamara()[0];
-          if (top) { setKPI(4, { l: 'Partido com mais deputados', v: top.titulo, txt: true, s: top.membros.length + (top.membros.length === 1 ? ' deputado' : ' deputados') + ' federais', cor: top.cor }); return; }
-        }
-        const porP = new Map();
-        com.forEach(([uf, r]) => { const s = resumo(r); if (s && s.lider) { const p = meta(s.lider, uf).partido; if (p) porP.set(p, (porP.get(p) || 0) + 1); } });
-        const top = [...porP.entries()].sort((a, b) => b[1] - a[1])[0];
-        if (top) setKPI(4, { l: 'Partido à frente em mais estados', v: top[0], txt: true, s:'lidera em ' + top[1] + (top[1] === 1 ? ' estado' : ' estados'), cor: PARTIDOS[semAcento(top[0]).replace(/[^a-z]/g, '')] || '#3b82f6' });
-        else setKPI(4, { l: 'Votos nulos', num: S.nulos, s: 'Soma de todos os estados' });
-        return;
-      }
-      const r = resultadoAtual();
-      if (!r) { for (let i = 1; i <= 4; i++) setKPI(i, { l: ['Votos válidos', 'Seções apuradas', 'Líder', 'Vantagem'][i - 1], v: '—', s: 'sem dados' }); return; }
-      const D = detalhe(r);
-      setKPI(1, { l: 'Votos válidos', num: D.total, s: nomeEscopo() });
-      if (D.secoes && D.secoes[1] > 0) { const p = D.secoes[0] / D.secoes[1] * 100; setKPI(2, { l: 'Seções apuradas', v: fmtApur(p), s: fmtInt(D.secoes[0]) + ' de ' + fmtInt(D.secoes[1]), bar: p }); }
-      else setKPI(2, { l: 'Brancos e nulos', num: D.brancos + D.nulos, s: D.comp > 0 ? fmtPct((D.brancos + D.nulos) / D.comp * 100) + ' dos votos' : '—' });
-      const l = D.lista[0];
-      if (l && D.total > 0) {
-        const cor = corDe(l.nome);
-        setKPI(3, { l: 'Líder', v: l.nome, txt: true, title: l.nome, s: fmtPct(l.votos / D.total * 100) + ' dos votos válidos', cor });
-        if (CARGOS[cargo].cadeiras && n === 'uf') {
-          const c = calcularDeputados(estado.uf);
-          if (c) setKPI(4, { l: 'Quociente eleitoral', num: c.qe, s: c.n + ' cadeiras · votos ÷ cadeiras', cor });
-          else setKPI(4, { l: 'Quociente eleitoral', v: '—', s: 'sem votos apurados' });
-        }
-        else if (CARGOS[cargo].vagas) {
-          if (D.lista.length > 2) setKPI(4, { l: 'Margem pela 2ª vaga', num: D.lista[1].votos - D.lista[2].votos, s: fmtPp((D.lista[1].votos - D.lista[2].votos) / D.total * 100) + ' sobre ' + D.lista[2].nome + ' (3º)', cor });
-          else setKPI(4, { l: 'Margem pela 2ª vaga', v: '—', s: 'precisa de 3 candidatos' });
-        }
-        else if (D.lista.length > 1) setKPI(4, { l: 'Vantagem', num: l.votos - D.lista[1].votos, s: fmtPp((l.votos - D.lista[1].votos) / D.total * 100) + ' sobre ' + D.lista[1].nome, cor });
-        else setKPI(4, { l: 'Vantagem', v: '—', s: 'precisa de 2 candidatos' });
-      } else {
-        setKPI(3, { l: 'Líder', v: '—', s: 'sem votos apurados', cor: '#94a3b8' });
-        setKPI(4, { l: 'Vantagem', v: '—', s: 'sem votos apurados', cor: '#94a3b8' });
-      }
-    }
-
-    function criarLinha(nome) {
-      const el = document.createElement('div');
-      el.className = 'cand';
-      el.tabIndex = 0;
-      el.innerHTML = '<div class="cand-top"><span class="rank num"></span><span class="avatar">' + esc(iniciais(nome)) + '</span>' +
-        '<span class="name-wrap"><span class="name">' + esc(nome) + '</span><span class="part"></span><span class="tag" hidden>Líder</span></span>' +
-        '<span class="nums"><span class="votes num"></span><span class="pct num"></span></span></div>' +
-        '<div class="track"><div class="fill"></div></div>';
-      el._r = { rank: el.querySelector('.rank'), part: el.querySelector('.part'), tag: el.querySelector('.tag'), votes: el.querySelector('.votes'), pct: el.querySelector('.pct'), fill: el.querySelector('.fill') };
-      el._novo = true;
-      el.addEventListener('mouseenter', () => setFoco(nome));
-      el.addEventListener('mouseleave', () => setFoco(null));
-      el.addEventListener('focus', () => setFoco(nome));
-      el.addEventListener('blur', () => setFoco(null));
-      return el;
-    }
-
-    function renderLinhas(lista, total) {
-      const cont = $('candList');
-      const manter = new Set(lista.map(c => c.nome));
-      for (const [nome, el] of linhas) if (!manter.has(nome)) { el.remove(); linhas.delete(nome); }
-      lista.forEach((c, i) => {
-        let el = linhas.get(c.nome);
-        if (!el) { el = criarLinha(c.nome); el.style.animationDelay = (i * 60) + 'ms'; linhas.set(c.nome, el); cont.appendChild(el); }
-        const pct = total > 0 ? (c.votos / total) * 100 : 0, m = meta(c.nome);
-        el.style.setProperty('--c', corDe(c.nome));
-        el._r.rank.textContent = i + 1;
-        el._r.part.textContent = [m.partido, m.numero].filter(x => x != null && x !== '').join(' · ');
-        const vagas = CARGOS[estado.cargo].vagas;
-        if (vagas && nivel() === 'uf' && total > 0 && i < vagas) { el._r.tag.hidden = false; el._r.tag.textContent = ufCompleta(resultadoAtual()) ? 'Eleito' : 'Na frente'; }
-        else { el._r.tag.hidden = !(i === 0 && total > 0 && lista.length > 1); el._r.tag.textContent = 'Líder'; }
-        el._r.votes.textContent = fmtInt(c.votos);
-        el._r.pct.textContent = fmtPct(pct);
-        if (el._novo) { void el.offsetWidth; el._novo = false; }
-        el._r.fill.style.width = pct + '%';
-      });
-      const atual = [...cont.children], desejado = lista.map(c => linhas.get(c.nome));
-      if (atual.length !== desejado.length || atual.some((el, i) => el !== desejado[i])) desejado.forEach(el => cont.appendChild(el));
-    }
-
-    const R = 76, C = 2 * Math.PI * R, GAP = 2.5;
-    function renderDonut(lista, total) {
-      const g = $('donutG');
-      const manter = new Set(lista.map(c => c.nome));
-      for (const [nome, el] of segs) if (!manter.has(nome)) { el.remove(); segs.delete(nome); }
-      let acc = 0;
-      lista.forEach(c => {
-        let el = segs.get(c.nome);
-        if (!el) {
-          el = document.createElementNS(NS, 'circle');
-          el.setAttribute('class', 'seg'); el.setAttribute('cx', 100); el.setAttribute('cy', 100); el.setAttribute('r', R);
-          el.style.strokeDasharray = '0 ' + C; el.style.strokeDashoffset = 0;
-          el.addEventListener('mouseenter', () => setFoco(c.nome));
-          el.addEventListener('mouseleave', () => setFoco(null));
-          g.appendChild(el); segs.set(c.nome, el);
-          void el.getBoundingClientRect();
-        }
-        const frac = total > 0 ? c.votos / total : 0;
-        const len = Math.max(0, frac * C - (lista.length > 1 ? GAP : 0));
-        el.style.stroke = corDe(c.nome);
-        el.style.strokeDasharray = len + ' ' + (C - len);
-        el.style.strokeDashoffset = -acc;
-        acc += frac * C;
-      });
-    }
-
-    function renderCentro() {
-      const { lista, total } = estado.atual;
-      const f = estado.foco ? lista.find(c => c.nome === estado.foco) : null;
-      const t = $('centroT'), b = $('centroB');
-      if (f) { t.textContent = fmtPct(total > 0 ? (f.votos / total) * 100 : 0); t.style.color = corDe(f.nome); b.textContent = f.nome; }
-      else { t.textContent = total > 0 ? fmtInt(total) : '—'; t.style.color = ''; b.textContent = 'votos válidos'; }
-    }
-
-    function setFoco(nome) {
-      estado.foco = nome;
-      $('donut').classList.toggle('has-foco', !!nome);
-      $('candList').classList.toggle('has-foco', !!nome);
-      segs.forEach((el, n) => el.classList.toggle('is-foco', n === nome));
-      linhas.forEach((el, n) => el.classList.toggle('is-foco', n === nome));
-      renderCentro();
-    }
-
-    function renderResultado() {
-      const painel = $('resPanel'), sem = $('semDados');
-      const r = resultadoAtual();
-      const govBR = nivel() === 'br' && !CARGOS[estado.cargo].nacional;
-      sem.hidden = true;
-      if (govBR) { painel.hidden = true; return; }
-      if (!r) {
-        painel.hidden = true; sem.hidden = false;
-        $('semDadosTxt').textContent = 'Ainda não há resultados para ' + nomeEscopo() + '.';
-        return;
-      }
-      painel.hidden = false;
-      const D = detalhe(r);
-      if (CARGOS[estado.cargo].cadeiras && D.lista.length > TOPO + 1) {      // muitos candidatos: mostra os mais votados e agrupa o resto
-        const resto = D.lista.slice(TOPO);
-        D.lista = D.lista.slice(0, TOPO).concat([{ nome: OUTROS, votos: resto.reduce((a, c) => a + c.votos, 0) }]);
-      }
-      estado.atual = { lista: D.lista, total: D.total };
-      if (estado.foco && !D.lista.some(c => c.nome === estado.foco)) estado.foco = null;
-      $('scopeName').textContent = nomeEscopo();
-      $('vazio2').hidden = D.total > 0;
-      renderLinhas(D.lista, D.total);
-      renderDonut(D.lista, D.total);
-      renderCentro();
-      const partes = [];
-      if (D.temBN && D.comp > 0) {
-        partes.push('<span>Brancos: <strong class="num">' + fmtInt(D.brancos) + '</strong> (' + fmtPct(D.brancos / D.comp * 100) + ')</span>');
-        partes.push('<span>Nulos: <strong class="num">' + fmtInt(D.nulos) + '</strong> (' + fmtPct(D.nulos / D.comp * 100) + ')</span>');
-      }
-      const leg = Object.values(r.legenda || {}).reduce((a, v) => a + (+v || 0), 0);
-      if (leg > 0) partes.push('<span>Votos de legenda: <strong class="num">' + fmtInt(leg) + '</strong></span>');
-      if (r.eleitorado) partes.push('<span>Eleitorado: <strong class="num">' + fmtInt(r.eleitorado) + '</strong></span>');
-      $('resFoot').innerHTML = partes.join('');
-      $('resFoot').hidden = !partes.length;
-    }
-
-    /* ---------- Senado: os 2 mais votados de cada UF ---------- */
-    const ufCompleta = r => !!(r && Array.isArray(r.secoes) && r.secoes[1] > 0 && r.secoes[0] >= r.secoes[1]);
-    function tabelaSenado() {
-      const cargo = 'senador', vagas = CARGOS[cargo].vagas, por = new Map();
-      CARGOS[cargo].ufs.forEach(uf => {
-        const r = resUF(cargo, uf);
-        if (!r) return;
-        const D = detalhe(r);
-        if (D.total <= 0) return;
-        const final = ufCompleta(r);
-        D.lista.slice(0, vagas).forEach(c => {
-          const partido = meta(c.nome, uf, cargo).partido || 'Sem partido';
-          const g = por.get(partido) || { partido, membros: [], cor: PARTIDOS[semAcento(partido).replace(/[^a-z]/g, '')] || '#94a3b8' };
-          g.membros.push({ nome: c.nome, uf, final, votos: c.votos });
-          por.set(partido, g);
-        });
-      });
-      por.forEach(g => g.membros.sort((a, b) => a.uf.localeCompare(b.uf) || b.votos - a.votos));
-      return [...por.values()].sort((a, b) => b.membros.length - a.membros.length || a.partido.localeCompare(b.partido, 'pt'));
-    }
-    function renderSenado() {
-      const painel = $('senPanel');
-      const tab = estado.cargo === 'senador' && nivel() === 'br' ? tabelaSenado() : [];
-      if (!tab.length) { painel.hidden = true; return; }
-      painel.hidden = false;
-      const vagas = CARGOS.senador.vagas * CARGOS.senador.ufs.length;
-      const n = tab.reduce((s, g) => s + g.membros.length, 0), def = tab.reduce((s, g) => s + g.membros.filter(m => m.final).length, 0);
-      $('senSub').textContent = def + ' de ' + vagas + ' vagas definidas · ' + (n - def) + ' ainda em apuração (os 2 mais votados de cada estado) · ' + tab.length + (tab.length === 1 ? ' partido' : ' partidos');
-      $('senLista').innerHTML = tab.map(g => '<div class="partido" style="--c:' + g.cor + '">' +
-        '<div class="p-head"><span class="dot"></span><span class="p-nome">' + esc(g.partido) + '</span><span class="p-n num">' + g.membros.length + '</span></div>' +
-        '<div class="p-membros">' + g.membros.map(m => '<button type="button" class="membro' + (m.final ? '' : ' parcial') + '" data-uf="' + m.uf + '" title="' + esc(m.nome + ' · ' + UFS[m.uf][0] + (m.final ? ' · eleito' : ' · ainda em apuração')) + '">' +
-          '<span class="m-nome">' + esc(m.nome) + '</span><span class="m-uf">' + m.uf + '</span></button>').join('') + '</div></div>').join('');
-    }
-
-    /* ---------- Câmara: sistema proporcional (quociente eleitoral + sobras por D'Hondt) ---------- */
-    function calcularDeputados(uf) {
-      const cargo = 'deputado', N = CADEIRAS[uf], r = resUF(cargo, uf);
-      if (!r || !N) return null;
-      const grupos = new Map(), deGrupo = new Map();
-      const obter = k => { let g = grupos.get(k); if (!g) { g = { chave: k, votos: 0, cands: [], cadeiras: 0 }; grupos.set(k, g); } return g; };
-      let total = 0;
-      for (const [nome, v] of Object.entries(r.votos || {})) {
-        const n = +v || 0, m = meta(nome, uf, cargo), partido = m.partido || 'Sem partido', g = obter(m.federacao || partido);
-        g.votos += n; g.cands.push({ nome, votos: n, partido }); total += n;
-        deGrupo.set(partido, g.chave);
-      }
-      for (const [k, v] of Object.entries(r.legenda || {})) { const n = +v || 0; obter(deGrupo.get(k) || k).votos += n; total += n; }
-      if (total <= 0) return null;
-      const q = total / N, qe = Math.max(1, q % 1 > 0.5 ? Math.ceil(q) : Math.floor(q));
-      const todos = [...grupos.values()], aptos = todos.filter(g => g.votos >= 0.8 * qe);
-      aptos.forEach(g => { g.cadeiras = Math.floor(g.votos / qe); });
-      let resto = N - todos.reduce((a, g) => a + g.cadeiras, 0);
-      const pool = SOBRAS_ABERTAS ? todos.filter(g => g.votos > 0) : aptos;
-      while (resto > 0 && pool.length) {
-        let melhor = pool[0];
-        pool.forEach(g => { if (g.votos / (g.cadeiras + 1) > melhor.votos / (melhor.cadeiras + 1)) melhor = g; });
-        melhor.cadeiras++; resto--;
-      }
-      const eleitos = [];
-      todos.forEach(g => {
-        g.cands.sort((a, b) => b.votos - a.votos);
-        const ok = g.cands.filter(c => c.votos >= 0.2 * qe), fora = g.cands.filter(c => c.votos < 0.2 * qe);
-        g.eleitos = ok.concat(fora).slice(0, g.cadeiras);
-        g.eleitos.forEach(c => eleitos.push({ ...c, grupo: g.chave, uf }));
-      });
-      eleitos.sort((a, b) => b.votos - a.votos);
-      const ordem = todos.filter(g => g.cadeiras > 0).sort((a, b) => b.cadeiras - a.cadeiras || b.votos - a.votos);
-      return { uf, n: N, qe, total, grupos: ordem, eleitos, final: ufCompleta(r) };
-    }
-    function tabelaCamara() {      // deputados eleitos de todo o país, por partido do candidato
-      const por = new Map();
-      CARGOS.deputado.ufs.forEach(uf => {
-        const c = calcularDeputados(uf);
-        if (!c) return;
-        c.eleitos.forEach(e => {
-          const g = por.get(e.partido) || { titulo: e.partido, membros: [], cor: PARTIDOS[semAcento(e.partido).replace(/[^a-z]/g, '')] || '#94a3b8' };
-          g.membros.push({ nome: e.nome, uf, final: c.final, sub: fmtInt(e.votos) + ' votos' });
-          por.set(e.partido, g);
-        });
-      });
-      por.forEach(g => g.membros.sort((a, b) => a.uf.localeCompare(b.uf) || a.nome.localeCompare(b.nome, 'pt')));
-      return [...por.values()].sort((a, b) => b.membros.length - a.membros.length || a.titulo.localeCompare(b.titulo, 'pt'));
-    }
-    function cartoes(tab, comUF) {
-      return tab.map(g => '<div class="partido" style="--c:' + g.cor + '">' +
-        '<div class="p-head"><span class="dot"></span><span class="p-nome">' + esc(g.titulo) + '</span><span class="p-n num">' + g.membros.length + '</span></div>' +
-        '<div class="p-membros">' + g.membros.map(m => '<button type="button" class="membro' + (m.final ? '' : ' parcial') + '" data-uf="' + m.uf + '" title="' + esc(m.nome + ' · ' + UFS[m.uf][0] + ' · ' + m.sub + (m.final ? '' : ' · ainda em apuração')) + '">' +
-          '<span class="m-nome">' + esc(m.nome) + '</span><span class="m-uf">' + (comUF ? m.uf : esc(m.sub)) + '</span></button>').join('') + '</div></div>').join('');
-    }
-    function renderCamara() {
-      const painel = $('depPanel'), n = nivel();
-      if (estado.cargo !== 'deputado' || n === 'mun') { painel.hidden = true; return; }
-      if (n === 'br') {
-        const tab = tabelaCamara();
-        if (!tab.length) { painel.hidden = true; return; }
-        const tot = Object.values(CADEIRAS).reduce((a, b) => a + b, 0);
-        const todos = tab.reduce((a, g) => a + g.membros.length, 0), def = tab.reduce((a, g) => a + g.membros.filter(m => m.final).length, 0);
-        $('depTitulo').textContent = 'Deputados federais eleitos';
-        $('depSub').textContent = def + ' de ' + tot + ' cadeiras definidas · ' + (todos - def) + ' ainda em apuração (projeção com os votos atuais) · ' + tab.length + (tab.length === 1 ? ' partido' : ' partidos');
-        $('depLista').innerHTML = cartoes(tab, true);
-        painel.hidden = false;
-        return;
-      }
-      const c = calcularDeputados(estado.uf);
-      if (!c) { painel.hidden = true; return; }
-      const tab = c.grupos.map(g => ({
-        titulo: g.chave, cor: PARTIDOS[semAcento(g.chave).replace(/[^a-z]/g, '')] || corDe(g.eleitos[0] ? g.eleitos[0].nome : g.chave, estado.uf),
-        membros: g.eleitos.map(e => ({ nome: e.nome, uf: estado.uf, final: c.final, sub: fmtInt(e.votos) + ' votos' }))
-      }));
-      $('depTitulo').textContent = 'Deputados federais · ' + UFS[estado.uf][0];
-      $('depSub').textContent = c.n + ' cadeiras · quociente eleitoral ' + fmtInt(c.qe) + (c.final ? '' : ' · projeção, ainda em apuração');
-      $('depLista').innerHTML = cartoes(tab, false);
-      painel.hidden = false;
-    }
-
-    const rotuloCurto = (nome, uf) => (!CARGOS[estado.cargo].nacional && meta(nome, uf).partido) || nome.split(/\s+/)[0];
-    function renderMapa() {
-      const painel = $('mapaPanel');
-      if (nivel() !== 'br') { painel.hidden = true; return; }
-      painel.hidden = false;
-      const gov = !CARGOS[estado.cargo].nacional;
-      $('mapaSub').textContent = (gov ? 'Cor = partido do candidato à frente' : 'Cor = candidato à frente') + ' · quanto mais forte, maior a percentagem · clica para abrir';
-      const por = {};
-      filhosAtuais().forEach(f => { por[f.cod] = f; });
-      let html = '';
-      REGIOES.forEach(reg => {
-        const ufs = CARGOS[estado.cargo].ufs.filter(u => UFS[u][1] === reg);
-        if (!ufs.length) return;
-        html += '<div class="reg"><h3>' + reg + '</h3><div class="tiles">';
-        ufs.forEach(uf => {
-          const s = por[uf] && por[uf].s, cod = uf === 'ZZ' ? 'EXT' : uf;
-          if (!s || !s.lider) { html += '<button type="button" class="tile off" data-uf="' + uf + '" title="' + esc(UFS[uf][0]) + ': sem dados"><span class="t-uf">' + cod + '</span><span class="t-l">sem dados</span><span class="t-p">—</span></button>'; return; }
-          const k = Math.max(12, Math.min(46, 12 + (s.pct - 30) * 1.1));
-          html += '<button type="button" class="tile" data-uf="' + uf + '" style="--c:' + corDe(s.lider, uf) + ';--k:' + k.toFixed(0) + '%" title="' + esc(UFS[uf][0] + ' — ' + s.lider + ' ' + fmtPct(s.pct)) + '">' +
-            '<span class="t-uf">' + cod + '</span><span class="t-l">' + esc(rotuloCurto(s.lider, uf)) + '</span><span class="t-p num">' + fmtPct(s.pct) + '</span></button>';
-        });
-        html += '</div></div>';
-      });
-      $('tiles').innerHTML = html;
-    }
-
-    function renderVitorias() {
-      const painel = $('vitPanel'), n = nivel();
-      const fl = n === 'mun' ? null : filhosAtuais();
-      const com = fl ? fl.filter(f => f.s && f.s.lider) : [];
-      if (!com.length) { painel.hidden = true; return; }
-      painel.hidden = false;
-      const porPartido = !CARGOS[estado.cargo].nacional && n === 'br';
-      const mapa = new Map();
-      com.forEach(f => {
-        const uf = n === 'br' ? f.cod : estado.uf;
-        const p = meta(f.s.lider, uf).partido;
-        const chave = porPartido ? (p || 'Sem partido') : f.s.lider;
-        const g = mapa.get(chave) || { chave, n: 0, cor: porPartido && !p ? '#94a3b8' : corDe(f.s.lider, uf) };
-        g.n++;
-        mapa.set(chave, g);
-      });
-      let gs = [...mapa.values()].sort((a, b) => b.n - a.n);
-      if (gs.length > 8) { const resto = gs.slice(7); gs = gs.slice(0, 7).concat([{ chave: 'Outros', n: resto.reduce((s, g) => s + g.n, 0), cor: '#94a3b8' }]); }
-      $('vitTitulo').textContent = porPartido ? 'Estados por partido do líder' : 'Onde cada candidato lidera';
-      $('vitSub').textContent = com.length + ' de ' + fl.length + ' ' + tipoFilhos() + ' com votos apurados';
-      $('stack').innerHTML = gs.map(g => '<span style="flex:' + g.n + ';background:' + g.cor + '" title="' + esc(g.chave) + ': ' + g.n + '"></span>').join('');
-      $('legend').innerHTML = gs.map(g => '<div class="lg"><span class="dot" style="background:' + g.cor + '"></span><span class="nm">' + esc(g.chave) + '</span><span class="n num">' + fmtInt(g.n) + '</span><span class="p num">' + fmtPct(g.n / com.length * 100) + '</span></div>').join('');
-    }
-
-    function itemHtml(f, ativo) {
-      const s = f.s, n = nivel();
-      const cor = s && s.lider ? corDe(s.lider, n === 'br' ? f.cod : estado.uf) : '#94a3b8';
-      const sub = s && s.lider ? esc(s.lider) + ' · ' + fmtPct(s.pct) : 'sem votos';
-      const ap = s && s.ap != null && s.ap < 100 ? '<span class="c-ap" title="Seções apuradas">' + fmtApur(s.ap) + '</span>' : '';
-      return '<button type="button" class="c-item' + (ativo ? ' on' : '') + '" data-cod="' + esc(f.cod) + '" style="--c:' + cor + '"' + (ativo ? ' aria-current="true"' : '') + '>' +
-        '<span class="dot"></span><span class="c-main"><span class="c-name">' + esc(f.nome) + '</span><span class="c-sub">' + sub + '</span></span>' +
-        '<span class="c-right"><span class="c-total num">' + (s ? fmtInt(s.total) : '—') + '</span>' + ap + '</span></button>';
-    }
-
-    function renderLista() {
-      const n = nivel(), cont = $('cList');
-      const tipo = tipoFilhos();
-      $('latTitulo').textContent = n === 'mun' ? 'Outros ' + tipo : tipo.charAt(0).toUpperCase() + tipo.slice(1);
-      $('busca').placeholder = 'Pesquisar ' + (n === 'br' ? 'estado' : estado.uf === 'ZZ' ? 'país' : 'município') + '…';
-      const voltar = $('voltar');
-      voltar.hidden = n === 'br';
-      if (n !== 'br') voltar.textContent = '← ' + (n === 'uf' ? 'Brasil' : UFS[estado.uf][0]);
-
-      const fl = filhosAtuais();
-      if (!fl) {
-        const L = listaMuns(estado.cargo, estado.uf);
-        $('latCount').textContent = '—';
-        cont.innerHTML = '<div class="empty">' + (L && L.erro ? 'Ainda não há resultados por ' + (estado.uf === 'ZZ' ? 'país' : 'município') + ' para este estado.' : 'A carregar…') + '</div>';
-        return;
-      }
-      const termo = semAcento(estado.busca.trim());
-      let itens = fl.filter(f => !termo || semAcento(f.nome).includes(termo));
-      if (estado.ordem === 'az') itens.sort((a, b) => a.nome.localeCompare(b.nome, 'pt'));
-      else itens.sort((a, b) => ((b.s ? b.s.total : -1) - (a.s ? a.s.total : -1)) || a.nome.localeCompare(b.nome, 'pt'));
-      $('latCount').textContent = termo ? itens.length + ' de ' + fl.length : fl.length + '';
-      const scroll = cont.scrollTop;
-      cont.innerHTML = itens.length ? itens.map(f => itemHtml(f, n === 'mun' && f.cod === estado.mun)).join('') : '<div class="empty">Nada encontrado.</div>';
-      cont.scrollTop = scroll;
-    }
-
-    /* ---------- Eventos ---------- */
-    document.querySelector('.cargo-sw').addEventListener('click', e => {
-      const b = e.target.closest('button[data-cargo]');
-      if (!b || b.dataset.cargo === estado.cargo) return;
-      const c = b.dataset.cargo;
-      ir(c, CARGOS[c].ufs.includes(estado.uf) ? estado.uf : null, null);
-    });
-    $('cList').addEventListener('click', e => {
-      const b = e.target.closest('button[data-cod]');
-      if (!b) return;
-      if (nivel() === 'br') ir(estado.cargo, b.dataset.cod, null);
-      else ir(estado.cargo, estado.uf, b.dataset.cod);
-    });
-    $('depLista').addEventListener('click', e => {
-      const b = e.target.closest('button[data-uf]');
-      if (b && nivel() === 'br') ir(estado.cargo, b.dataset.uf, null);
-    });
-    $('senLista').addEventListener('click', e => {
-      const b = e.target.closest('button[data-uf]');
-      if (b) ir(estado.cargo, b.dataset.uf, null);
-    });
-    $('tiles').addEventListener('click', e => {
-      const b = e.target.closest('button[data-uf]');
-      if (b) ir(estado.cargo, b.dataset.uf, null);
-    });
-    $('voltar').addEventListener('click', () => { if (nivel() === 'mun') ir(estado.cargo, estado.uf, null); else ir(estado.cargo, null, null); });
-    $('busca').addEventListener('input', e => { estado.busca = e.target.value; renderLista(); });
-    document.querySelector('.seg-ctrl').addEventListener('click', e => {
-      const b = e.target.closest('button[data-ordem]');
-      if (!b) return;
-      estado.ordem = b.dataset.ordem;
-      document.querySelectorAll('.seg-ctrl button').forEach(x => x.classList.toggle('on', x === b));
-      renderLista();
-    });
-    $('tema').addEventListener('click', () => {
-      const novo = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', novo);
-      try { localStorage.setItem('tema', novo); } catch (e) { /* ignora */ }
-    });
-
-    function limparDados() { estado.dados = {}; estado.fontes = {}; estado.muns = {}; estado.tentou = {}; estado.chaveLista = ''; }
-    function entrarDemo() { estado.demo = true; limparDados(); definirStatus('demo', 'Demonstração'); navegar(); }
-    function sairDemo() {
-      estado.demo = false; limparDados();
-      try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) { /* ignora */ }
-      definirStatus('loading', 'A carregar…');
-      navegar();
-    }
-    $('verDemo').addEventListener('click', entrarDemo);
-    $('sairDemo').addEventListener('click', sairDemo);
-    $('tentar').addEventListener('click', () => { estado.tentou[estado.cargo] = false; definirStatus('loading', 'A carregar…'); render(); atualizar(); });
-
-    window.addEventListener('hashchange', navegar);
-    estado.demo = /[?&]demo(=|&|$)/.test(location.search);
-    navegar();
-    setInterval(() => { if (!estado.demo) atualizar(); }, 30000);
-  </script>
-</body>
-</html>
